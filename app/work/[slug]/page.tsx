@@ -7,6 +7,7 @@ import { staggerContainer, fadeUp } from "@/lib/motion";
 import { projects, getProjectBySlug } from "@/data/projects";
 import ScrollProgress from "@/components/ScrollProgress";
 import Footer from "@/components/Footer";
+import Tag from "@/components/Tag";
 import { use } from "react";
 
 export default function CaseStudy({
@@ -16,92 +17,98 @@ export default function CaseStudy({
 }) {
   const { slug } = use(params);
   const project = getProjectBySlug(slug);
-
   if (!project) notFound();
 
   const prev = projects.find((p) => p.slug === project.prevSlug);
   const next = projects.find((p) => p.slug === project.nextSlug);
+  const tools = project.tools.split(", ");
 
   return (
     <>
       <ScrollProgress />
-
       <main className="min-h-screen">
-        {/* ─── Header ─────────────────────────────────────────── */}
-        <section className="px-6 md:px-10 pt-36 pb-16">
-          <div className="max-w-3xl mx-auto">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-            >
+        {/* ─── Header ──────────────────────────────────────────── */}
+        <section className="relative overflow-hidden">
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `radial-gradient(ellipse 80% 60% at 50% 0%, rgba(138,111,240,0.38) 0%, transparent 60%)`,
+            }}
+          />
+          <div className="relative max-w-3xl mx-auto px-6 md:px-8 pt-28 pb-12">
+            <motion.div variants={staggerContainer} initial="hidden" animate="visible">
               {/* Back */}
-              <motion.div variants={fadeUp} className="mb-10">
+              <motion.div variants={fadeUp} className="mb-8">
                 <Link
-                  href="/#work"
-                  className="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200"
+                  href="/"
+                  className="inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors duration-200"
                 >
                   ← Work
                 </Link>
               </motion.div>
 
-              {/* Tag */}
-              <motion.p
-                variants={fadeUp}
-                className="text-xs tracking-widest uppercase text-fg-muted mb-4"
-              >
-                {project.tag}
-              </motion.p>
+              <motion.div variants={fadeUp} className="mb-4">
+                <Tag variant="lavender">{project.tag}</Tag>
+              </motion.div>
 
-              {/* Title */}
               <motion.h1
                 variants={fadeUp}
-                className="text-5xl md:text-7xl text-fg leading-tight tracking-tight mb-4"
+                className="text-4xl md:text-6xl font-bold text-fg leading-tight tracking-tight mb-4"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {project.title.split(" ").map((word, i) =>
                   word === project.accentWord ? (
-                    <em key={i} className="not-italic italic text-accent">
+                    <span
+                      key={i}
+                      style={{
+                        background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }}
+                    >
                       {word}{" "}
-                    </em>
+                    </span>
                   ) : (
                     <span key={i}>{word} </span>
                   )
                 )}
               </motion.h1>
 
-              {/* Subtitle */}
-              <motion.p
-                variants={fadeUp}
-                className="text-base text-fg-muted mb-10"
-              >
+              <motion.p variants={fadeUp} className="text-lg text-fg-muted mb-8">
                 {project.subtitle}
               </motion.p>
 
-              {/* Meta row */}
+              {/* Meta grid */}
               <motion.div
                 variants={fadeUp}
-                className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-fg-muted border-t border-b border-border py-4"
+                className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-surface border border-border"
               >
-                <span>{project.role}</span>
-                <span className="text-border">·</span>
-                <span>{project.duration}</span>
-                <span className="text-border">·</span>
-                <span>{project.tools}</span>
-                <span className="text-border">·</span>
-                <span>{project.year}</span>
+                {[
+                  { label: "Role", value: project.role },
+                  { label: "Duration", value: project.duration },
+                  { label: "Year", value: project.year },
+                  { label: "Tools", value: project.tools },
+                ].map(({ label, value }) => (
+                  <div key={label}>
+                    <p className="text-xs text-fg-muted mb-1 font-medium uppercase tracking-wider">
+                      {label}
+                    </p>
+                    <p className="text-sm text-fg font-medium">{value}</p>
+                  </div>
+                ))}
               </motion.div>
             </motion.div>
           </div>
         </section>
 
-        {/* ─── Banner ─────────────────────────────────────────── */}
+        {/* ─── Banner ──────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="mx-6 md:mx-10 rounded-2xl overflow-hidden"
-          style={{ height: 340 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mx-6 md:mx-8 xl:max-w-5xl xl:mx-auto rounded-2xl overflow-hidden border border-border"
+          style={{ height: 360 }}
         >
           {/* TODO: replace with real image */}
           <div
@@ -112,22 +119,22 @@ export default function CaseStudy({
           />
         </motion.div>
 
-        {/* ─── Content ────────────────────────────────────────── */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-          className="px-6 md:px-10 py-20"
-        >
-          <div className="max-w-3xl mx-auto flex flex-col gap-20">
+        {/* ─── Content ─────────────────────────────────────────── */}
+        <div className="max-w-3xl mx-auto px-6 md:px-8 py-20">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="flex flex-col gap-20"
+          >
             {/* Overview */}
             <motion.div variants={fadeUp}>
-              <p className="text-xs tracking-widest uppercase text-fg-muted mb-4">
+              <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-3">
                 Overview
               </p>
               <h2
-                className="text-3xl text-fg mb-4 leading-snug"
+                className="text-2xl font-bold text-fg mb-4"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 The Project
@@ -135,23 +142,29 @@ export default function CaseStudy({
               <p className="text-base text-fg-muted leading-relaxed max-w-xl">
                 {project.overview}
               </p>
-
-              {/* Image placeholder */}
-              <div className="mt-8 rounded-xl overflow-hidden bg-surface" style={{ height: 240 }}>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {tools.map((t) => (
+                  <Tag key={t} variant="default">{t.trim()}</Tag>
+                ))}
+              </div>
+              <div
+                className="mt-8 rounded-2xl overflow-hidden border border-border bg-surface flex items-center justify-center"
+                style={{ height: 220 }}
+              >
                 {/* TODO: replace with real image */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-xs text-fg-muted tracking-widest uppercase">Overview Image</span>
-                </div>
+                <span className="text-xs text-fg-muted tracking-widest uppercase">
+                  Overview Image
+                </span>
               </div>
             </motion.div>
 
-            {/* The Problem */}
+            {/* Problem */}
             <motion.div variants={fadeUp}>
-              <p className="text-xs tracking-widest uppercase text-fg-muted mb-4">
+              <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-3">
                 The Problem
               </p>
               <h2
-                className="text-3xl text-fg mb-4 leading-snug"
+                className="text-2xl font-bold text-fg mb-4"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 What we set out to solve
@@ -163,11 +176,11 @@ export default function CaseStudy({
 
             {/* Process */}
             <motion.div variants={fadeUp}>
-              <p className="text-xs tracking-widest uppercase text-fg-muted mb-4">
+              <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-3">
                 Process
               </p>
               <h2
-                className="text-3xl text-fg mb-8 leading-snug"
+                className="text-2xl font-bold text-fg mb-8"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 How we got there
@@ -176,49 +189,58 @@ export default function CaseStudy({
                 {project.processSteps.map((step) => (
                   <div
                     key={step.step}
-                    className="p-5 rounded-xl bg-surface flex flex-col gap-3"
+                    className="p-5 rounded-2xl bg-surface border border-border flex flex-col gap-3"
                   >
                     <span
-                      className="text-3xl text-fg-muted"
+                      className="text-2xl font-bold text-fg-muted"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {step.step}
                     </span>
-                    <p className="text-sm font-medium text-fg">{step.title}</p>
+                    <p className="text-sm font-semibold text-fg">{step.title}</p>
                     <p className="text-xs text-fg-muted leading-relaxed">
                       {step.description}
                     </p>
                   </div>
                 ))}
               </div>
-
-              {/* Image placeholder */}
-              <div className="mt-8 rounded-xl overflow-hidden bg-surface" style={{ height: 280 }}>
+              <div
+                className="mt-8 rounded-2xl overflow-hidden border border-border bg-surface flex items-center justify-center"
+                style={{ height: 260 }}
+              >
                 {/* TODO: replace with real image */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-xs text-fg-muted tracking-widest uppercase">Process Image</span>
-                </div>
+                <span className="text-xs text-fg-muted tracking-widest uppercase">
+                  Process Image
+                </span>
               </div>
             </motion.div>
 
             {/* Key Numbers */}
             <motion.div variants={fadeUp}>
-              <p className="text-xs tracking-widest uppercase text-fg-muted mb-4">
+              <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-6">
                 Key Numbers
               </p>
               <div className="grid grid-cols-3 gap-4">
                 {project.stats.map((stat) => (
                   <div
                     key={stat.label}
-                    className="p-6 rounded-xl border border-border flex flex-col gap-2"
+                    className="p-6 rounded-2xl border border-border bg-surface/60 flex flex-col gap-2"
                   >
                     <span
-                      className="text-4xl text-accent"
-                      style={{ fontFamily: "var(--font-display)" }}
+                      className="text-4xl font-bold"
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }}
                     >
                       {stat.value}
                     </span>
-                    <span className="text-xs text-fg-muted">{stat.label}</span>
+                    <span className="text-xs text-fg-muted leading-snug">
+                      {stat.label}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -226,11 +248,11 @@ export default function CaseStudy({
 
             {/* Outcome */}
             <motion.div variants={fadeUp}>
-              <p className="text-xs tracking-widest uppercase text-fg-muted mb-4">
+              <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-3">
                 Outcome
               </p>
               <h2
-                className="text-3xl text-fg mb-4 leading-snug"
+                className="text-2xl font-bold text-fg mb-4"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 What shipped
@@ -238,31 +260,32 @@ export default function CaseStudy({
               <p className="text-base text-fg-muted leading-relaxed max-w-xl">
                 {project.outcome}
               </p>
-
-              {/* Image placeholder */}
-              <div className="mt-8 rounded-xl overflow-hidden bg-surface" style={{ height: 280 }}>
+              <div
+                className="mt-8 rounded-2xl overflow-hidden border border-border bg-surface flex items-center justify-center"
+                style={{ height: 260 }}
+              >
                 {/* TODO: replace with real image */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-xs text-fg-muted tracking-widest uppercase">Final Design</span>
-                </div>
+                <span className="text-xs text-fg-muted tracking-widest uppercase">
+                  Final Design
+                </span>
               </div>
             </motion.div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
-        {/* ─── Project Navigation ─────────────────────────────── */}
-        <div className="px-6 md:px-10 py-12 border-t border-border">
-          <div className="max-w-3xl mx-auto flex items-center justify-between">
+        {/* ─── Project nav ─────────────────────────────────────── */}
+        <div className="max-w-3xl mx-auto px-6 md:px-8 py-12 border-t border-border">
+          <div className="flex items-center justify-between">
             {prev ? (
               <Link
                 href={`/work/${prev.slug}`}
-                className="group flex flex-col gap-1"
+                className="group flex flex-col gap-1 p-4 rounded-xl hover:bg-surface transition-colors duration-200"
               >
-                <span className="text-xs text-fg-muted group-hover:text-fg transition-colors duration-200">
+                <span className="text-xs text-fg-muted group-hover:text-fg transition-colors">
                   ← Previous
                 </span>
                 <span
-                  className="text-xl text-fg group-hover:text-accent transition-colors duration-200"
+                  className="text-base font-semibold text-fg group-hover:text-accent transition-colors"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {prev.title}
@@ -271,17 +294,16 @@ export default function CaseStudy({
             ) : (
               <div />
             )}
-
             {next ? (
               <Link
                 href={`/work/${next.slug}`}
-                className="group flex flex-col gap-1 text-right"
+                className="group flex flex-col gap-1 text-right p-4 rounded-xl hover:bg-surface transition-colors duration-200"
               >
-                <span className="text-xs text-fg-muted group-hover:text-fg transition-colors duration-200">
+                <span className="text-xs text-fg-muted group-hover:text-fg transition-colors">
                   Next →
                 </span>
                 <span
-                  className="text-xl text-fg group-hover:text-accent transition-colors duration-200"
+                  className="text-base font-semibold text-fg group-hover:text-accent transition-colors"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {next.title}

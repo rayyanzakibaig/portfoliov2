@@ -47,7 +47,6 @@ export default function BentoItem({ item, onClick }: Props) {
         </p>
         <h3
           className="text-xl md:text-2xl text-white leading-tight"
-          style={{ fontFamily: "var(--font-display)" }}
         >
           {item.title}
         </h3>

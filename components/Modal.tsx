@@ -20,21 +20,14 @@ export default function Modal({ item, onClose }: Props) {
   }, [onClose]);
 
   useEffect(() => {
-    if (item) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = item ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [item]);
 
   return (
     <AnimatePresence>
       {item && (
         <>
-          {/* Backdrop */}
           <motion.div
             key="backdrop"
             variants={overlayVariants}
@@ -42,10 +35,9 @@ export default function Modal({ item, onClose }: Props) {
             animate="visible"
             exit="exit"
             onClick={onClose}
-            className="fixed inset-0 z-[9980] bg-black/60 backdrop-blur-md"
+            className="fixed inset-0 z-[9980] bg-black/40 backdrop-blur-sm"
           />
 
-          {/* Modal */}
           <div className="fixed inset-0 z-[9981] flex items-center justify-center p-6">
             <motion.div
               key="modal"
@@ -53,50 +45,43 @@ export default function Modal({ item, onClose }: Props) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="relative w-full max-w-lg bg-bg border border-border rounded-2xl p-8 md:p-10"
               onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md bg-bg border border-border rounded-2xl overflow-hidden shadow-2xl shadow-black/10"
             >
+              {/* Gradient header */}
+              <div className={`h-40 bg-gradient-to-br ${item.gradient}`} />
+
               {/* Close */}
               <button
                 onClick={onClose}
-                className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center text-fg-muted hover:text-fg transition-colors duration-200 text-lg"
-                aria-label="Close modal"
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-black/20 hover:bg-black/30 text-white transition-colors duration-150 text-base"
+                aria-label="Close"
               >
                 ×
               </button>
 
-              {/* Header gradient swatch */}
-              <div
-                className={`w-full h-32 rounded-xl mb-6 bg-gradient-to-br ${item.gradient}`}
-              />
+              <div className="p-6">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface border border-border text-fg-muted mb-3">
+                  {item.type}
+                </span>
 
-              {/* Type */}
-              <p className="text-xs tracking-widest uppercase text-fg-muted mb-2">
-                {item.type}
-              </p>
+                <h3
+                  className="text-2xl font-bold text-fg mb-3 leading-tight"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {item.title}
+                </h3>
 
-              {/* Title */}
-              <h3
-                className="text-3xl md:text-4xl text-fg leading-tight mb-4"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {item.title}
-              </h3>
+                {item.award && (
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F4F2FF] border border-[#E5DFFF] text-[#6B5CE7] text-xs font-medium mb-3">
+                    ★ {item.award}
+                  </div>
+                )}
 
-              {/* Award badge */}
-              {item.award && (
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/30 bg-accent/10 mb-4">
-                  <span className="text-accent text-xs">★</span>
-                  <span className="text-accent text-xs tracking-wide">
-                    {item.award}
-                  </span>
-                </div>
-              )}
-
-              {/* Description */}
-              <p className="text-sm text-fg-muted leading-relaxed">
-                {item.description}
-              </p>
+                <p className="text-sm text-fg-muted leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
             </motion.div>
           </div>
         </>
