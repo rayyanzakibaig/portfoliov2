@@ -126,7 +126,7 @@ export default function Home() {
               </button>
               <span className="text-border">·</span>
               <a
-                href="https://linkedin.com/in/rayyanzakibaig"
+                href="https://www.linkedin.com/in/rayyan-zakibaig"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 hover:text-fg transition-colors duration-150"
@@ -148,7 +148,7 @@ export default function Home() {
                 View Work
               </a>
               <a
-                href="/resume.pdf"
+                href="https://drive.google.com/file/d/1mnPFnb0WzECPuX6eOYl4WHcP4RkWxX7f/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-border text-fg text-sm font-medium hover:bg-surface-hover transition-all duration-200"

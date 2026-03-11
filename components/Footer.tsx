@@ -68,7 +68,7 @@ export default function Footer() {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://linkedin.com/in/rayyanzakibaig"
+              href="https://www.linkedin.com/in/rayyan-zakibaig"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-1.5 rounded-lg text-sm text-fg-muted hover:text-fg hover:bg-surface transition-all duration-200"
@@ -84,7 +84,7 @@ export default function Footer() {
               GitHub
             </a>
             <a
-              href="/resume.pdf"
+              href="https://drive.google.com/file/d/1mnPFnb0WzECPuX6eOYl4WHcP4RkWxX7f/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-1.5 rounded-lg text-sm text-fg-muted hover:text-fg hover:bg-surface transition-all duration-200"

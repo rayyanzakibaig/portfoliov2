@@ -9,6 +9,9 @@ const experience = [
   { year: "2024", role: "Product Design Intern", company: "American EMR" },
   { year: "2024", role: "UX/UI Designer & Developer", company: "Investate Holdings" },
   { year: "2023–", role: "Freelance Product Designer", company: "Independent" },
+  { year: "2023–", role: "Freelance Product Designer", company: "Independent" },
+  { year: "2023–", role: "Freelance Product Designer", company: "Independent" },
+  { year: "2023–", role: "Freelance Product Designer", company: "Independent" },
 ];
 
 const skills: Record<string, { label: string; variant: "lavender" | "pink" | "blue" | "green" | "default" }[]> = {
@@ -108,7 +111,7 @@ export default function About() {
           <div className="flex flex-col">
             {experience.map(({ year, role, company }, i) => (
               <motion.div
-                key={`${year}-${company}`}
+                key={i}
                 variants={fadeUp}
                 className="grid grid-cols-[72px_1fr_auto] gap-6 py-5 border-b border-border last:border-0 items-center"
               >

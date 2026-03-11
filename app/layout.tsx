@@ -24,6 +24,13 @@ export const metadata: Metadata = {
   title: "Rayyan Zakibaig — Product Designer & Builder",
   description:
     "Product designer who builds. Crafting products that are intuitive to use and thoughtful to look at.",
+  icons: {
+    icon: [
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "Rayyan Zakibaig — Product Designer & Builder",
     description: "Product designer who builds.",

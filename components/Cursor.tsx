@@ -53,7 +53,7 @@ export default function Cursor() {
     <>
       {/* Dot */}
       <motion.div
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full bg-fg mix-blend-difference"
+        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full bg-accent"
         style={{
           x: mouseX,
           y: mouseY,
@@ -61,15 +61,15 @@ export default function Cursor() {
           translateY: "-50%",
         }}
         animate={{
-          width: hovered ? 8 : 6,
-          height: hovered ? 8 : 6,
+          width: hovered ? 10 : 7,
+          height: hovered ? 10 : 7,
           opacity: 1,
         }}
         transition={{ duration: 0.15 }}
       />
       {/* Ring */}
       <motion.div
-        className="fixed top-0 left-0 z-[99998] pointer-events-none rounded-full border border-fg mix-blend-difference"
+        className="fixed top-0 left-0 z-[99998] pointer-events-none rounded-full border border-accent"
         style={{
           x: ringX,
           y: ringY,
@@ -77,9 +77,9 @@ export default function Cursor() {
           translateY: "-50%",
         }}
         animate={{
-          width: hovered ? 44 : 32,
-          height: hovered ? 44 : 32,
-          opacity: hovered ? 0.6 : 0.4,
+          width: hovered ? 44 : 34,
+          height: hovered ? 44 : 34,
+          opacity: hovered ? 0.5 : 0.25,
         }}
         transition={{ duration: 0.2 }}
       />
