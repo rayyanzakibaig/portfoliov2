@@ -54,7 +54,11 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    document.documentElement.classList.toggle("lightbox-open", isOpen);
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.classList.remove("lightbox-open");
+    };
   }, [isOpen]);
 
   return (
@@ -68,24 +72,27 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
           exit="hidden"
           transition={{ duration: 0.25 }}
           onClick={onClose}
-          className="fixed inset-0 z-[9980] bg-black/95 flex flex-col items-center justify-center px-6 py-14 md:px-16"
+          className="fixed inset-0 z-[9980] bg-black/95 flex flex-col items-center justify-center px-6 pt-24 pb-10 md:pt-20 md:pb-10 md:px-16"
         >
           {/* Close */}
           <button
             onClick={onClose}
-            className="absolute top-[72px] right-5 md:top-5 w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white text-xl leading-none transition-colors duration-150"
+            className="absolute top-[72px] right-5 w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white text-xl leading-none transition-colors duration-150"
             aria-label="Close"
           >
             ×
           </button>
 
           {/* Counter */}
-          <p className="absolute top-[78px] left-6 md:top-6 text-white/30 text-xs tracking-widest tabular-nums select-none">
+          <p className="absolute top-[78px] left-6 text-white/30 text-xs tracking-widest tabular-nums select-none">
             {(index ?? 0) + 1} / {images.length}
           </p>
 
           {/* Image + caption */}
-          <div className="flex flex-col items-center gap-5 w-full max-w-[95vw] md:max-w-5xl lg:max-w-6xl">
+          <div
+            className="flex flex-col items-center gap-5 w-[90vw]"
+            onClick={(e) => e.stopPropagation()}
+          >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={current.id}
@@ -94,7 +101,7 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="flex items-center justify-center"
+                className="w-full"
               >
                 {current.src ? (
                   <Image
@@ -102,9 +109,7 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
                     alt={current.alt}
                     width={1400}
                     height={1000}
-                    className="max-w-[90vw] max-h-[78vh] rounded-xl"
-                    style={{ width: "auto", height: "auto" }}
-                    onClick={(e) => e.stopPropagation()}
+                    className="w-full h-auto max-h-[78vh] object-contain rounded-xl"
                     sizes="(max-width: 768px) 95vw, 90vw"
                   />
                 ) : (
@@ -126,7 +131,7 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
                 <p className="text-white/90 text-sm font-medium">{current.title}</p>
                 <p className="text-white/40 text-xs mt-0.5">{current.category}</p>
               </div>
-              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center gap-2">
                 <button
                   onClick={goPrev}
                   className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition-colors duration-150"

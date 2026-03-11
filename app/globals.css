@@ -113,3 +113,8 @@ body::after {
   background-repeat: repeat;
   background-size: 300px 300px;
 }
+
+/* Hide nav when lightbox is open */
+html.lightbox-open header {
+  display: none;
+}
