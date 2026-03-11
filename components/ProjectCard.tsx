@@ -90,9 +90,17 @@ export default function ProjectCard({ project, className = "" }: Props) {
       {/* Content */}
       <div className="p-6">
         <div className="flex items-start justify-between gap-4 mb-3">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface border border-border text-fg-muted">
-            {project.tag}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface border border-border text-fg-muted">
+              {project.tag}
+            </span>
+            {project.wip && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 border border-amber-200 text-amber-600 dark:bg-amber-950/40 dark:border-amber-800/50 dark:text-amber-400">
+                <span className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
+                WIP
+              </span>
+            )}
+          </div>
           <span className="text-xs text-fg-muted tabular-nums">{project.year}</span>
         </div>
 

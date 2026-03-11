@@ -70,7 +70,7 @@ export default function Home() {
             <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-6 md:mb-8">
               <span className="w-5 h-px bg-fg-muted" />
               <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase text-fg-muted">
-                Product Designer · UX Engineer
+                Product Designer · MIS Student · Pokémon Collector
               </span>
             </motion.div>
 
@@ -84,7 +84,7 @@ export default function Home() {
               <br />
               <span
                 style={{
-                  background: "linear-gradient(135deg, #8A6FF0 0%, #C855A0 60%, #9B6EE8 100%)",
+                  background: "linear-gradient(90deg, #c65aa6 0%, #b26ad7 45%, #7b79f2 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",

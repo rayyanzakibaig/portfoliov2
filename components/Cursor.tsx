@@ -53,12 +53,13 @@ export default function Cursor() {
     <>
       {/* Dot */}
       <motion.div
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full bg-accent"
+        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full"
         style={{
           x: mouseX,
           y: mouseY,
           translateX: "-50%",
           translateY: "-50%",
+          background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
         }}
         animate={{
           width: hovered ? 10 : 7,
@@ -69,17 +70,18 @@ export default function Cursor() {
       />
       {/* Ring */}
       <motion.div
-        className="fixed top-0 left-0 z-[99998] pointer-events-none rounded-full border border-accent"
+        className="fixed top-0 left-0 z-[99998] pointer-events-none rounded-full"
         style={{
           x: ringX,
           y: ringY,
           translateX: "-50%",
           translateY: "-50%",
+          background: "linear-gradient(135deg, rgba(138,111,240,0.5), rgba(200,85,160,0.5))",
         }}
         animate={{
           width: hovered ? 44 : 34,
           height: hovered ? 44 : 34,
-          opacity: hovered ? 0.5 : 0.25,
+          opacity: hovered ? 0.4 : 0.18,
         }}
         transition={{ duration: 0.2 }}
       />

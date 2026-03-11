@@ -56,7 +56,16 @@ export default function Nav() {
 
           <div className="relative h-full max-w-5xl mx-auto px-6 md:px-8 flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200">
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200"
+            >
               <Image
                 src="/rz-logo.png"
                 alt="RZ"
