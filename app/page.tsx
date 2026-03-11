@@ -31,13 +31,13 @@ export default function Home() {
   return (
     <main>
       {/* ─── Hero ──────────────────────────────────────────────── */}
-      <section className="relative min-h-[92vh] flex flex-col justify-center overflow-hidden">
+      <section className="relative min-h-[100svh] md:min-h-[92vh] flex flex-col justify-center overflow-hidden">
         {/* Animated gradient blobs — CSS only, GPU composited */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="blob-1 absolute rounded-full"
             style={{
-              width: "70%", height: "70%", top: "-20%", right: "-10%",
+              width: "90%", height: "60%", top: "-15%", right: "-15%",
               background: "radial-gradient(ellipse, rgba(138,111,240,0.5) 0%, transparent 70%)",
               filter: "blur(48px)",
             }}
@@ -45,7 +45,7 @@ export default function Home() {
           <div
             className="blob-2 absolute rounded-full"
             style={{
-              width: "55%", height: "55%", bottom: "-15%", left: "-5%",
+              width: "70%", height: "50%", bottom: "-15%", left: "-10%",
               background: "radial-gradient(ellipse, rgba(200,85,160,0.35) 0%, transparent 70%)",
               filter: "blur(52px)",
             }}
@@ -53,23 +53,23 @@ export default function Home() {
           <div
             className="blob-3 absolute rounded-full"
             style={{
-              width: "50%", height: "50%", bottom: "-10%", right: "-5%",
+              width: "60%", height: "45%", bottom: "-10%", right: "-5%",
               background: "radial-gradient(ellipse, rgba(155,110,232,0.28) 0%, transparent 70%)",
               filter: "blur(44px)",
             }}
           />
         </div>
 
-        <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-28 pb-24 w-full">
+        <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-24 md:pt-28 pb-16 md:pb-24 w-full">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
           >
             {/* Eyebrow */}
-            <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-8">
+            <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-6 md:mb-8">
               <span className="w-5 h-px bg-fg-muted" />
-              <span className="text-xs font-medium tracking-widest uppercase text-fg-muted">
+              <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase text-fg-muted">
                 Product Designer · UX Engineer
               </span>
             </motion.div>
@@ -77,7 +77,7 @@ export default function Home() {
             {/* Name */}
             <motion.h1
               variants={fadeUp}
-              className="text-[clamp(3rem,8vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-fg mb-6"
+              className="text-[clamp(2.75rem,10vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-fg mb-4 md:mb-6"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Rayyan
@@ -97,7 +97,7 @@ export default function Home() {
             {/* Mission */}
             <motion.p
               variants={fadeUp}
-              className="text-lg text-fg-muted leading-relaxed max-w-md mb-10"
+              className="text-base md:text-lg text-fg-muted leading-relaxed max-w-sm md:max-w-md mb-8 md:mb-10"
             >
               Crafting products that are intuitive to use
               and thoughtful to look at.
@@ -106,7 +106,7 @@ export default function Home() {
             {/* Metadata row */}
             <motion.div
               variants={fadeUp}
-              className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-fg-muted mb-10"
+              className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 gap-x-5 text-sm text-fg-muted mb-8 md:mb-10"
             >
               <span className="flex items-center gap-1.5">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -114,7 +114,7 @@ export default function Home() {
                 </svg>
                 Canada
               </span>
-              <span className="text-border">·</span>
+              <span className="hidden sm:block text-border">·</span>
               <button
                 onClick={() => navigator.clipboard.writeText("rzakibaig@gmail.com")}
                 className="flex items-center gap-1.5 hover:text-fg transition-colors duration-150"
@@ -124,7 +124,7 @@ export default function Home() {
                 </svg>
                 rzakibaig@gmail.com
               </button>
-              <span className="text-border">·</span>
+              <span className="hidden sm:block text-border">·</span>
               <a
                 href="https://www.linkedin.com/in/rayyan-zakibaig"
                 target="_blank"
