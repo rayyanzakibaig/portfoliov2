@@ -71,7 +71,7 @@ export default function Nav() {
                 alt="RZ"
                 width={36}
                 height={36}
-                className="h-7 w-auto dark:invert"
+                className="h-9 w-auto dark:invert"
                 priority
               />
             </Link>

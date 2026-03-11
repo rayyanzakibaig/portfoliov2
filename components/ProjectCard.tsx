@@ -61,7 +61,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
       />
 
       {/* Cover image / gradient area */}
-      <div className="relative h-52 overflow-hidden">
+      <div className="relative aspect-[16/9] overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
@@ -73,7 +73,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
             src={project.coverImage}
             alt={project.title}
             fill
-            className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         )}

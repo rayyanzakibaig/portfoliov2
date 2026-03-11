@@ -12,10 +12,15 @@ type Props = {
   onChange: (index: number) => void;
 };
 
-const slideVariants: Variants = {
-  enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
-  center: { x: 0, opacity: 1, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } },
-  exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0, transition: { duration: 0.2, ease: "easeIn" } }),
+const backdropVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const imageVariants: Variants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 40 : -40, opacity: 0, scale: 0.97 }),
+  center: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } },
+  exit: (dir: number) => ({ x: dir > 0 ? -40 : 40, opacity: 0, scale: 0.97, transition: { duration: 0.2, ease: "easeIn" } }),
 };
 
 export default function Lightbox({ images, index, onClose, onChange }: Props) {
@@ -55,107 +60,95 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
   return (
     <AnimatePresence>
       {isOpen && current && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            key="lb-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+        <motion.div
+          key="lb-backdrop"
+          variants={backdropVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          transition={{ duration: 0.25 }}
+          onClick={onClose}
+          className="fixed inset-0 z-[9980] bg-black/95 flex flex-col items-center justify-center px-6 py-14 md:px-16"
+        >
+          {/* Close */}
+          <button
             onClick={onClose}
-            className="fixed inset-0 z-[9980] bg-black/80 backdrop-blur-md"
-          />
-
-          {/* Centering shell — click outside closes */}
-          <div
-            className="fixed inset-0 z-[9981] flex items-center justify-center"
-            onClick={onClose}
+            className="absolute top-[72px] right-5 md:top-5 w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white text-xl leading-none transition-colors duration-150"
+            aria-label="Close"
           >
+            ×
+          </button>
+
+          {/* Counter */}
+          <p className="absolute top-[78px] left-6 md:top-6 text-white/30 text-xs tracking-widest tabular-nums select-none">
+            {(index ?? 0) + 1} / {images.length}
+          </p>
+
+          {/* Image + caption */}
+          <div className="flex flex-col items-center gap-5 w-full max-w-[95vw] md:max-w-5xl lg:max-w-6xl">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={current.id}
                 custom={direction}
-                variants={slideVariants}
+                variants={imageVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
-                onClick={(e) => e.stopPropagation()}
-                /* 100% on mobile, 80vw × 80vh on md+ */
-                className="relative w-full h-[100svh] md:w-[80vw] md:h-[80vh] md:rounded-2xl overflow-hidden flex flex-col"
-                style={{
-                  background: "#F8F7F4",
-                  boxShadow: "0 8px 40px rgba(0,0,0,0.2)",
-                }}
+                className="flex items-center justify-center"
               >
-                {/* Top bar */}
-                <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-5 pt-5">
-                  <span className="text-black/40 text-xs tracking-widest tabular-nums">
-                    {(index ?? 0) + 1} / {images.length}
-                  </span>
-                  <button
-                    onClick={onClose}
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-black/8 hover:bg-black/12 text-black/70 text-lg transition-colors duration-150"
-                    aria-label="Close"
+                {current.src ? (
+                  <Image
+                    src={current.src}
+                    alt={current.alt}
+                    width={1400}
+                    height={1000}
+                    className="max-w-[90vw] max-h-[78vh] rounded-xl"
+                    style={{ width: "auto", height: "auto" }}
+                    onClick={(e) => e.stopPropagation()}
+                    sizes="(max-width: 768px) 95vw, 90vw"
+                  />
+                ) : (
+                  <div
+                    className="w-full max-w-xl aspect-[4/3] rounded-xl flex items-center justify-center"
+                    style={{ background: current.gradient }}
                   >
-                    ×
-                  </button>
-                </div>
-
-                {/* Image */}
-                <div className="flex-1 relative">
-                  {current.src ? (
-                    <Image
-                      src={current.src}
-                      alt={current.alt}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 80vw"
-                    />
-                  ) : (
-                    <div
-                      className="absolute inset-0 flex items-center justify-center"
-                      style={{ background: current.gradient }}
-                    >
-                      <span className="text-white/40 text-xs tracking-widest uppercase">
-                        {current.title}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Bottom bar: caption + arrows */}
-                <div className="flex items-center justify-between px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-black/80 text-sm font-medium">{current.title}</span>
-                    <span className="text-black/25">·</span>
-                    <span className="text-black/50 text-xs">{current.category}</span>
+                    <span className="text-white/40 text-xs tracking-widest uppercase">
+                      {current.title}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={goPrev}
-                      className="w-9 h-9 flex items-center justify-center rounded-full bg-black/8 hover:bg-black/12 text-black/60 transition-colors duration-150"
-                      aria-label="Previous"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="15 18 9 12 15 6" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={goNext}
-                      className="w-9 h-9 flex items-center justify-center rounded-full bg-black/8 hover:bg-black/12 text-black/60 transition-colors duration-150"
-                      aria-label="Next"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="9 18 15 12 9 6" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
+                )}
               </motion.div>
             </AnimatePresence>
+
+            {/* Caption row */}
+            <div className="flex flex-col items-center gap-3 w-full">
+              <div className="text-center">
+                <p className="text-white/90 text-sm font-medium">{current.title}</p>
+                <p className="text-white/40 text-xs mt-0.5">{current.category}</p>
+              </div>
+              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={goPrev}
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition-colors duration-150"
+                  aria-label="Previous"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button
+                  onClick={goNext}
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition-colors duration-150"
+                  aria-label="Next"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );

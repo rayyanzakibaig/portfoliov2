@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <main>
       {/* ─── Hero ──────────────────────────────────────────────── */}
-      <section className="relative min-h-[100svh] md:min-h-[92vh] flex flex-col justify-center overflow-hidden">
+      <section className="relative h-[100svh] flex flex-col justify-center overflow-hidden">
         {/* Animated gradient blobs — CSS only, GPU composited */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div

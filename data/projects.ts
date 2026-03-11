@@ -20,17 +20,21 @@ export type Project = {
   problem: string;
   outcome: string;
   stats: { value: string; label: string }[];
-  processSteps: { step: string; title: string; description: string }[];
+  processSteps: { step: string; title: string; description: string; processImage?: string }[];
   // Optional extended case study fields
   overviewImage?: string;
+  overviewSupportImages?: string[];
   goals?: string[];
   research?: string;
   researchImages?: string[];
-  keyInsights?: string[];
+  researchAnnotations?: string[];
+  keyInsights?: Array<string | { insight: string; response: string }>;
   userFlow?: string;
   iterations?: string;
+  iterationsImages?: string[];
   keyDesignDecisions?: { title: string; description: string; beforeImage?: string; image?: string }[];
   finalDesign?: string;
+  finalDesignImages?: string[];
   prototype?: string;
   reflection?: string;
   nextSteps?: string[];
@@ -112,20 +116,21 @@ export const projects: Project[] = [
   },
   {
     slug: "sleep-os",
-    title: "Sleep OS",
+    title: "Sleep OS Product Design Challenge",
     accentWord: "OS",
     coverImage: "",
-    subtitle: "Palantir annual design challenge",
-    description: "A 72-hour solo design sprint creating an operating system concept for better sleep health.",
-    year: "2024",
-    role: "UX Designer (Solo)",
-    duration: "72 hours",
+    subtitle: "Palantir design challenge",
+    description: "A 2-hour solo design sprint creating an operating system concept for better sleep health.",
+    year: "2025",
+    role: "Product Designer",
+    duration: "2 hours",
     tools: "Figma",
     gradientFrom: "#1a1a2e",
     gradientTo: "#16213e",
     tag: "UX Design",
     prevSlug: "hire-journey",
     nextSlug: "american-emr",
+    wip: true,
     overview:
       "Sleep OS is a conceptual operating system layer designed to help users optimize their sleep through ambient data collection and intelligent scheduling. Built for the Palantir design challenge.",
     problem:
@@ -284,12 +289,36 @@ export const projects: Project[] = [
       { value: "2wk", label: "Time to first closed deal" },
     ],
     processSteps: [
-      { step: "01", title: "Discovery", description: "One intensive session to understand the business, market positioning, and visual direction." },
-      { step: "02", title: "Brand", description: "Developed logo, Montserrat type system, and a black/white palette with warm accents." },
-      { step: "03", title: "Design", description: "Wireframed and designed all 5 pages — from hero to contact — with clear information hierarchy." },
-      { step: "04", title: "Build", description: "Coded and deployed the site in HTML/CSS, handed off with editable source files." },
+      {
+        step: "01",
+        title: "Discovery",
+        description: "One intensive session to understand the business, market positioning, and visual direction. Produced initial rough sketches of possible page structures.",
+        processImage: "/images/investate/wireframe1.jpg",
+      },
+      {
+        step: "02",
+        title: "Brand",
+        description: "Developed the logo, Montserrat type system, and a black/white palette with warm accents — documented as a transferable brand guide.",
+        processImage: "/images/investate/Branding.png",
+      },
+      {
+        step: "03",
+        title: "Design",
+        description: "Wireframed and designed all 5 pages — from hero to contact — iterating on layout structure before moving to high-fidelity.",
+        processImage: "/images/investate/wireframe3.jpg",
+      },
+      {
+        step: "04",
+        title: "Build",
+        description: "Coded and deployed the site in HTML/CSS, handed off with editable source files and a short brand usage guide.",
+        processImage: "/images/investate/investate.jpg",
+      },
     ],
     overviewImage: "/images/investate/investate-screens.png",
+    overviewSupportImages: [
+      "/images/investate/investate.jpg",
+      "/images/investate/about-us.png",
+    ],
     goals: [
       "Build a brand that signals credibility and stability to high-net-worth real estate investors",
       "Design and deploy a 5-page marketing site within 3 days",
@@ -302,16 +331,34 @@ export const projects: Project[] = [
       "/images/investate/wireframe2.jpg",
       "/images/investate/wireframe3.jpg",
     ],
-    keyInsights: [
-      "Competitors defaulted to dark, masculine visual languages — an opportunity to differentiate with a clean, confident palette",
-      "The target audience responds to specificity: deal numbers and social proof outperform abstract value proposition copy",
-      "Founders had strong typographic instincts but no rationale — naming the system gave them confidence to defend brand decisions independently",
+    researchAnnotations: [
+      "Single-column layout — clear hierarchy and easy scanning, but limited visual interest on wider screens",
+      "Three-column grid — dynamic and photo-rich, ideal for property showcasing, but complex to build responsively",
+      "Two-column image-text split — balanced density and visual weight. Selected as the structural direction",
     ],
-    iterations: "/images/investate/benefits.png",
+    keyInsights: [
+      {
+        insight: "Competitors defaulted to dark, masculine visual languages — a clear opportunity to differentiate",
+        response: "Chose a clean black-and-white base with warm sand accents, reading as approachable authority rather than corporate intimidation",
+      },
+      {
+        insight: "The target audience responds to specificity: concrete numbers outperform abstract value propositions",
+        response: "Structured the hero and Why Choose Us sections around deal volume data and concrete outcomes, not tagline copy",
+      },
+      {
+        insight: "Founders had strong typographic instincts but no framework — naming the system built their internal confidence",
+        response: "Formalized into a defined Montserrat scale with named roles: Display, Heading, Subheading, Body, Caption — documented for independent use",
+      },
+    ],
+    iterationsImages: [
+      "/images/investate/wireframe3.jpg",
+      "/images/investate/benefits.png",
+      "/images/investate/investate-screens.png",
+    ],
     keyDesignDecisions: [
       {
-        title: "Typography and color system",
-        description: "Montserrat was chosen for its geometric clarity — modern without being trendy. A black and white base keeps the palette timeless, letting property photography carry the visual weight.",
+        title: "Type system: Montserrat at every level",
+        description: "A single typeface — Montserrat — carries the entire brand. Differentiation comes from weight and size alone: bold display headlines at the top, light caption text at the bottom. Clean, scalable, and easy for the client to apply independently.",
         image: "/images/investate/Branding.png",
       },
       {
@@ -319,11 +366,15 @@ export const projects: Project[] = [
         description: "The hero leads with deal volume and returns data rather than a tagline. In a trust-driven market, specificity is more persuasive than branding language.",
       },
       {
-        title: "Layout progression across wireframes",
-        description: "Explored three structural approaches — single column, three-column grid, and a two-column image-text split — before committing to the layout that balanced visual richness with readability on both desktop and mobile.",
+        title: "Two-column over full-bleed",
+        description: "The two-column image-text split was chosen over a three-column grid after wireframing — it balanced visual richness with readability and held up better on mobile without a framework.",
       },
     ],
-    finalDesign: "/images/investate/about-us.png",
+    finalDesignImages: [
+      "/images/investate/investate-screens.png",
+      "/images/investate/investate.jpg",
+      "/images/investate/about-us.png",
+    ],
     reflection:
       "Three days is not enough time to do brand identity properly. What I delivered was a strong starting point, not a finished system. The client treated it as final, which worked — but I should have been clearer about what was MVP work versus what would need iteration once they had real customers and feedback.",
     nextSteps: [
