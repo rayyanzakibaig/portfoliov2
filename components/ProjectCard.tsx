@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { type Project } from "@/data/projects";
 
 type Props = {
@@ -59,7 +60,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
         }}
       />
 
-      {/* Gradient image area */}
+      {/* Cover image / gradient area */}
       <div className="relative h-52 overflow-hidden">
         <div
           className="absolute inset-0"
@@ -67,7 +68,15 @@ export default function ProjectCard({ project, className = "" }: Props) {
             background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
           }}
         />
-        {/* TODO: replace with real image */}
+        {project.coverImage && (
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill
+            className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        )}
 
         {/* Arrow — magnetic, top right */}
         <motion.div

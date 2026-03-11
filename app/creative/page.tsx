@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { staggerContainer, fadeUp } from "@/lib/motion";
 import { creativeItems, type CreativeItem } from "@/data/creative";
+import { bentoImages } from "@/data/bentoImages";
 import Modal from "@/components/Modal";
+import Lightbox from "@/components/Lightbox";
 import Footer from "@/components/Footer";
 
 export default function Creative() {
   const [activeModal, setActiveModal] = useState<CreativeItem | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
     <>
@@ -27,14 +31,14 @@ export default function Creative() {
                 variants={fadeUp}
                 className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-6"
               >
-                Beyond the Brief
+                Beyond the edge
               </motion.p>
               <motion.h1
                 variants={fadeUp}
                 className="text-4xl md:text-6xl font-bold text-fg leading-tight tracking-tight mb-6"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Work made for{" "}
+                All things{" "}
                 <span
                   style={{
                     background: "linear-gradient(135deg, #C855A0, #8A6FF0)",
@@ -43,7 +47,7 @@ export default function Creative() {
                     backgroundClip: "text",
                   }}
                 >
-                  curiosity.
+                  creative.
                 </span>
               </motion.h1>
               <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-md">
@@ -53,66 +57,135 @@ export default function Creative() {
           </div>
         </section>
 
-        {/* ─── List ────────────────────────────────────────────── */}
+        {/* ─── Bento Grid ──────────────────────────────────────── */}
         <section className="max-w-5xl mx-auto px-6 md:px-8 pb-24">
-          <div className="border-t border-border">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-10"
+          >
+            <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-2">
+              Gallery
+            </p>
+            <div className="w-full h-px bg-border" />
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={staggerContainer}
+            className="grid grid-cols-3 gap-3"
+            style={{ gridAutoRows: "200px" }}
+          >
+            {/* Item 1 — 2×2 featured */}
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLightboxIndex(0)}
+              className="group relative col-span-2 row-span-2 rounded-2xl overflow-hidden"
+              data-cursor="hover"
             >
-              {creativeItems.map((item, i) => (
-                <motion.button
-                  key={item.id}
-                  variants={fadeUp}
-                  onClick={() => setActiveModal(item)}
-                  className="group w-full py-8 flex items-center gap-6 md:gap-8 text-left border-b border-border hover:bg-surface/50 transition-colors duration-200 px-2 -mx-2 rounded-lg"
-                  data-cursor="hover"
-                >
-                  {/* Index */}
-                  <span className="text-xs text-fg-muted tabular-nums w-5 shrink-0 font-medium">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+              <BentoCell image={bentoImages[0]} />
+              <HoverOverlay title={bentoImages[0].title} category={bentoImages[0].category} />
+            </motion.button>
 
-                  {/* Swatch */}
-                  <div
-                    className={`w-10 h-10 rounded-xl shrink-0 bg-gradient-to-br ${item.gradient} opacity-70 group-hover:opacity-100 transition-opacity duration-300`}
-                  />
+            {/* Item 2 — 1×1 */}
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLightboxIndex(1)}
+              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
+              data-cursor="hover"
+            >
+              <BentoCell image={bentoImages[1]} />
+              <HoverOverlay title={bentoImages[1].title} category={bentoImages[1].category} />
+            </motion.button>
 
-                  {/* Title */}
-                  <div className="flex-1 min-w-0">
-                    <h2
-                      className="text-xl md:text-2xl font-semibold text-fg group-hover:text-accent transition-colors duration-200 leading-tight"
-                      style={{ fontFamily: "var(--font-display)" }}
-                    >
-                      {item.title}
-                    </h2>
-                    {item.award && (
-                      <div className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded-full bg-[#F4F2FF] border border-[#E5DFFF] text-[#6B5CE7] text-xs font-medium">
-                        ★ {item.award}
-                      </div>
-                    )}
-                  </div>
+            {/* Item 3 — 1×1 */}
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLightboxIndex(2)}
+              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
+              data-cursor="hover"
+            >
+              <BentoCell image={bentoImages[2]} />
+              <HoverOverlay title={bentoImages[2].title} category={bentoImages[2].category} />
+            </motion.button>
 
-                  {/* Type tag */}
-                  <span className="hidden md:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface border border-border text-fg-muted shrink-0">
-                    {item.type}
-                  </span>
+            {/* Item 4 — 1×1 */}
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLightboxIndex(3)}
+              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
+              data-cursor="hover"
+            >
+              <BentoCell image={bentoImages[3]} />
+              <HoverOverlay title={bentoImages[3].title} category={bentoImages[3].category} />
+            </motion.button>
 
-                  {/* Arrow */}
-                  <span className="text-fg-muted group-hover:text-fg group-hover:translate-x-1 transition-all duration-200 shrink-0">
-                    →
-                  </span>
-                </motion.button>
-              ))}
-            </motion.div>
-          </div>
+            {/* Item 5 — 2×1 wide */}
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLightboxIndex(4)}
+              className="group relative col-span-2 row-span-1 rounded-2xl overflow-hidden"
+              data-cursor="hover"
+            >
+              <BentoCell image={bentoImages[4]} />
+              <HoverOverlay title={bentoImages[4].title} category={bentoImages[4].category} />
+            </motion.button>
+
+            {/* Item 6 — 1×1 */}
+            <motion.button
+              variants={fadeUp}
+              onClick={() => setLightboxIndex(5)}
+              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
+              data-cursor="hover"
+            >
+              <BentoCell image={bentoImages[5]} />
+              <HoverOverlay title={bentoImages[5].title} category={bentoImages[5].category} />
+            </motion.button>
+          </motion.div>
         </section>
 
         <Footer />
       </main>
 
       <Modal item={activeModal} onClose={() => setActiveModal(null)} />
+      <Lightbox
+        images={bentoImages}
+        index={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onChange={setLightboxIndex}
+      />
     </>
+  );
+}
+
+function BentoCell({ image }: { image: { src: string; alt: string; gradient: string } }) {
+  return image.src ? (
+    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]">
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, 50vw"
+      />
+    </div>
+  ) : (
+    <div
+      className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]"
+      style={{ background: image.gradient }}
+    />
+  );
+}
+
+function HoverOverlay({ title, category }: { title: string; category: string }) {
+  return (
+    <div className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/60 to-transparent">
+      <p className="text-white/60 text-xs tracking-widest uppercase mb-0.5">{category}</p>
+      <p className="text-white text-sm font-medium">{title}</p>
+    </div>
   );
 }

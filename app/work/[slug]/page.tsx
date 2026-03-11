@@ -2,6 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/motion";
 import { projects, getProjectBySlug } from "@/data/projects";
@@ -107,16 +108,25 @@ export default function CaseStudy({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mx-6 md:mx-8 xl:max-w-5xl xl:mx-auto rounded-2xl overflow-hidden border border-border"
+          className="relative mx-6 md:mx-8 xl:max-w-5xl xl:mx-auto rounded-2xl overflow-hidden border border-border"
           style={{ height: 360 }}
         >
-          {/* TODO: replace with real image */}
           <div
-            className="w-full h-full"
+            className="absolute inset-0"
             style={{
               background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
             }}
           />
+          {project.coverImage && (
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              priority
+            />
+          )}
         </motion.div>
 
         {/* ─── Content ─────────────────────────────────────────── */}

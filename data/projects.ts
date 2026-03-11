@@ -3,6 +3,7 @@ export type Project = {
   title: string;
   accentWord: string;
   subtitle: string;
+  coverImage?: string;
   description: string;
   year: string;
   role: string;
@@ -91,6 +92,7 @@ export const projects: Project[] = [
     slug: "american-emr",
     title: "American EMR",
     accentWord: "EMR",
+    coverImage: "/images/american-emr.png",
     subtitle: "Patient healthcare mobile application",
     description: "Redesigning the patient-facing mobile experience for a leading electronic medical records platform.",
     year: "2024",
