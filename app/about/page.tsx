@@ -80,12 +80,12 @@ export default function About() {
             </motion.h1>
             <motion.div variants={fadeUp} className="max-w-xl">
               <p className="text-base text-fg-muted leading-relaxed mb-4">
-                I&apos;m a product designer with a thing for clean systems and honest craft —
-                someone who cares equally about how something works and how it feels.
+                I&apos;m a product designer and MIS student at the University of Houston —
+                who enjoys turning complex systems into simple intuitive experiences.
               </p>
               <p className="text-base text-fg-muted leading-relaxed">
-                I move between design and code fluidly, which means I build what I design
-                and design what I build. Based in Canada, working on things that matter.
+                I'm interested in building products that are both thoughtful 
+                in design and genuinely enrich the experience of those who use them.
               </p>
             </motion.div>
           </motion.div>
