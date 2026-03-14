@@ -16,20 +16,12 @@ const ALL_SECTIONS: (
   | { id: string; label: string; always: true; key?: never }
   | { id: string; label: string; always?: false; key: keyof Project }
 )[] = [
-  { id: "overview",       label: "Overview",       always: true },
-  { id: "problem",        label: "Problem",        always: true },
-  { id: "goals",          label: "Goals",          key: "goals" },
-  { id: "research",       label: "Research",       key: "research" },
-  { id: "key-insights",   label: "Key Insights",   key: "keyInsights" },
-  { id: "design-process", label: "Design Process", always: true },
-  { id: "user-flow",      label: "User Flow",      key: "userFlow" },
-  { id: "iterations",     label: "Iterations",     key: "iterations" },
-  { id: "key-decisions",  label: "Key Decisions",  key: "keyDesignDecisions" },
-  { id: "final-design",   label: "Final Design",   key: "finalDesign" },
-  { id: "prototype",      label: "Prototype",      key: "prototype" },
-  { id: "results",        label: "Results",        always: true },
-  { id: "reflection",     label: "Reflection",     key: "reflection" },
-  { id: "next-steps",     label: "Next Steps",     key: "nextSteps" },
+  { id: "overview",    label: "Overview",    always: true },
+  { id: "problem",     label: "Problem",     always: true },
+  { id: "research",    label: "Research",    key: "research" },
+  { id: "solution",    label: "Solution",    always: true },
+  { id: "flows",       label: "Flows",       key: "finalDesignImages" },
+  { id: "reflection",  label: "Reflection",  key: "reflection" },
 ];
 
 const accentGrad = {
@@ -79,13 +71,11 @@ export default function CaseStudy({
   const next = projects.find((p) => p.slug === project.nextSlug);
   const tools = project.tools.split(", ");
 
-  const hasIterations = project.iterations !== undefined || project.iterationsImages !== undefined;
-  const hasFinalDesign = project.finalDesign !== undefined || project.finalDesignImages !== undefined;
+  const hasFlows = !!(project.finalDesignImages || project.userFlow || project.prototype);
 
   const activeSections: SectionMeta[] = ALL_SECTIONS.filter((s) => {
     if (s.always) return true;
-    if (s.id === "iterations") return hasIterations;
-    if (s.id === "final-design") return hasFinalDesign;
+    if (s.id === "flows") return hasFlows;
     return project[s.key!] !== undefined && project[s.key!] !== null;
   }).map(({ id, label }) => ({ id, label }));
 
@@ -94,76 +84,78 @@ export default function CaseStudy({
       <ScrollProgress />
       <main className="min-h-screen">
         {/* ─── Hero ────────────────────────────────────────────── */}
-        <section className="relative h-[100svh] overflow-hidden">
-          {/* Background: cover image or gradient fallback */}
+        <section className="h-[100svh] flex flex-col overflow-hidden">
+
+          {/* ── Banner (top half) ── */}
           <div
-            className="absolute inset-0"
+            className="relative h-[50vh] shrink-0 overflow-hidden"
             style={{
               background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
             }}
-          />
-          {project.coverImage && (
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill
-              className="object-cover object-top"
-              sizes="100vw"
-              priority
-            />
-          )}
-
-          {/* Gradient scrim */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 50%, transparent 100%)`,
-            }}
-          />
-
-          {/* Back link — top left */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="absolute top-8 left-8 md:left-12"
           >
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-white/80 hover:text-white transition-colors duration-200"
-            >
-              ← Work
-            </Link>
-          </motion.div>
+            {project.coverImage && (
+              <Image
+                src={project.coverImage}
+                alt={project.title}
+                fill
+                className="object-cover object-center"
+                sizes="100vw"
+                priority
+              />
+            )}
+            {project.coverVideo && (
+              <video
+                src={project.coverVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
+            )}
+          </div>
 
-          {/* Bottom content */}
-          <div className="absolute bottom-0 left-0 right-0 pb-10 md:pb-14 px-6 md:px-12">
-            <div className="max-w-5xl mx-auto">
-              <motion.div variants={staggerContainer} initial="hidden" animate="visible">
-                <motion.div variants={fadeUp} className="mb-5">
+          {/* ── Text panel (bottom half) ── */}
+          <div className="flex-1 bg-bg flex flex-col justify-between px-6 md:px-12 pt-6 pb-8 md:pb-12 overflow-y-auto">
+            <div className="max-w-5xl mx-auto w-full flex flex-col gap-4">
+              <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-4">
+
+                {/* Back link */}
+                <motion.div variants={fadeUp}>
+                  <Link
+                    href="/"
+                    className="inline-flex items-center gap-1.5 text-sm text-fg-muted hover:text-fg transition-colors duration-200"
+                  >
+                    ← Work
+                  </Link>
+                </motion.div>
+
+                {/* Tag */}
+                <motion.div variants={fadeUp}>
                   <Tag variant="lavender">{project.tag}</Tag>
                 </motion.div>
 
+                {/* Title + subtitle */}
                 <motion.h1
                   variants={fadeUp}
-                  className="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-4"
+                  className="text-4xl md:text-5xl font-bold text-fg leading-tight tracking-tight"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {project.title}
                 </motion.h1>
 
-                <motion.p variants={fadeUp} className="text-lg text-white/70 mb-8 max-w-xl">
+                <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-xl">
                   {project.subtitle}
                 </motion.p>
 
                 {/* See Website button */}
                 {!project.wip && project.liveUrl && (
-                  <motion.div variants={fadeUp} className="mb-8">
+                  <motion.div variants={fadeUp}>
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.15] backdrop-blur-xl backdrop-saturate-150 shadow-[0_0_0_0.5px_rgba(255,255,255,0.15),0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.2)] text-white text-sm font-medium hover:bg-white/[0.22] transition-all duration-200"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-border text-fg text-sm font-medium hover:bg-border transition-all duration-200"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       See Website ↗
@@ -173,25 +165,27 @@ export default function CaseStudy({
 
                 {/* Meta grid */}
                 <motion.div variants={fadeUp}>
-                  <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/[0.1] rounded-2xl overflow-hidden bg-black/[0.3] backdrop-blur-xl backdrop-saturate-150 shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_4px_24px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.12)]">
+                  <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border rounded-2xl overflow-hidden bg-surface border border-border">
                     {[
                       { label: "Role", value: project.role },
                       { label: "Duration", value: project.duration },
                       { label: "Year", value: project.year },
                       { label: "Tools", value: project.tools },
                     ].map(({ label, value }) => (
-                      <div key={label} className="px-6 py-5 flex flex-col gap-1">
-                        <p className="text-[10px] font-semibold tracking-widest uppercase text-white/50">
+                      <div key={label} className="px-5 py-4 flex flex-col gap-1">
+                        <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">
                           {label}
                         </p>
-                        <p className="text-sm text-white font-medium leading-snug">{value}</p>
+                        <p className="text-sm text-fg font-medium leading-snug">{value}</p>
                       </div>
                     ))}
                   </div>
                 </motion.div>
+
               </motion.div>
             </div>
           </div>
+
         </section>
 
         {/* ─── Content ─────────────────────────────────────────── */}
@@ -234,7 +228,7 @@ export default function CaseStudy({
         ) : (
           <>
             <CaseStudySideNav sections={activeSections} />
-            <div className="max-w-5xl mx-auto px-6 md:px-8 py-20">
+            <div className="max-w-[860px] mx-auto px-6 md:px-8 py-20">
               <motion.div
                 initial="hidden"
                 whileInView="visible"
@@ -246,7 +240,7 @@ export default function CaseStudy({
                 {/* ── Overview ─────────────────────────────────── */}
                 <motion.section id="overview" variants={fadeUp}>
                   <SectionHeader label="Overview" title="The Project" />
-                  <p className="text-base text-fg-muted leading-relaxed max-w-prose mb-6">
+                  <p className="text-base text-fg-muted leading-relaxed max-w-[65ch] mb-6">
                     {project.overview}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-8">
@@ -254,7 +248,6 @@ export default function CaseStudy({
                       <Tag key={t} variant="default">{t.trim()}</Tag>
                     ))}
                   </div>
-                  {/* Dynamic image layout */}
                   {project.overviewImage ? (
                     <div className="flex flex-col gap-3">
                       <Image
@@ -286,22 +279,14 @@ export default function CaseStudy({
 
                 {/* ── Problem ──────────────────────────────────── */}
                 <motion.section id="problem" variants={fadeUp}>
-                  <SectionHeader label="The Problem" title="What we set out to solve" />
-                  <p className="text-base text-fg-muted leading-relaxed max-w-prose">
+                  <SectionHeader label="Problem" title="What we set out to solve" />
+                  <p className="text-base text-fg-muted leading-relaxed max-w-[65ch] mb-8">
                     {project.problem}
                   </p>
-                </motion.section>
-
-                {/* ── Goals ────────────────────────────────────── */}
-                {project.goals && (
-                  <motion.section id="goals" variants={fadeUp}>
-                    <SectionHeader label="Goals" title="What we aimed to achieve" />
+                  {project.goals && (
                     <ul className="flex flex-col gap-3">
                       {project.goals.map((goal, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-3 text-base text-fg-muted leading-relaxed"
-                        >
+                        <li key={i} className="flex items-start gap-3 text-base text-fg-muted leading-relaxed">
                           <span
                             className="mt-2 w-1.5 h-1.5 rounded-full shrink-0"
                             style={{ backgroundColor: "var(--color-accent)" }}
@@ -310,45 +295,30 @@ export default function CaseStudy({
                         </li>
                       ))}
                     </ul>
-                  </motion.section>
-                )}
+                  )}
+                </motion.section>
 
                 {/* ── Research ─────────────────────────────────── */}
                 {project.research && (
                   <motion.section id="research" variants={fadeUp}>
                     <SectionHeader label="Research" title="Understanding the space" />
-                    <p className="text-base text-fg-muted leading-relaxed max-w-prose mb-8">
+                    <p className="text-base text-fg-muted leading-relaxed max-w-[65ch] mb-8">
                       {project.research}
                     </p>
                     {project.researchImages && (
                       <div
-                        className={`grid gap-4 ${
-                          project.researchImages.length >= 3
-                            ? "grid-cols-3"
-                            : project.researchImages.length === 2
-                            ? "grid-cols-2"
-                            : "grid-cols-1"
+                        className={`grid gap-4 mb-8 ${
+                          project.researchImages.length >= 3 ? "grid-cols-3" : project.researchImages.length === 2 ? "grid-cols-2" : "grid-cols-1"
                         }`}
                       >
                         {project.researchImages.map((src, i) => (
                           <div key={i} className="flex flex-col gap-3">
                             <div className="relative overflow-hidden rounded-xl border border-border">
-                              <Image
-                                src={src}
-                                alt={`Research artifact ${i + 1}`}
-                                width={400}
-                                height={300}
-                                className="w-full h-auto"
-                              />
+                              <Image src={src} alt={`Research artifact ${i + 1}`} width={400} height={300} className="w-full h-auto" />
                             </div>
                             {project.researchAnnotations?.[i] && (
                               <p className="text-xs text-fg-muted leading-relaxed">
-                                <span
-                                  className="font-semibold mr-1"
-                                  style={accentGrad}
-                                >
-                                  {["A", "B", "C"][i]}
-                                </span>
+                                <span className="font-semibold mr-1" style={accentGrad}>{["A", "B", "C"][i]}</span>
                                 {project.researchAnnotations[i]}
                               </p>
                             )}
@@ -356,176 +326,87 @@ export default function CaseStudy({
                         ))}
                       </div>
                     )}
-                  </motion.section>
-                )}
-
-                {/* ── Key Insights ─────────────────────────────── */}
-                {project.keyInsights && (
-                  <motion.section id="key-insights" variants={fadeUp}>
-                    <SectionHeader label="Key Insights" title="What the research revealed" />
-                    <ul className="flex flex-col gap-4">
-                      {project.keyInsights.map((item, i) => {
-                        const insight = typeof item === "string" ? item : item.insight;
-                        const response = typeof item === "string" ? null : item.response;
-                        return (
-                          <li
-                            key={i}
-                            className="p-5 rounded-xl bg-surface border border-border flex flex-col gap-4"
-                          >
-                            <div className="flex items-start gap-4">
-                              <span
-                                className="mt-0.5 text-xs font-bold tabular-nums shrink-0"
-                                style={{ ...accentGrad, fontFamily: "var(--font-display)" }}
-                              >
-                                {String(i + 1).padStart(2, "0")}
-                              </span>
-                              <p className="text-sm text-fg leading-relaxed font-medium">{insight}</p>
-                            </div>
-                            {response && (
-                              <div className="ml-8 pl-4 border-l-2 border-border">
-                                <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted mb-1.5">
-                                  Design Response
-                                </p>
-                                <p className="text-xs text-fg-muted leading-relaxed">{response}</p>
+                    {project.keyInsights && (
+                      <ul className="flex flex-col gap-4">
+                        {project.keyInsights.map((item, i) => {
+                          const insight = typeof item === "string" ? item : item.insight;
+                          const response = typeof item === "string" ? null : item.response;
+                          return (
+                            <li key={i} className="p-5 rounded-xl bg-surface border border-border flex flex-col gap-4">
+                              <div className="flex items-start gap-4">
+                                <span className="mt-0.5 text-xs font-bold tabular-nums shrink-0" style={{ ...accentGrad, fontFamily: "var(--font-display)" }}>
+                                  {String(i + 1).padStart(2, "0")}
+                                </span>
+                                <p className="text-sm text-fg leading-relaxed font-medium">{insight}</p>
                               </div>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
+                              {response && (
+                                <div className="ml-8 pl-4 border-l-2 border-border">
+                                  <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted mb-1.5">Design Response</p>
+                                  <p className="text-xs text-fg-muted leading-relaxed">{response}</p>
+                                </div>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
                   </motion.section>
                 )}
 
-                {/* ── Design Process ───────────────────────────── */}
-                <motion.section id="design-process" variants={fadeUp}>
-                  <SectionHeader label="Design Process" title="How we got there" />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* ── Solution ─────────────────────────────────── */}
+                <motion.section id="solution" variants={fadeUp}>
+                  <SectionHeader label="Solution" title="How we got there" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
                     {project.processSteps.map((step) => (
-                      <div
-                        key={step.step}
-                        className="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col"
-                      >
+                      <div key={step.step} className="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
                         {step.processImage && (
                           <div className="relative w-full h-36 overflow-hidden border-b border-border">
-                            <Image
-                              src={step.processImage}
-                              alt={step.title}
-                              fill
-                              className="object-cover object-top"
-                              sizes="400px"
-                            />
+                            <Image src={step.processImage} alt={step.title} fill className="object-cover object-top" sizes="400px" />
                           </div>
                         )}
                         <div className="p-5 flex flex-col gap-2">
-                          <span
-                            className="text-xl font-bold text-fg-muted"
-                            style={{ fontFamily: "var(--font-display)" }}
-                          >
-                            {step.step}
-                          </span>
+                          <span className="text-xl font-bold text-fg-muted" style={{ fontFamily: "var(--font-display)" }}>{step.step}</span>
                           <p className="text-sm font-semibold text-fg">{step.title}</p>
                           <p className="text-xs text-fg-muted leading-relaxed">{step.description}</p>
                         </div>
                       </div>
                     ))}
                   </div>
-                </motion.section>
-
-                {/* ── User Flow ────────────────────────────────── */}
-                {project.userFlow !== undefined && (
-                  <motion.section id="user-flow" variants={fadeUp}>
-                    <SectionHeader label="User Flow" title="How users move through the product" />
-                    {project.userFlow ? (
-                      <Image
-                        src={project.userFlow}
-                        alt="User Flow"
-                        width={800}
-                        height={500}
-                        className="rounded-2xl border border-border w-full h-auto"
-                      />
-                    ) : (
-                      <Placeholder label="User Flow" height={280} />
-                    )}
-                  </motion.section>
-                )}
-
-                {/* ── Iterations ───────────────────────────────── */}
-                {hasIterations && (
-                  <motion.section id="iterations" variants={fadeUp}>
-                    <SectionHeader label="Iterations" title="How the design evolved" />
-                    {project.iterationsImages ? (
-                      <div
-                        className={`grid gap-4 ${
-                          project.iterationsImages.length >= 3 ? "grid-cols-3" : "grid-cols-2"
-                        }`}
-                      >
-                        {project.iterationsImages.map((src, i) => {
-                          const phaseLabels = ["Wireframe", "First Pass", "Final"];
-                          return (
-                            <div key={i} className="flex flex-col gap-2.5">
-                              <div className="relative overflow-hidden rounded-xl border border-border">
-                                <Image
-                                  src={src}
-                                  alt={phaseLabels[i] ?? `Iteration ${i + 1}`}
-                                  width={400}
-                                  height={300}
-                                  className="w-full h-auto"
-                                />
-                              </div>
-                              <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted text-center">
-                                {phaseLabels[i] ?? `Phase ${i + 1}`}
-                              </p>
+                  {project.iterations && (
+                    <Image src={project.iterations} alt="Iterations" width={800} height={500} className="rounded-2xl border border-border w-full h-auto mb-12" />
+                  )}
+                  {project.iterationsImages && (
+                    <div className={`grid gap-4 mb-12 ${project.iterationsImages.length >= 3 ? "grid-cols-3" : "grid-cols-2"}`}>
+                      {project.iterationsImages.map((src, i) => {
+                        const phaseLabels = ["Wireframe", "First Pass", "Final"];
+                        return (
+                          <div key={i} className="flex flex-col gap-2.5">
+                            <div className="relative overflow-hidden rounded-xl border border-border">
+                              <Image src={src} alt={phaseLabels[i] ?? `Iteration ${i + 1}`} width={400} height={300} className="w-full h-auto" />
                             </div>
-                          );
-                        })}
-                      </div>
-                    ) : project.iterations ? (
-                      <Image
-                        src={project.iterations}
-                        alt="Iterations"
-                        width={800}
-                        height={500}
-                        className="rounded-2xl border border-border w-full h-auto"
-                      />
-                    ) : (
-                      <Placeholder label="Iterations" height={280} />
-                    )}
-                  </motion.section>
-                )}
-
-                {/* ── Key Design Decisions ─────────────────────── */}
-                {project.keyDesignDecisions && (
-                  <motion.section id="key-decisions" variants={fadeUp}>
-                    <SectionHeader label="Key Design Decisions" title="The choices that shaped the product" />
-                    {project.keyDesignDecisions.some((d) => d.image) ? (
+                            <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted text-center">
+                              {phaseLabels[i] ?? `Phase ${i + 1}`}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  {project.keyDesignDecisions && (
+                    project.keyDesignDecisions.some((d) => d.image) ? (
                       <div className="flex flex-col gap-4">
                         {project.keyDesignDecisions.map((d, i) => (
-                          <div
-                            key={i}
-                            className="rounded-2xl bg-surface border border-border overflow-hidden"
-                          >
+                          <div key={i} className="rounded-2xl bg-surface border border-border overflow-hidden">
                             {d.beforeImage && d.image ? (
                               <>
                                 <div className="grid grid-cols-2 divide-x divide-border border-b border-border">
                                   <div className="flex flex-col gap-1.5 p-1.5">
                                     <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted px-2 pt-1">Before</span>
-                                    <Image
-                                      src={d.beforeImage}
-                                      alt={`${d.title} — before`}
-                                      width={400}
-                                      height={220}
-                                      className="rounded-lg w-full h-auto"
-                                    />
+                                    <Image src={d.beforeImage} alt={`${d.title} — before`} width={400} height={220} className="rounded-lg w-full h-auto" />
                                   </div>
                                   <div className="flex flex-col gap-1.5 p-1.5">
                                     <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted px-2 pt-1">After</span>
-                                    <Image
-                                      src={d.image}
-                                      alt={`${d.title} — after`}
-                                      width={400}
-                                      height={220}
-                                      className="rounded-lg w-full h-auto"
-                                    />
+                                    <Image src={d.image} alt={`${d.title} — after`} width={400} height={220} className="rounded-lg w-full h-auto" />
                                   </div>
                                 </div>
                                 <div className="p-5 flex flex-col gap-2">
@@ -536,13 +417,7 @@ export default function CaseStudy({
                             ) : d.image ? (
                               <>
                                 <div className="border-b border-border p-1.5">
-                                  <Image
-                                    src={d.image}
-                                    alt={d.title}
-                                    width={800}
-                                    height={400}
-                                    className="rounded-xl w-full h-auto"
-                                  />
+                                  <Image src={d.image} alt={d.title} width={800} height={400} className="rounded-xl w-full h-auto" />
                                 </div>
                                 <div className="p-5 flex flex-col gap-2">
                                   <p className="text-sm font-semibold text-fg">{d.title}</p>
@@ -561,133 +436,58 @@ export default function CaseStudy({
                     ) : (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {project.keyDesignDecisions.map((d, i) => (
-                          <div
-                            key={i}
-                            className="p-5 rounded-2xl bg-surface border border-border flex flex-col gap-2"
-                          >
+                          <div key={i} className="p-5 rounded-2xl bg-surface border border-border flex flex-col gap-2">
                             <p className="text-sm font-semibold text-fg">{d.title}</p>
                             <p className="text-xs text-fg-muted leading-relaxed">{d.description}</p>
                           </div>
                         ))}
                       </div>
-                    )}
-                  </motion.section>
-                )}
+                    )
+                  )}
+                </motion.section>
 
-                {/* ── Final Design ─────────────────────────────── */}
-                {hasFinalDesign && (
-                  <motion.section id="final-design" variants={fadeUp}>
-                    <SectionHeader label="Final Design" title="What shipped" />
+                {/* ── Flows ────────────────────────────────────── */}
+                {hasFlows && (
+                  <motion.section id="flows" variants={fadeUp}>
+                    <SectionHeader label="Flows" title="The final experience" />
                     {project.finalDesignImages ? (
                       <div className="flex flex-col gap-3">
-                        <Image
-                          src={project.finalDesignImages[0]}
-                          alt="Final Design — main view"
-                          width={800}
-                          height={520}
-                          className="rounded-2xl border border-border w-full h-auto"
-                        />
+                        <Image src={project.finalDesignImages[0]} alt="Final Design — main view" width={800} height={520} className="rounded-2xl border border-border w-full h-auto" />
                         {project.finalDesignImages.length > 1 && (
                           <div className="grid grid-cols-2 gap-3">
                             {project.finalDesignImages.slice(1).map((src, i) => (
-                              <Image
-                                key={i}
-                                src={src}
-                                alt={`Final Design — view ${i + 2}`}
-                                width={400}
-                                height={280}
-                                className="rounded-xl border border-border w-full h-auto object-cover"
-                              />
+                              <Image key={i} src={src} alt={`Final Design — view ${i + 2}`} width={400} height={280} className="rounded-xl border border-border w-full h-auto object-cover" />
                             ))}
                           </div>
                         )}
                       </div>
                     ) : project.finalDesign ? (
-                      <Image
-                        src={project.finalDesign}
-                        alt="Final Design"
-                        width={800}
-                        height={500}
-                        className="rounded-2xl border border-border w-full h-auto"
-                      />
-                    ) : (
-                      <Placeholder label="Final Design" height={320} />
-                    )}
+                      <Image src={project.finalDesign} alt="Final Design" width={800} height={500} className="rounded-2xl border border-border w-full h-auto" />
+                    ) : project.userFlow ? (
+                      <Image src={project.userFlow} alt="User Flow" width={800} height={500} className="rounded-2xl border border-border w-full h-auto" />
+                    ) : project.prototype ? (
+                      <Image src={project.prototype} alt="Prototype" width={800} height={500} className="rounded-2xl border border-border w-full h-auto" />
+                    ) : null}
                   </motion.section>
                 )}
-
-                {/* ── Prototype ────────────────────────────────── */}
-                {project.prototype !== undefined && (
-                  <motion.section id="prototype" variants={fadeUp}>
-                    <SectionHeader label="Prototype" title="See it in action" />
-                    {project.prototype ? (
-                      <Image
-                        src={project.prototype}
-                        alt="Prototype"
-                        width={800}
-                        height={500}
-                        className="rounded-2xl border border-border w-full h-auto"
-                      />
-                    ) : (
-                      <Placeholder label="Prototype" height={280} />
-                    )}
-                  </motion.section>
-                )}
-
-                {/* ── Results ──────────────────────────────────── */}
-                <motion.section id="results" variants={fadeUp}>
-                  <SectionHeader label="Results" title="The impact" />
-                  <div className="grid grid-cols-3 gap-4 mb-8">
-                    {project.stats.map((stat) => (
-                      <div
-                        key={stat.label}
-                        className="p-6 rounded-2xl border border-border bg-surface/60 flex flex-col gap-3"
-                      >
-                        <span
-                          className="text-5xl md:text-6xl font-bold leading-none"
-                          style={{ fontFamily: "var(--font-display)", ...accentGrad }}
-                        >
-                          {stat.value}
-                        </span>
-                        <span className="text-xs text-fg-muted leading-snug">{stat.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-base text-fg-muted leading-relaxed max-w-prose">
-                    {project.outcome}
-                  </p>
-                </motion.section>
 
                 {/* ── Reflection ───────────────────────────────── */}
                 {project.reflection && (
                   <motion.section id="reflection" variants={fadeUp}>
                     <SectionHeader label="Reflection" title="What I learned" />
-                    <p className="text-base text-fg-muted leading-relaxed max-w-prose">
-                      {project.reflection}
-                    </p>
-                  </motion.section>
-                )}
-
-                {/* ── Next Steps ───────────────────────────────── */}
-                {project.nextSteps && (
-                  <motion.section id="next-steps" variants={fadeUp}>
-                    <SectionHeader label="Next Steps" title="Where this goes from here" />
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      {project.nextSteps.map((step, i) => (
-                        <div
-                          key={i}
-                          className="p-5 rounded-2xl bg-surface border border-border flex flex-col gap-4"
-                        >
-                          <span
-                            className="text-3xl font-bold"
-                            style={{ fontFamily: "var(--font-display)", ...accentGrad }}
-                          >
-                            {String(i + 1).padStart(2, "0")}
+                    <div className="grid grid-cols-3 gap-4 mb-8">
+                      {project.stats.map((stat) => (
+                        <div key={stat.label} className="p-6 rounded-2xl border border-border bg-surface/60 flex flex-col gap-3">
+                          <span className="text-5xl md:text-6xl font-bold leading-none" style={{ fontFamily: "var(--font-display)", ...accentGrad }}>
+                            {stat.value}
                           </span>
-                          <p className="text-sm text-fg-muted leading-relaxed">{step}</p>
+                          <span className="text-xs text-fg-muted leading-snug">{stat.label}</span>
                         </div>
                       ))}
                     </div>
+                    <p className="text-base text-fg-muted leading-relaxed max-w-[65ch]">
+                      {project.reflection}
+                    </p>
                   </motion.section>
                 )}
 
@@ -697,7 +497,7 @@ export default function CaseStudy({
         )}
 
         {/* ─── Project nav ─────────────────────────────────────── */}
-        <div className="max-w-5xl mx-auto px-6 md:px-8 py-12 border-t border-border">
+        <div className="max-w-[860px] mx-auto px-6 md:px-8 py-12 border-t border-border">
           <div className="flex items-center justify-between">
             {prev ? (
               <Link

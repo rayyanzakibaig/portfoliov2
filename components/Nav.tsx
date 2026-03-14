@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
 
@@ -32,39 +31,20 @@ function MoonIcon() {
 
 export default function Nav() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(true);
-  const lastY = useRef(0);
   const { theme, toggle } = useTheme();
 
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (y < 60 || y < lastY.current) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
-      lastY.current = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.header
-          initial={{ y: -16, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -16, opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed top-4 left-1/2 -translate-x-1/2 z-[9990]"
-        >
+    <motion.header
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed bottom-4 md:bottom-auto md:top-10 left-1/2 -translate-x-1/2 z-[9990]"
+    >
           {/* Liquid glass pill */}
           <div
-            className="relative h-11 rounded-full px-3
-              bg-white/[0.55] dark:bg-[#111]/[0.55]
-              backdrop-blur-[32px] backdrop-saturate-[200%]
+            className="relative h-11 w-max rounded-full px-3
+              bg-white/75 dark:bg-[#111]/70
+              backdrop-blur-xl backdrop-saturate-[180%]
               shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),0_4px_28px_rgba(0,0,0,0.09),inset_0_1px_0_rgba(255,255,255,1)]
               dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_4px_28px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
           >
@@ -81,7 +61,7 @@ export default function Nav() {
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }
                 }}
-                className="flex items-center transition-opacity duration-200 pl-1"
+                className="flex items-center shrink-0 transition-opacity duration-200 pl-1"
               >
                 <Image
                   src="/rz-logo.png"
@@ -154,8 +134,6 @@ export default function Nav() {
               </motion.button>
             </div>
           </div>
-        </motion.header>
-      )}
-    </AnimatePresence>
+    </motion.header>
   );
 }

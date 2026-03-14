@@ -10,27 +10,34 @@ type Props = {
 };
 
 const ctaLabel: Record<string, string> = {
-  "Brand Design": "View Work",
+  "Brand Design": "Website Development",
   "UX Design": "View Case Study",
-  "Mobile Design": "View Case Study",
+  "Mobile Design": "UX Design Internship",
   "Product Design": "View Case Study",
 };
 
 export default function ProjectCard({ project, className = "" }: Props) {
-  const label = project.wip ? "Coming Soon!" : (ctaLabel[project.tag] ?? "View Project");
+  const label = project.wip
+    ? "Coming Soon!"
+    : project.cursorLabel ?? (ctaLabel[project.tag] ?? "View Project");
+
+  const tags = project.tags ?? [project.tag];
+  const showTags = !project.wip && !project.cursorLabel;
 
   return (
     <motion.a
       href={`/work/${project.slug}`}
       data-cursor="project"
       data-cursor-label={label}
+      data-cursor-tags={showTags ? tags.join(",") : ""}
+      data-cursor-wip={project.wip ? "true" : undefined}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 400, damping: 28 }}
       className={`group block ${className}`}
     >
       {/* Thumbnail — brand color stage with floating mockup */}
       <div
-        className="relative aspect-[4/3] rounded-2xl overflow-hidden"
+        className="relative aspect-video rounded-2xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
         }}
@@ -50,7 +57,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
             alt={project.title}
             fill
             className="object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 768px) 100vw, 896px"
           />
         ) : null}
 

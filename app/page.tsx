@@ -1,69 +1,69 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/motion";
 import { projects } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 import Footer from "@/components/Footer";
 
 export default function Home() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 40, damping: 18 });
+  const springY = useSpring(mouseY, { stiffness: 40, damping: 18 });
+
+  // Different depth multipliers per blob — outer motion.div handles cursor, inner div handles CSS wander
+  const b1x = useTransform(springX, v => v * 0.12);
+  const b1y = useTransform(springY, v => v * 0.12);
+  const b2x = useTransform(springX, v => v * -0.18);
+  const b2y = useTransform(springY, v => v * 0.18);
+  const b3x = useTransform(springX, v => v * 0.24);
+  const b3y = useTransform(springY, v => v * -0.24);
 
   return (
     <main>
       {/* ─── Hero ──────────────────────────────────────────────── */}
-      <section className="relative h-[100svh] flex flex-col justify-center overflow-hidden">
-        {/* Animated gradient blobs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <motion.div
-            className="blob-1 absolute rounded-full"
-            style={{
-              width: "90%", height: "60%", top: "-15%", right: "-15%",
-              background: "radial-gradient(ellipse, rgba(138,111,240,0.5) 0%, transparent 70%)",
-              filter: "blur(48px)",
-            }}
-            animate={{ x: [0, 30, -20, 0], y: [0, -20, 30, 0], scale: [1, 1.05, 0.97, 1] }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="blob-2 absolute rounded-full"
-            style={{
-              width: "70%", height: "50%", bottom: "-15%", left: "-10%",
-              background: "radial-gradient(ellipse, rgba(200,85,160,0.35) 0%, transparent 70%)",
-              filter: "blur(52px)",
-            }}
-            animate={{ x: [0, -25, 20, 0], y: [0, 25, -15, 0], scale: [1, 0.96, 1.04, 1] }}
-            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="blob-3 absolute rounded-full"
-            style={{
-              width: "60%", height: "45%", bottom: "-10%", right: "-5%",
-              background: "radial-gradient(ellipse, rgba(155,110,232,0.28) 0%, transparent 70%)",
-              filter: "blur(44px)",
-            }}
-            animate={{ x: [0, 20, -30, 0], y: [0, -30, 10, 0], scale: [1, 1.03, 0.98, 1] }}
-            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-          />
+      <section
+        className="relative h-[100svh] flex flex-col justify-center"
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          mouseX.set(e.clientX - rect.left - rect.width / 2);
+          mouseY.set(e.clientY - rect.top - rect.height / 2);
+        }}
+        onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
+      >
+        {/* Blobs: outer motion.div = cursor parallax, inner div = CSS wander (separate transforms avoid conflict) */}
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "75%", height: "65%", top: "5%", left: "10%" }}>
+            <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.75) 0%, transparent 70%)", filter: "blur(48px)" }} />
+          </motion.div>
+          <motion.div className="absolute" style={{ x: b2x, y: b2y, width: "65%", height: "55%", top: "40%", left: "25%" }}>
+            <div className="blob-2 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(200,85,160,0.6) 0%, transparent 70%)", filter: "blur(52px)" }} />
+          </motion.div>
+          <motion.div className="absolute" style={{ x: b3x, y: b3y, width: "60%", height: "50%", top: "20%", left: "40%" }}>
+            <div className="blob-3 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(155,110,232,0.55) 0%, transparent 70%)", filter: "blur(44px)" }} />
+          </motion.div>
         </div>
 
         <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-24 md:pt-28 pb-16 md:pb-24 w-full flex flex-col items-center text-center">
-          <div className="flex flex-col items-center">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="flex flex-col items-center"
+          >
             {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              className="flex items-center gap-2.5 mb-6 md:mb-8"
-            >
+            <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-6 md:mb-8">
               <span className="w-5 h-px bg-fg-muted" />
               <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase text-fg-muted">
-                Product Designer | Pokémon Collector
+                Product Designer | Seeking Summer 26' Internship
               </span>
               <span className="w-5 h-px bg-fg-muted" />
             </motion.div>
 
-            {/* Name — one line, per-word blur */}
-            <h1
+            {/* Name — per-word blur */}
+            <motion.h1
+              variants={fadeUp}
               className="text-[clamp(2.75rem,10vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-fg mb-4 md:mb-6 whitespace-nowrap"
               style={{ fontFamily: "var(--font-display)" }}
             >
@@ -78,69 +78,66 @@ export default function Home() {
                   {word}{i === 0 ? "\u00a0" : ""}
                 </motion.span>
               ))}
-            </h1>
+            </motion.h1>
 
             {/* Mission */}
             <motion.p
-              initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.65 }}
+              variants={fadeUp}
               className="text-base md:text-lg text-fg-muted leading-relaxed max-w-sm md:max-w-md mb-8 md:mb-10"
             >
-              Enhancing human computer interaction
+              {["Enhancing", "human", "computer", "interaction"].map((word, i) => (
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.7 + i * 0.08 }}
+                  className="inline-block"
+                >
+                  {word}{i < 3 ? "\u00a0" : ""}
+                </motion.span>
+              ))}
             </motion.p>
 
             {/* CTA buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.85 }}
-              className="flex items-center gap-3"
-            >
+            <motion.div variants={fadeUp} className="flex items-center gap-3">
               <a
                 href="#work"
-                className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] hover:bg-fg/70 hover:text-bg transition-all duration-200"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-0 bg-accent transition-transform duration-300 ease-out rounded-full" />
-                <span className="relative">View Work</span>
+                View Work
               </a>
               <a
                 href="https://drive.google.com/file/d/1mnPFnb0WzECPuX6eOYl4WHcP4RkWxX7f/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.82] dark:bg-white/[0.08] backdrop-blur-xl backdrop-saturate-150 shadow-[0_0_0_0.5px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.12)] text-fg text-sm font-medium overflow-hidden"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.82] dark:bg-white/[0.08] backdrop-blur-xl backdrop-saturate-150 shadow-[0_0_0_0.5px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.12)] text-fg text-sm font-medium hover:bg-black/[0.06] dark:hover:bg-white/[0.14] hover:shadow-none transition-all duration-200"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-0 bg-accent transition-transform duration-300 ease-out rounded-full" />
-                <span className="relative group-hover:text-white transition-colors duration-300">Resume ↗</span>
+                Resume ↗
               </a>
             </motion.div>
-          </div>
-        </div>
 
-        {/* Scroll indicator */}
-        <motion.a
-          href="#work"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          onClick={(e) => {
-            e.preventDefault();
-            document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
-          }}
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
-            className="text-fg-muted/50 hover:text-fg-muted transition-colors duration-200"
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 7l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            {/* Scroll arrow */}
+            <motion.a
+              href="#work"
+              variants={fadeUp}
+              className="mt-10 flex flex-col items-center text-fg-muted/50 hover:text-fg-muted transition-colors duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <motion.svg
+                width="20" height="20" viewBox="0 0 20 20" fill="none"
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
+              >
+                <path d="M4 7l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </motion.svg>
+            </motion.a>
           </motion.div>
-        </motion.a>
+        </div>
       </section>
 
       {/* ─── Work ──────────────────────────────────────────────── */}
@@ -169,7 +166,7 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, amount: 0 }}
             variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 gap-10"
+            className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16"
           >
             {projects.map((project) => (
               <motion.div key={project.slug} variants={fadeUp}>

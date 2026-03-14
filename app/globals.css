@@ -81,25 +81,38 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 2px;
 }
 
-/* Gradient blob animations — transform only, GPU-composited */
-@keyframes blob-1 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  33%       { transform: translate3d(30px, -20px, 0); }
-  66%       { transform: translate3d(-15px, 15px, 0); }
+
+/* Gradient blob wandering — transform only, GPU compositor thread */
+@keyframes wander-1 {
+  0%   { transform: translate(0, 0); }
+  15%  { transform: translate(-38vw, 18vh); }
+  32%  { transform: translate(22vw, -42vh); }
+  51%  { transform: translate(44vw, 12vh); }
+  67%  { transform: translate(-14vw, 38vh); }
+  83%  { transform: translate(30vw, -20vh); }
+  100% { transform: translate(0, 0); }
 }
-@keyframes blob-2 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  33%       { transform: translate3d(-25px, 18px, 0); }
-  66%       { transform: translate3d(20px, -12px, 0); }
+@keyframes wander-2 {
+  0%   { transform: translate(0, 0); }
+  18%  { transform: translate(40vw, -28vh); }
+  38%  { transform: translate(-32vw, -44vh); }
+  54%  { transform: translate(16vw, 40vh); }
+  72%  { transform: translate(-44vw, 10vh); }
+  88%  { transform: translate(28vw, -14vh); }
+  100% { transform: translate(0, 0); }
 }
-@keyframes blob-3 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  33%       { transform: translate3d(18px, -22px, 0); }
-  66%       { transform: translate3d(-22px, 20px, 0); }
+@keyframes wander-3 {
+  0%   { transform: translate(0, 0); }
+  22%  { transform: translate(-20vw, -40vh); }
+  41%  { transform: translate(42vw, 22vh); }
+  58%  { transform: translate(-36vw, 36vh); }
+  76%  { transform: translate(18vw, -30vh); }
+  91%  { transform: translate(-28vw, -16vh); }
+  100% { transform: translate(0, 0); }
 }
-.blob-1 { animation: blob-1 18s ease-in-out infinite; will-change: transform; }
-.blob-2 { animation: blob-2 22s ease-in-out infinite 3s; will-change: transform; }
-.blob-3 { animation: blob-3 26s ease-in-out infinite 6s; will-change: transform; }
+.blob-1 { animation: wander-1 33s ease-in-out infinite; will-change: transform; }
+.blob-2 { animation: wander-2 42s ease-in-out infinite; will-change: transform; }
+.blob-3 { animation: wander-3 51s ease-in-out infinite; will-change: transform; }
 
 /* Grain overlay — very subtle */
 body::after {

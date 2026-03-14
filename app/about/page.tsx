@@ -170,12 +170,14 @@ export default function About() {
             </p>
           </motion.div>
           <motion.div variants={fadeUp}>
-            <div
-              className="rounded-3xl w-full aspect-[4/3] border border-border flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #2d1b69, #11998e, #38ef7d)" }}
-            >
-              <span className="text-xs text-white/30 tracking-widest uppercase">Photo</span>
-              {/* TODO: replace with real image */}
+            <div className="rounded-3xl w-full aspect-[4/3] overflow-hidden">
+              <Image
+                src="/images/rayyan-apple.jpg"
+                alt="Rayyan at Apple"
+                width={800}
+                height={600}
+                className="w-full h-full object-cover object-top"
+              />
             </div>
           </motion.div>
         </motion.section>

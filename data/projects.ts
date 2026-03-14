@@ -18,6 +18,7 @@ export type Project = {
   nextSlug: string;
   wip?: boolean;
   liveUrl?: string;
+  cursorLabel?: string;
   overview: string;
   problem: string;
   outcome: string;
@@ -47,9 +48,9 @@ export const projects: Project[] = [
     slug: "hire-journey",
     title: "Hire Journey",
     accentWord: "Journey",
-    coverImage: "/images/hirejourney/hirejourneydashboard.png",
+    coverVideo: "/images/hirejourney/hirejourneycover.mp4",
     subtitle: "A full-stack web helping job seekers find and track their next opportunity.",
-    description: "A full-stack platform rethinking how modern job seekers track and manage their search.",
+    description: "Modern Job Tracker for Job Seekers",
     year: "2026",
     role: "Product Designer & Developer",
     duration: "In Progress",
@@ -119,12 +120,11 @@ export const projects: Project[] = [
   },
   {
     slug: "sleep-os",
-    title: "Sleep OS Product Design Challenge",
+    title: "Sleep Improvement",
     accentWord: "OS",
-    coverImage: "",
     coverVideo: "/images/sleep-os/palantir-cover.mp4",
     subtitle: "Palantir design challenge",
-    description: "A 2-hour solo design sprint creating an operating system concept for better sleep health.",
+    description: "AI System to Improve Sleep Behavior",
     year: "2025",
     role: "Product Designer",
     duration: "2 hours",
@@ -139,7 +139,7 @@ export const projects: Project[] = [
     overview:
       "Sleep OS is a conceptual operating system layer designed to help users optimize their sleep through ambient data collection and intelligent scheduling. Built for the Palantir design challenge.",
     problem:
-      "Most sleep tracking apps are passive — they collect data but don't act on it. The challenge was to design a system that actively intervenes, gently adjusting your digital environment to support better sleep hygiene.",
+      "Most sleep trackinmg apps are passive — they collect data but don't act on it. The challenge was to design a system that actively intervenes, gently adjusting your digital environment to support better sleep hygiene.",
     outcome:
       "The submission featured a comprehensive design system, 24 screens, and a novel 'wind-down mode' concept that dynamically adjusts notifications, screen temperature, and app access based on sleep schedule.",
     stats: [
@@ -189,11 +189,12 @@ export const projects: Project[] = [
   },
   {
     slug: "american-emr",
+    cursorLabel: "UX Design Internship",
     title: "American EMR",
     accentWord: "EMR",
     coverImage: "/images/american-emr/american-emr.png",
     subtitle: "Patient healthcare mobile application",
-    description: "Designing an all-in-one patient portal for a healthcare EMR platform — from research through interactive prototype.",
+    description: "Simplifying Patient Healthcare Interface",
     year: "2024",
     role: "Product Design Intern",
     duration: "1 week",
@@ -268,12 +269,12 @@ export const projects: Project[] = [
   },
   {
     slug: "investate",
+    cursorLabel: "Website Development",
     title: "Investate Holdings",
     accentWord: "Holdings",
     coverImage: "/images/investate/investate.jpg",
-    coverVideo: "/images/investate/investate-cover.mp4",
     subtitle: "Brand identity and website design for a real estate investment firm.",
-    description: "Complete brand identity and website for a real estate investment and rental management firm.",
+    description: "Short Term Rental Website",
     year: "2023",
     role: "UX/UI Designer & Developer",
     duration: "3 days",

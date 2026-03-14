@@ -13,6 +13,18 @@ type Props = {
 
 export default function CaseStudySideNav({ sections }: Props) {
   const [activeId, setActiveId] = useState<string>(sections[0]?.id ?? "");
+  const [pastHero, setPastHero] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const overview = document.getElementById("overview");
+      if (!overview) return;
+      setPastHero(overview.getBoundingClientRect().top <= 120);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
@@ -44,10 +56,13 @@ export default function CaseStudySideNav({ sections }: Props) {
 
   return (
     <aside
-      className="hidden xl:flex flex-col fixed z-40"
+      className="hidden xl:flex flex-col fixed z-40 transition-all duration-300"
       style={{
         top: "6rem",
-        left: "max(1.5rem, calc(50vw - 32rem - 12rem))",
+        left: "2rem",
+        opacity: pastHero ? 1 : 0,
+        pointerEvents: pastHero ? "auto" : "none",
+        transform: pastHero ? "translateY(0)" : "translateY(8px)",
       }}
     >
       <div className="flex flex-col gap-2.5 pl-3 border-l border-border/50">

@@ -9,6 +9,8 @@ export default function Cursor() {
   const { theme } = useTheme();
   const [hovered, setHovered] = useState(false);
   const [cursorLabel, setCursorLabel] = useState<string | null>(null);
+  const [cursorTags, setCursorTags] = useState<string[]>([]);
+  const [cursorWip, setCursorWip] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const mouseX = useMotionValue(-100);
@@ -29,7 +31,10 @@ export default function Cursor() {
       const target = e.target as HTMLElement;
       const projectEl = target.closest("[data-cursor='project']") as HTMLElement | null;
       if (projectEl) {
-        setCursorLabel(projectEl.dataset.cursorLabel ?? "View Project");
+        const tagsRaw = projectEl.dataset.cursorTags ?? "";
+        setCursorTags(tagsRaw ? tagsRaw.split(",") : []);
+        setCursorLabel(projectEl.dataset.cursorLabel ?? null);
+        setCursorWip(projectEl.dataset.cursorWip === "true");
         setHovered(false);
       } else if (
         target.tagName === "A" ||
@@ -50,6 +55,8 @@ export default function Cursor() {
       const related = e.relatedTarget as HTMLElement | null;
       if (!related?.closest("[data-cursor='project']")) {
         setCursorLabel(null);
+        setCursorTags([]);
+        setCursorWip(false);
       }
       if (!related?.closest("a") && !related?.closest("button")) {
         setHovered(false);
@@ -69,7 +76,7 @@ export default function Cursor() {
 
   if (!mounted) return null;
 
-  const isProject = !!cursorLabel;
+  const isProject = cursorTags.length > 0 || !!cursorLabel;
 
   return (
     <>
@@ -127,9 +134,19 @@ export default function Cursor() {
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest px-5 py-2.5 rounded-full whitespace-nowrap"
+              className="flex items-center gap-2 rounded-full whitespace-nowrap px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest"
               style={
-                theme === "dark"
+                cursorWip
+                  ? {
+                      background: theme === "dark" ? "rgba(40,22,4,0.55)" : "rgba(255,237,210,0.6)",
+                      backdropFilter: "blur(24px) saturate(220%) brightness(1.1)",
+                      WebkitBackdropFilter: "blur(24px) saturate(220%) brightness(1.1)",
+                      boxShadow: theme === "dark"
+                        ? "0 0 0 0.5px rgba(251,146,60,0.45), 0 4px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,200,120,0.15)"
+                        : "0 0 0 0.5px rgba(251,146,60,0.5), 0 4px 24px rgba(251,146,60,0.2), inset 0 1px 0 rgba(255,255,255,0.95)",
+                      color: theme === "dark" ? "rgba(255,165,60,1)" : "rgba(160,72,0,1)",
+                    }
+                  : theme === "dark"
                   ? {
                       background: "rgba(17,17,17,0.65)",
                       backdropFilter: "blur(20px) saturate(180%)",
@@ -146,7 +163,25 @@ export default function Cursor() {
                     }
               }
             >
-              {cursorLabel}
+              {cursorTags.length > 0 ? (
+                <div className="flex items-center gap-1.5">
+                  {cursorTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-widest uppercase"
+                      style={
+                        theme === "dark"
+                          ? { background: "rgba(138,111,240,0.25)", color: "rgba(255,255,255,0.9)" }
+                          : { background: "rgba(107,92,231,0.12)", color: "rgba(107,92,231,1)" }
+                      }
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                cursorLabel
+              )}
             </div>
           </motion.div>
         )}
