@@ -37,7 +37,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
     >
       {/* Thumbnail — brand color stage with floating mockup */}
       <div
-        className="relative aspect-video rounded-2xl overflow-hidden"
+        className="relative aspect-[4/3] md:aspect-video rounded-2xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
         }}
