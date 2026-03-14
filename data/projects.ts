@@ -4,6 +4,7 @@ export type Project = {
   accentWord: string;
   subtitle: string;
   coverImage?: string;
+  coverVideo?: string;
   description: string;
   year: string;
   role: string;
@@ -12,6 +13,7 @@ export type Project = {
   gradientFrom: string;
   gradientTo: string;
   tag: string;
+  tags?: string[];
   prevSlug: string;
   nextSlug: string;
   wip?: boolean;
@@ -55,6 +57,7 @@ export const projects: Project[] = [
     gradientFrom: "#1a2340",
     gradientTo: "#2d3f6b",
     tag: "Product Design",
+    tags: ["Product Design", "Full Stack"],
     prevSlug: "investate",
     nextSlug: "sleep-os",
     wip: true,
@@ -119,6 +122,7 @@ export const projects: Project[] = [
     title: "Sleep OS Product Design Challenge",
     accentWord: "OS",
     coverImage: "",
+    coverVideo: "/images/sleep-os/palantir-cover.mp4",
     subtitle: "Palantir design challenge",
     description: "A 2-hour solo design sprint creating an operating system concept for better sleep health.",
     year: "2025",
@@ -128,6 +132,7 @@ export const projects: Project[] = [
     gradientFrom: "#1a1a2e",
     gradientTo: "#16213e",
     tag: "UX Design",
+    tags: ["UX Design", "Design Sprint"],
     prevSlug: "hire-journey",
     nextSlug: "american-emr",
     wip: true,
@@ -196,6 +201,7 @@ export const projects: Project[] = [
     gradientFrom: "#1a2e2a",
     gradientTo: "#2d4a44",
     tag: "Mobile Design",
+    tags: ["Mobile Design", "Internship"],
     prevSlug: "sleep-os",
     nextSlug: "investate",
     overview:
@@ -265,6 +271,7 @@ export const projects: Project[] = [
     title: "Investate Holdings",
     accentWord: "Holdings",
     coverImage: "/images/investate/investate.jpg",
+    coverVideo: "/images/investate/investate-cover.mp4",
     subtitle: "Brand identity and website design for a real estate investment firm.",
     description: "Complete brand identity and website for a real estate investment and rental management firm.",
     year: "2023",
@@ -274,6 +281,7 @@ export const projects: Project[] = [
     gradientFrom: "#2e2a1a",
     gradientTo: "#4a3f2d",
     tag: "Brand Design",
+    tags: ["Brand Design", "Development"],
     prevSlug: "american-emr",
     nextSlug: "hire-journey",
     liveUrl: "https://investateholdings.com",
