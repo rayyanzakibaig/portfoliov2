@@ -114,22 +114,27 @@ export default function Home() {
         </div>
 
         {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center"
+        <motion.a
+          href="#work"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4, duration: 0.8 }}
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+          }}
         >
           <motion.div
             animate={{ y: [0, 7, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="text-fg-muted/50"
+            className="text-fg-muted/50 hover:text-fg-muted transition-colors duration-200"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M4 7l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </motion.div>
-        </motion.div>
+        </motion.a>
       </section>
 
       {/* ─── Work ──────────────────────────────────────────────── */}
