@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { type Project } from "@/data/projects";
 
@@ -10,114 +9,64 @@ type Props = {
   className?: string;
 };
 
+const ctaLabel: Record<string, string> = {
+  "Brand Design": "View Work",
+  "UX Design": "View Case Study",
+  "Mobile Design": "View Case Study",
+  "Product Design": "View Case Study",
+};
+
 export default function ProjectCard({ project, className = "" }: Props) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const arrowX = useSpring(useTransform(mouseX, [-1, 1], [-5, 5]), {
-    stiffness: 200,
-    damping: 20,
-  });
-  const arrowY = useSpring(useTransform(mouseY, [-1, 1], [-5, 5]), {
-    stiffness: 200,
-    damping: 20,
-  });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set(((e.clientX - rect.left) / rect.width - 0.5) * 2);
-    mouseY.set(((e.clientY - rect.top) / rect.height - 0.5) * 2);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  const label = project.wip ? "Coming Soon!" : (ctaLabel[project.tag] ?? "View Project");
 
   return (
     <motion.a
-      ref={cardRef}
       href={`/work/${project.slug}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      data-cursor="project"
+      data-cursor-label={label}
       whileHover={{ y: -4 }}
-      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className={`group block rounded-2xl border border-border bg-bg overflow-hidden ${className}`}
-      style={{
-        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-      }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+      className={`group block ${className}`}
     >
-      {/* Hover shadow */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl pointer-events-none"
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+      {/* Thumbnail — brand color stage with floating mockup */}
+      <div
+        className="relative aspect-[4/3] rounded-2xl overflow-hidden"
         style={{
-          boxShadow: "0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+          background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
         }}
-      />
-
-      {/* Cover image / gradient area */}
-      <div className="relative aspect-[16/9] overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
-          }}
-        />
-        {project.coverImage && (
+      >
+        {project.coverVideo ? (
+          <video
+            src={project.coverVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
+          />
+        ) : project.coverImage ? (
           <Image
             src={project.coverImage}
             alt={project.title}
             fill
-            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            className="object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
-        )}
+        ) : null}
 
-        {/* Arrow — magnetic, top right */}
-        <motion.div
-          style={{ x: arrowX, y: arrowY }}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/15 border border-white/25 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        >
-          <span className="text-white text-sm">↗</span>
-        </motion.div>
+        {/* Subtle scrim on hover */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <div className="flex items-start justify-between gap-4 mb-3">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface border border-border text-fg-muted">
-              {project.tag}
-            </span>
-            {project.wip && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 border border-amber-200 text-amber-600 dark:bg-amber-950/40 dark:border-amber-800/50 dark:text-amber-400">
-                <span className="w-1 h-1 rounded-full bg-amber-400 animate-pulse" />
-                WIP
-              </span>
-            )}
-          </div>
-          <span className="text-xs text-fg-muted tabular-nums">{project.year}</span>
-        </div>
-
-        <h3
-          className="text-lg font-semibold text-fg mb-1.5 leading-snug"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
+      {/* Metadata below the thumbnail */}
+      <div className="mt-3 px-0.5 flex items-baseline gap-3">
+        <h3 className="text-sm font-medium text-fg leading-snug shrink-0">
           {project.title}
         </h3>
-        <p className="text-sm text-fg-muted leading-relaxed">{project.subtitle}</p>
-
-        <div className="mt-5 flex items-center justify-between">
-          <span className="text-xs text-fg-muted">{project.role}</span>
-          <span className="text-sm text-fg-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all duration-200">
-            →
-          </span>
-        </div>
+        <p className="text-sm text-fg-muted truncate min-w-0 flex-1">
+          {project.description}
+        </p>
+        <span className="text-sm text-fg-muted shrink-0">{project.year}</span>
       </div>
     </motion.a>
   );
