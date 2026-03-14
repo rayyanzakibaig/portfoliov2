@@ -1,11 +1,11 @@
 import { Variants } from "framer-motion";
 
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 56 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -56,16 +56,14 @@ export const slideRight: Variants = {
 };
 
 export const pageVariants: Variants = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0 },
   animate: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.3, ease: "easeOut" },
   },
   exit: {
     opacity: 0,
-    y: -12,
-    transition: { duration: 0.3, ease: "easeIn" },
+    transition: { duration: 0.2, ease: "easeIn" },
   },
 };
 

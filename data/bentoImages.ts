@@ -1,12 +1,10 @@
 export type BentoImage = {
   id: string;
-  src: string; // TODO: replace with real image path e.g. "/images/project-1.jpg"
+  src: string;
   alt: string;
   title: string;
   category: string;
-  gradient: string; // placeholder until real images are added
-  colSpan: number;
-  rowSpan: number;
+  gradient: string;
 };
 
 export const bentoImages: BentoImage[] = [
@@ -17,8 +15,6 @@ export const bentoImages: BentoImage[] = [
     title: "Porsche Poster",
     category: "Graphic Design",
     gradient: "linear-gradient(135deg, #1a0a0a, #3d1010)",
-    colSpan: 2,
-    rowSpan: 2,
   },
   {
     id: "bento-2",
@@ -27,8 +23,6 @@ export const bentoImages: BentoImage[] = [
     title: "Audi R8 Poster",
     category: "Photography + Graphic Design",
     gradient: "linear-gradient(135deg, #2e1a1a, #4a2d2d)",
-    colSpan: 1,
-    rowSpan: 1,
   },
   {
     id: "bento-3",
@@ -37,8 +31,6 @@ export const bentoImages: BentoImage[] = [
     title: "AMG Roller",
     category: "Photoshop",
     gradient: "linear-gradient(135deg, #1a2e1a, #2d4a2d)",
-    colSpan: 1,
-    rowSpan: 1,
   },
   {
     id: "bento-4",
@@ -47,8 +39,6 @@ export const bentoImages: BentoImage[] = [
     title: "Ink's Lake",
     category: "India Ink Painting",
     gradient: "linear-gradient(135deg, #1a1a2e, #2d2d4a)",
-    colSpan: 1,
-    rowSpan: 1,
   },
   {
     id: "bento-5",
@@ -57,8 +47,6 @@ export const bentoImages: BentoImage[] = [
     title: "Home Office Interior Design",
     category: "Interior Design",
     gradient: "linear-gradient(135deg, #2e1a2e, #4a2d4a)",
-    colSpan: 2,
-    rowSpan: 1,
   },
   {
     id: "bento-6",
@@ -67,8 +55,6 @@ export const bentoImages: BentoImage[] = [
     title: "Pokemon Art Extension",
     category: "Generative AI",
     gradient: "linear-gradient(135deg, #2e2a1a, #4a3f2d)",
-    colSpan: 1,
-    rowSpan: 1,
   },
   {
     id: "bento-7",
@@ -77,7 +63,5 @@ export const bentoImages: BentoImage[] = [
     title: "Hire Journey Logo",
     category: "Logo Design",
     gradient: "linear-gradient(135deg, #2e2a1a, #4a3f2d)",
-    colSpan: 1,
-    rowSpan: 1,
   },
 ];

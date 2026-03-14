@@ -2,44 +2,17 @@
 
 import { motion } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/motion";
+import Image from "next/image";
 import Footer from "@/components/Footer";
-import Tag from "@/components/Tag";
 
 const experience = [
-  { year: "2026-Present", role: "Member Relations Director", company: "UH Cougar Product" },
-  { year: "2024-Present", role: "Product Specialist", company: "Apple" },
+  { year: "2026–Present", role: "Member Relations Director", company: "UH Cougar Product" },
+  { year: "2024–Present", role: "Product Specialist", company: "Apple" },
   { year: "2025", role: "Product Designer", company: "Palantir" },
   { year: "2024", role: "UX Design Intern", company: "American EMR" },
   { year: "2023", role: "Web Developer", company: "Investate Holdings" },
   { year: "2018–2022", role: "Designer, Photographer", company: "Klein Cain High School" },
 ];
-
-const skills: Record<string, { label: string; variant: "lavender" | "pink" | "blue" | "green" | "default" }[]> = {
-  Design: [
-    { label: "Figma", variant: "lavender" },
-    { label: "UX Research", variant: "lavender" },
-    { label: "Interaction Design", variant: "lavender" },
-    { label: "Visual Design", variant: "lavender" },
-    { label: "Brand Identity", variant: "lavender" },
-    { label: "Design Systems", variant: "lavender" },
-    { label: "Prototyping", variant: "lavender" },
-  ],
-  Development: [
-    { label: "React", variant: "blue" },
-    { label: "Next.js", variant: "blue" },
-    { label: "TypeScript", variant: "blue" },
-    { label: "HTML/CSS", variant: "blue" },
-    { label: "Tailwind CSS", variant: "blue" },
-    { label: "Node.js", variant: "blue" },
-  ],
-  Methods: [
-    { label: "Design Sprints", variant: "pink" },
-    { label: "Usability Testing", variant: "pink" },
-    { label: "Heuristic Evaluation", variant: "pink" },
-    { label: "Information Architecture", variant: "pink" },
-    { label: "Systems Thinking", variant: "pink" },
-  ],
-};
 
 export default function About() {
   return (
@@ -58,14 +31,14 @@ export default function About() {
               variants={fadeUp}
               className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-6"
             >
-              About
+
             </motion.p>
             <motion.h1
               variants={fadeUp}
-              className="text-4xl md:text-6xl font-bold text-fg leading-tight tracking-tight mb-8"
+              className="text-4xl md:text-6xl font-bold text-fg leading-tight tracking-tight"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Designer.{" "}
+              I design with intention.{" "}
               <span
                 style={{
                   background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
@@ -74,83 +47,198 @@ export default function About() {
                   backgroundClip: "text",
                 }}
               >
-                Builder.
-              </span>{" "}
-              Creative.
+                I build with care.
+              </span>
             </motion.h1>
-            <motion.div variants={fadeUp} className="max-w-xl">
-              <p className="text-base text-fg-muted leading-relaxed mb-4">
-                I&apos;m a product designer and MIS student at the University of Houston —
-                who enjoys turning complex systems into simple intuitive experiences.
-              </p>
-              <p className="text-base text-fg-muted leading-relaxed">
-                I'm interested in building products that are both thoughtful 
-                in design and genuinely enrich the experience of those who use them.
-              </p>
-            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-8 pb-24">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 pb-24 space-y-28">
+        {/* ─── Intro Split ─────────────────────────────────────── */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+          <div>
+            {/* Portrait placeholder */}
+            <div
+              className="rounded-3xl w-full aspect-[3/4] border border-border flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #1a1a2e, #2d1b69)" }}
+            >
+              <span className="text-xs text-white/30 tracking-widest uppercase">Portrait</span>
+              {/* TODO: replace with real image */}
+            </div>
+          </div>
+          <div className="flex flex-col justify-center gap-5">
+            <h2
+              className="text-2xl md:text-3xl font-bold text-fg"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              This is my story.
+            </h2>
+            <p className="text-base text-fg-muted leading-relaxed max-w-prose">
+              I&apos;m Rayyan — a product designer and MIS student based in Houston. I&apos;ve
+              spent the last few years learning what it takes to build products that actually hold
+              up: good research, sharp craft, and a willingness to get into the code when needed.
+            </p>
+          </div>
+        </section>
+
+        {/* ─── Chapter 1: text left, image right ───────────────── */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
+        >
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
+            <h2
+              className="text-2xl md:text-3xl font-bold text-fg"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              It started with a lens.
+            </h2>
+            <p className="text-base text-fg-muted leading-relaxed max-w-prose">
+              I picked up a camera in high school and spent four years shooting and designing for
+              my school. That&apos;s where I learned to see — how light, framing, and negative
+              space work together. Those habits never left.
+            </p>
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <div className="rounded-3xl w-full aspect-square overflow-hidden">
+              <Image
+                src="/rayyan-camera.jpg"
+                alt="Rayyan with a camera"
+                width={900}
+                height={900}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
+        </motion.section>
+
+        {/* ─── Chapter 2: image left, text right ───────────────── */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
+        >
+          <motion.div variants={fadeUp} className="md:order-1 order-2">
+            <div
+              className="rounded-3xl w-full aspect-[4/3] border border-border flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)" }}
+            >
+              <span className="text-xs text-white/30 tracking-widest uppercase">Photo</span>
+              {/* TODO: replace with real image */}
+            </div>
+          </motion.div>
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5 md:order-2 order-1">
+            <h2
+              className="text-2xl md:text-3xl font-bold text-fg"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Then I found product.
+            </h2>
+            <p className="text-base text-fg-muted leading-relaxed max-w-prose">
+              Studying MIS at the University of Houston pushed me to think in systems. I started
+              doing UX work — first at American EMR, then building a product for a real estate
+              startup. I realized good design isn&apos;t just visual; it&apos;s behavioral.
+            </p>
+          </motion.div>
+        </motion.section>
+
+        {/* ─── Chapter 3: text left, image right ───────────────── */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
+        >
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
+            <h2
+              className="text-2xl md:text-3xl font-bold text-fg"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Now I work at the intersection.
+            </h2>
+            <p className="text-base text-fg-muted leading-relaxed max-w-prose">
+              I spent a summer at Palantir designing enterprise tools used by thousands of
+              analysts. I work at Apple. I care about the details that most people never notice —
+              and I think that&apos;s exactly the point.
+            </p>
+          </motion.div>
+          <motion.div variants={fadeUp}>
+            <div
+              className="rounded-3xl w-full aspect-[4/3] border border-border flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #2d1b69, #11998e, #38ef7d)" }}
+            >
+              <span className="text-xs text-white/30 tracking-widest uppercase">Photo</span>
+              {/* TODO: replace with real image */}
+            </div>
+          </motion.div>
+        </motion.section>
+
+        {/* ─── Outside of Work ─────────────────────────────────── */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0 }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-10"
+        >
+          <motion.div variants={fadeUp} className="flex flex-col gap-3">
+            <h3
+              className="text-xl font-bold text-fg"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              I shoot film.
+            </h3>
+            <p className="text-base text-fg-muted leading-relaxed">
+              There&apos;s something about the constraint of 36 frames that sharpens your eye.
+              Analog photography keeps me honest and grounded outside of screens.
+            </p>
+          </motion.div>
+          <motion.div variants={fadeUp} className="flex flex-col gap-3">
+            <h3
+              className="text-xl font-bold text-fg"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              I&apos;m obsessed with cars.
+            </h3>
+            <p className="text-base text-fg-muted leading-relaxed">
+              Cars are one of the few products where engineering, aesthetics, and emotion all
+              converge. I follow the industry closely — and I drive with intent.
+            </p>
+          </motion.div>
+        </motion.section>
+
         {/* ─── Experience ──────────────────────────────────────── */}
         <motion.section
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: true, amount: 0 }}
           variants={staggerContainer}
-          className="mb-20"
         >
-          <motion.div variants={fadeUp} className="mb-8">
-            <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-1">
+          <motion.div variants={fadeUp} className="mb-10">
+            <p className="text-xs font-medium tracking-widest uppercase text-fg-muted">
               Experience
             </p>
-            <div className="w-full h-px bg-border mt-4" />
           </motion.div>
 
-          <div className="flex flex-col">
+          <div className="relative flex flex-col pl-5 border-l border-border">
             {experience.map(({ year, role, company }, i) => (
               <motion.div
                 key={i}
                 variants={fadeUp}
-                className="grid grid-cols-[72px_1fr_auto] gap-6 py-5 border-b border-border last:border-0 items-center"
+                className="flex items-start justify-between gap-6 py-5 last:pb-0"
               >
-                <span className="text-sm text-fg-muted tabular-nums font-medium">{year}</span>
-                <div>
-                  <p className="text-sm font-medium text-fg">{role}</p>
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-sm font-semibold text-fg">{company}</p>
+                  <p className="text-sm text-fg-muted">{role}</p>
                 </div>
-                <span className="text-sm text-fg-muted">{company}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* ─── Skills & Tools ──────────────────────────────────── */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={staggerContainer}
-          className="mb-20"
-        >
-          <motion.div variants={fadeUp} className="mb-8">
-            <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-1">
-              Skills & Tools
-            </p>
-            <div className="w-full h-px bg-border mt-4" />
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {Object.entries(skills).map(([category, items]) => (
-              <motion.div key={category} variants={fadeUp}>
-                <p className="text-xs font-semibold tracking-widest uppercase text-fg-muted mb-4">
-                  {category}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {items.map(({ label, variant }) => (
-                    <Tag key={label} variant={variant}>{label}</Tag>
-                  ))}
-                </div>
+                <span className="shrink-0 text-sm text-fg-muted tabular-nums">{year}</span>
               </motion.div>
             ))}
           </div>
@@ -160,7 +248,7 @@ export default function About() {
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0 }}
           transition={{ duration: 0.5 }}
           className="p-8 rounded-2xl border border-border bg-surface/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
         >
@@ -177,7 +265,7 @@ export default function About() {
           </div>
           <a
             href="mailto:rzakibaig@gmail.com"
-            className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium hover:opacity-85 transition-all duration-200"
+            className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] hover:opacity-85 transition-all duration-200"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Get in touch →

@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Cormorant_Garamond } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Nav from "@/components/Nav";
 import Cursor from "@/components/Cursor";
 import PageTransition from "@/components/PageTransition";
+import LenisProvider from "@/components/LenisProvider";
+import EasterEgg from "@/components/EasterEgg";
 
-const inter = Inter({
-  variable: "--font-inter",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  display: "swap",
-});
-
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -45,11 +41,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${jakarta.variable} antialiased`}>
+      <body className={`${GeistSans.variable} ${cormorant.variable} antialiased`}>
         <ThemeProvider>
-          <Cursor />
-          <Nav />
-          <PageTransition>{children}</PageTransition>
+          <LenisProvider>
+            <Cursor />
+            <Nav />
+            <EasterEgg />
+            <PageTransition>{children}</PageTransition>
+          </LenisProvider>
         </ThemeProvider>
       </body>
     </html>
