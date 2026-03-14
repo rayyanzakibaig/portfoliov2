@@ -126,8 +126,8 @@ export default function Home() {
           }}
         >
           <motion.div
-            animate={{ y: [0, 7, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
             className="text-fg-muted/50 hover:text-fg-muted transition-colors duration-200"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
