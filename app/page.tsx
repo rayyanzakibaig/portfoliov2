@@ -12,31 +12,37 @@ export default function Home() {
     <main>
       {/* ─── Hero ──────────────────────────────────────────────── */}
       <section className="relative h-[100svh] flex flex-col justify-center overflow-hidden">
-        {/* Animated gradient blobs — mouse-tracked */}
+        {/* Animated gradient blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div
+          <motion.div
             className="blob-1 absolute rounded-full"
             style={{
               width: "90%", height: "60%", top: "-15%", right: "-15%",
               background: "radial-gradient(ellipse, rgba(138,111,240,0.5) 0%, transparent 70%)",
               filter: "blur(48px)",
             }}
+            animate={{ x: [0, 30, -20, 0], y: [0, -20, 30, 0], scale: [1, 1.05, 0.97, 1] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
           />
-          <div
+          <motion.div
             className="blob-2 absolute rounded-full"
             style={{
               width: "70%", height: "50%", bottom: "-15%", left: "-10%",
               background: "radial-gradient(ellipse, rgba(200,85,160,0.35) 0%, transparent 70%)",
               filter: "blur(52px)",
             }}
+            animate={{ x: [0, -25, 20, 0], y: [0, 25, -15, 0], scale: [1, 0.96, 1.04, 1] }}
+            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
           />
-          <div
+          <motion.div
             className="blob-3 absolute rounded-full"
             style={{
               width: "60%", height: "45%", bottom: "-10%", right: "-5%",
               background: "radial-gradient(ellipse, rgba(155,110,232,0.28) 0%, transparent 70%)",
               filter: "blur(44px)",
             }}
+            animate={{ x: [0, 20, -30, 0], y: [0, -30, 10, 0], scale: [1, 1.03, 0.98, 1] }}
+            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
           />
         </div>
 
