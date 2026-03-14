@@ -41,14 +41,14 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-24 md:pt-28 pb-16 md:pb-24 w-full flex flex-col items-center text-center">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col items-center"
-          >
+          <div className="flex flex-col items-center">
             {/* Eyebrow */}
-            <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-6 md:mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              className="flex items-center gap-2.5 mb-6 md:mb-8"
+            >
               <span className="w-5 h-px bg-fg-muted" />
               <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase text-fg-muted">
                 Product Designer | Pokémon Collector
@@ -56,27 +56,41 @@ export default function Home() {
               <span className="w-5 h-px bg-fg-muted" />
             </motion.div>
 
-            {/* Name */}
-            <motion.h1
-              variants={fadeUp}
-              className="text-[clamp(2.75rem,10vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-fg mb-4 md:mb-6"
+            {/* Name — one line, per-word blur */}
+            <h1
+              className="text-[clamp(2.75rem,10vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-fg mb-4 md:mb-6 whitespace-nowrap"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Rayyan
-              <br />
-              Zakibaig
-            </motion.h1>
+              {["Rayyan", "Zakibaig"].map((word, i) => (
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 16, filter: "blur(12px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: 0.3 + i * 0.15 }}
+                  className="inline-block"
+                >
+                  {word}{i === 0 ? "\u00a0" : ""}
+                </motion.span>
+              ))}
+            </h1>
 
             {/* Mission */}
             <motion.p
-              variants={fadeUp}
+              initial={{ opacity: 0, y: 8, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.65 }}
               className="text-base md:text-lg text-fg-muted leading-relaxed max-w-sm md:max-w-md mb-8 md:mb-10"
             >
               Enhancing human computer interaction
             </motion.p>
 
             {/* CTA buttons */}
-            <motion.div variants={fadeUp} className="flex items-center gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.85 }}
+              className="flex items-center gap-3"
+            >
               <a
                 href="#work"
                 className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden"
@@ -96,8 +110,26 @@ export default function Home() {
                 <span className="relative group-hover:text-white transition-colors duration-300">Resume ↗</span>
               </a>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+        >
+          <motion.div
+            animate={{ y: [0, 7, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="text-fg-muted/50"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 7l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ─── Work ──────────────────────────────────────────────── */}

@@ -63,8 +63,8 @@ export default function Nav() {
           {/* Liquid glass pill */}
           <div
             className="relative h-11 rounded-full px-3
-              bg-white/[0.82] dark:bg-[#111]/[0.75]
-              backdrop-blur-2xl backdrop-saturate-[180%]
+              bg-white/[0.55] dark:bg-[#111]/[0.55]
+              backdrop-blur-[32px] backdrop-saturate-[200%]
               shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),0_4px_28px_rgba(0,0,0,0.09),inset_0_1px_0_rgba(255,255,255,1)]
               dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_4px_28px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)]"
           >
@@ -88,7 +88,7 @@ export default function Nav() {
                   alt="RZ"
                   width={32}
                   height={32}
-                  className="h-8 w-auto dark:invert"
+                  className="h-8 w-8 dark:invert"
                   priority
                 />
               </Link>
