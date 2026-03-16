@@ -12,12 +12,17 @@ export default function Cursor() {
   const [cursorTags, setCursorTags] = useState<string[]>([]);
   const [cursorWip, setCursorWip] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
   const ringX = useSpring(mouseX, { stiffness: 280, damping: 22, mass: 0.25 });
   const ringY = useSpring(mouseY, { stiffness: 280, damping: 22, mass: 0.25 });
+
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -74,7 +79,7 @@ export default function Cursor() {
     };
   }, [mouseX, mouseY]);
 
-  if (!mounted) return null;
+  if (!mounted || isTouch) return null;
 
   const isProject = cursorTags.length > 0 || !!cursorLabel;
 

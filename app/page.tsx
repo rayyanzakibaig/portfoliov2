@@ -12,13 +12,12 @@ export default function Home() {
   const springX = useSpring(mouseX, { stiffness: 40, damping: 18 });
   const springY = useSpring(mouseY, { stiffness: 40, damping: 18 });
 
-  // Different depth multipliers per blob — outer motion.div handles cursor, inner div handles CSS wander
-  const b1x = useTransform(springX, v => v * 0.12);
-  const b1y = useTransform(springY, v => v * 0.12);
-  const b2x = useTransform(springX, v => v * -0.18);
-  const b2y = useTransform(springY, v => v * 0.18);
-  const b3x = useTransform(springX, v => v * 0.24);
-  const b3y = useTransform(springY, v => v * -0.24);
+  const b1x = useTransform(springX, v => v * 0.10);
+  const b1y = useTransform(springY, v => v * 0.10);
+  const b2x = useTransform(springX, v => v * 0.11);
+  const b2y = useTransform(springY, v => v * 0.11);
+  const b3x = useTransform(springX, v => v * 0.12);
+  const b3y = useTransform(springY, v => v * 0.12);
 
   return (
     <main>
@@ -33,7 +32,7 @@ export default function Home() {
         onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
       >
         {/* Blobs: outer motion.div = cursor parallax, inner div = CSS wander (separate transforms avoid conflict) */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "75%", height: "65%", top: "5%", left: "10%" }}>
             <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.75) 0%, transparent 70%)", filter: "blur(48px)" }} />
           </motion.div>

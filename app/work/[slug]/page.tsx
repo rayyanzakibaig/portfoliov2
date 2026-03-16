@@ -165,18 +165,18 @@ export default function CaseStudy({
 
                 {/* Meta grid */}
                 <motion.div variants={fadeUp}>
-                  <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-border rounded-2xl overflow-hidden bg-surface border border-border">
+                  <div className="grid grid-cols-4 divide-x divide-border rounded-2xl overflow-hidden bg-surface border border-border">
                     {[
                       { label: "Role", value: project.role },
                       { label: "Duration", value: project.duration },
                       { label: "Year", value: project.year },
                       { label: "Tools", value: project.tools },
                     ].map(({ label, value }) => (
-                      <div key={label} className="px-5 py-4 flex flex-col gap-1">
-                        <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">
+                      <div key={label} className="px-3 py-3 md:px-5 md:py-4 flex flex-col gap-1 min-w-0">
+                        <p className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase text-fg-muted">
                           {label}
                         </p>
-                        <p className="text-sm text-fg font-medium leading-snug">{value}</p>
+                        <p className="text-xs md:text-sm text-fg font-medium leading-snug">{value}</p>
                       </div>
                     ))}
                   </div>
@@ -475,13 +475,13 @@ export default function CaseStudy({
                 {project.reflection && (
                   <motion.section id="reflection" variants={fadeUp}>
                     <SectionHeader label="Reflection" title="What I learned" />
-                    <div className="grid grid-cols-3 gap-4 mb-8">
+                    <div className="grid grid-cols-3 gap-3 mb-8">
                       {project.stats.map((stat) => (
-                        <div key={stat.label} className="p-6 rounded-2xl border border-border bg-surface/60 flex flex-col gap-3">
-                          <span className="text-5xl md:text-6xl font-bold leading-none" style={{ fontFamily: "var(--font-display)", ...accentGrad }}>
+                        <div key={stat.label} className="p-4 md:p-6 rounded-2xl border border-border bg-surface/60 flex flex-col gap-2 md:gap-3">
+                          <span className="text-3xl md:text-5xl lg:text-6xl font-bold leading-none" style={{ fontFamily: "var(--font-display)", ...accentGrad }}>
                             {stat.value}
                           </span>
-                          <span className="text-xs text-fg-muted leading-snug">{stat.label}</span>
+                          <span className="text-[11px] md:text-xs text-fg-muted leading-snug">{stat.label}</span>
                         </div>
                       ))}
                     </div>

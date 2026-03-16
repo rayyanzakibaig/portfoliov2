@@ -43,10 +43,15 @@
   box-sizing: border-box;
 }
 
+@media (pointer: coarse) {
+  *, *::before, *::after { cursor: auto !important; }
+}
+
 html {
   background-color: var(--bg);
   color: var(--fg);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {

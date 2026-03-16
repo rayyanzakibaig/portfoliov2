@@ -49,7 +49,9 @@ export default function Footer() {
     <footer className="mt-32 border-t border-border">
       <div className="max-w-5xl mx-auto px-6 md:px-8 py-12">
         {/* Links row */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+          <div className="flex flex-col gap-2">
+          <p className="text-xs font-medium tracking-widest uppercase text-fg-muted">Contact</p>
           <button
             onClick={copyEmail}
             className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.82] dark:bg-white/[0.08] backdrop-blur-xl backdrop-saturate-150 shadow-[0_0_0_0.5px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.12)] text-sm font-medium text-fg transition-all duration-200"
@@ -72,6 +74,7 @@ export default function Footer() {
               </span>
             )}
           </button>
+          </div>
 
           <div className="flex items-center gap-3">
             <a

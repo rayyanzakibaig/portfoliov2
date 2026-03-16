@@ -110,16 +110,16 @@ export default function HireJourneyCaseStudy() {
               {/* Meta row */}
               <motion.div
                 variants={fadeUp}
-                className="flex flex-wrap justify-center gap-px rounded-2xl overflow-hidden border border-border bg-border"
+                className="grid grid-cols-3 divide-x divide-border rounded-2xl overflow-hidden border border-border bg-border w-full max-w-xl"
               >
                 {[
                   { label: "Role", value: "Product Design + Development" },
                   { label: "Tools", value: "Figma · Next.js · Claude Code" },
                   { label: "Type", value: "Personal Product" },
                 ].map(({ label, value }) => (
-                  <div key={label} className="bg-bg px-6 py-4 flex flex-col gap-0.5 min-w-[140px]">
-                    <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">{label}</p>
-                    <p className="text-sm text-fg font-medium">{value}</p>
+                  <div key={label} className="bg-bg px-3 py-3 md:px-6 md:py-4 flex flex-col gap-0.5 min-w-0">
+                    <p className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase text-fg-muted">{label}</p>
+                    <p className="text-xs md:text-sm text-fg font-medium leading-snug">{value}</p>
                   </div>
                 ))}
               </motion.div>
