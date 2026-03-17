@@ -1,191 +1,157 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { staggerContainer, fadeUp } from "@/lib/motion";
-import { creativeItems, type CreativeItem } from "@/data/creative";
-import { bentoImages } from "@/data/bentoImages";
-import Modal from "@/components/Modal";
-import Lightbox from "@/components/Lightbox";
+import { bentoImages, type BentoImage } from "@/data/bentoImages";
+import CreativeDrawer from "@/components/CreativeDrawer";
 import Footer from "@/components/Footer";
 
+// Ordered for editorial grid placement
+// Row 1: landscape/square  Row 2: portrait trio  Row 3: landscape
+const DISPLAY_ORDER = ["bento-8", "bento-3", "bento-9", "bento-10", "bento-12", "bento-17", "bento-15", "bento-11", "bento-13", "bento-14", "bento-1", "bento-2", "bento-4", "bento-16", "bento-6", "bento-7", "bento-5"];
+
+
+const orderedImages = DISPLAY_ORDER
+  .map(id => bentoImages.find(img => img.id === id))
+  .filter(Boolean) as BentoImage[];
+
+const FILTER_CATEGORIES = Array.from(
+  new Set(bentoImages.map(img => img.filterCategory))
+);
+
 export default function Creative() {
-  const [activeModal, setActiveModal] = useState<CreativeItem | null>(null);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [activeItem, setActiveItem] = useState<BentoImage | null>(null);
+
+  const filtered = activeFilter
+    ? orderedImages.filter(img => img.filterCategory === activeFilter)
+    : orderedImages;
 
   return (
     <>
-      <main className="min-h-screen">
+      <main className="relative min-h-screen">
+        <div
+          className="absolute top-0 left-0 right-0 h-[520px] pointer-events-none"
+          style={{
+            background: `radial-gradient(ellipse 120% 80% at 0% 80%, rgba(244, 114, 182, 0.26) 0%, transparent 60%)`,
+            maskImage: `linear-gradient(to bottom, black 50%, transparent 100%)`,
+            WebkitMaskImage: `linear-gradient(to bottom, black 50%, transparent 100%)`,
+          }}
+        />
         {/* ─── Header ──────────────────────────────────────────── */}
-        <section className="relative overflow-hidden">
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `radial-gradient(ellipse 80% 60% at 80% 20%, rgba(200,85,160,0.38) 0%, transparent 60%)`,
-            }}
-          />
-          <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-32 pb-16">
-            <motion.div variants={staggerContainer} initial="hidden" animate="visible">
-              <motion.p
-                variants={fadeUp}
-                className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-6"
-              >
+        <section className="relative">
+          <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-32 pb-12">
+          <motion.div variants={staggerContainer} initial="hidden" animate="visible" transition={{ delayChildren: 0.3, staggerChildren: 0.1 }}>
+            <motion.h1
+              variants={fadeUp}
+              className="text-5xl md:text-7xl font-semibold text-fg leading-tight tracking-tight mb-4"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Creative
+            </motion.h1>
+            <motion.p variants={fadeUp} className="text-sm text-fg-muted mb-8 max-w-sm">
+              When I'm not designing or building, I'm either taking photos, making art, or exploring new creative medias.
+            </motion.p>
 
-              </motion.p>
-              <motion.h1
-                variants={fadeUp}
-                className="text-4xl md:text-6xl font-bold text-fg leading-tight tracking-tight mb-6"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                All things{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #C855A0, #8A6FF0)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  creative.
-                </span>
-              </motion.h1>
-              <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-md">
-                Side projects, art, and creative explorations made outside of client work.
-              </motion.p>
+            {/* Filter pills */}
+            <motion.div variants={fadeUp} className="flex flex-wrap gap-2">
+              <FilterPill
+                label="All"
+                active={activeFilter === null}
+                onClick={() => setActiveFilter(null)}
+              />
+              {FILTER_CATEGORIES.map(cat => (
+                <FilterPill
+                  key={cat}
+                  label={cat}
+                  active={activeFilter === cat}
+                  onClick={() => setActiveFilter(activeFilter === cat ? null : cat)}
+                />
+              ))}
             </motion.div>
+          </motion.div>
           </div>
         </section>
 
-        {/* ─── Bento Grid ──────────────────────────────────────── */}
-        <section className="max-w-5xl mx-auto px-6 md:px-8 pb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-10"
-          >
-            <p className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-2">
-              Gallery
-            </p>
-            <div className="w-full h-px bg-border" />
-          </motion.div>
+        {/* ─── Grid ────────────────────────────────────────────── */}
+        <section className="px-6 md:px-8 pb-24">
+          <div className="relative overflow-hidden columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((image, index) => (
+                <div key={image.id} className="break-inside-avoid pb-3">
+                <motion.button
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    opacity: { duration: 0.25, ease: "easeOut" },
+                    y: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+                    delay: index * 0.04,
+                  }}
+                  onClick={() => setActiveItem(image)}
+                  data-cursor="hover"
+                  className="group relative overflow-hidden cursor-pointer w-full block"
+                  style={{ aspectRatio: image.aspectRatio }}
+                >
+                  {/* Image or gradient fallback */}
+                  <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04]">
+                    {image.src ? (
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        style={image.thumbnailScale ? { transform: `scale(${image.thumbnailScale})` } : undefined}
+                      />
+                    ) : (
+                      <div className="absolute inset-0" style={{ background: image.gradient }} />
+                    )}
+                  </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={staggerContainer}
-            className="grid grid-cols-3 gap-3"
-            style={{ gridAutoRows: "200px" }}
-          >
-            {/* Item 1 — 2×2 featured */}
-            <motion.button
-              variants={fadeUp}
-              onClick={() => setLightboxIndex(0)}
-              className="group relative col-span-2 row-span-2 rounded-2xl overflow-hidden"
-              data-cursor="hover"
-            >
-              <BentoCell image={bentoImages[0]} />
-              <HoverOverlay title={bentoImages[0].title} category={bentoImages[0].category} />
-            </motion.button>
-
-            {/* Item 2 — 1×1 */}
-            <motion.button
-              variants={fadeUp}
-              onClick={() => setLightboxIndex(1)}
-              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
-              data-cursor="hover"
-            >
-              <BentoCell image={bentoImages[1]} />
-              <HoverOverlay title={bentoImages[1].title} category={bentoImages[1].category} />
-            </motion.button>
-
-            {/* Item 3 — 1×1 */}
-            <motion.button
-              variants={fadeUp}
-              onClick={() => setLightboxIndex(2)}
-              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
-              data-cursor="hover"
-            >
-              <BentoCell image={bentoImages[2]} />
-              <HoverOverlay title={bentoImages[2].title} category={bentoImages[2].category} />
-            </motion.button>
-
-            {/* Item 4 — 1×1 */}
-            <motion.button
-              variants={fadeUp}
-              onClick={() => setLightboxIndex(3)}
-              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
-              data-cursor="hover"
-            >
-              <BentoCell image={bentoImages[3]} />
-              <HoverOverlay title={bentoImages[3].title} category={bentoImages[3].category} />
-            </motion.button>
-
-            {/* Item 5 — 2×1 wide */}
-            <motion.button
-              variants={fadeUp}
-              onClick={() => setLightboxIndex(4)}
-              className="group relative col-span-2 row-span-1 rounded-2xl overflow-hidden"
-              data-cursor="hover"
-            >
-              <BentoCell image={bentoImages[4]} />
-              <HoverOverlay title={bentoImages[4].title} category={bentoImages[4].category} />
-            </motion.button>
-
-            {/* Item 6 — 1×1 */}
-            <motion.button
-              variants={fadeUp}
-              onClick={() => setLightboxIndex(5)}
-              className="group relative col-span-1 row-span-1 rounded-2xl overflow-hidden"
-              data-cursor="hover"
-            >
-              <BentoCell image={bentoImages[5]} />
-              <HoverOverlay title={bentoImages[5].title} category={bentoImages[5].category} />
-            </motion.button>
-          </motion.div>
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/65 to-transparent">
+                    <p className="text-white/60 text-xs tracking-widest uppercase mb-0.5">
+                      {image.category}
+                    </p>
+                    <p className="text-white text-sm font-medium">{image.title}</p>
+                  </div>
+                </motion.button>
+                </div>
+              ))}
+            </AnimatePresence>
+          </div>
         </section>
 
         <Footer />
       </main>
 
-      <Modal item={activeModal} onClose={() => setActiveModal(null)} />
-      <Lightbox
-        images={bentoImages}
-        index={lightboxIndex}
-        onClose={() => setLightboxIndex(null)}
-        onChange={setLightboxIndex}
-      />
+      <CreativeDrawer item={activeItem} items={filtered} onClose={() => setActiveItem(null)} onNavigate={setActiveItem} />
     </>
   );
 }
 
-function BentoCell({ image }: { image: { src: string; alt: string; gradient: string } }) {
-  return image.src ? (
-    <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, 50vw"
-      />
-    </div>
-  ) : (
-    <div
-      className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]"
-      style={{ background: image.gradient }}
-    />
-  );
-}
-
-function HoverOverlay({ title, category }: { title: string; category: string }) {
+function FilterPill({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
   return (
-    <div className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/60 to-transparent">
-      <p className="text-white/60 text-xs tracking-widest uppercase mb-0.5">{category}</p>
-      <p className="text-white text-sm font-medium">{title}</p>
-    </div>
+    <button
+      onClick={onClick}
+      className={`px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide transition-all duration-200 ${
+        active
+          ? "bg-accent text-white shadow-[0_0_0_0.5px_rgba(107,92,231,0.5),0_2px_8px_rgba(107,92,231,0.3)]"
+          : "bg-white/[0.82] dark:bg-white/[0.08] backdrop-blur-xl backdrop-saturate-150 shadow-[0_0_0_0.5px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.9)] dark:shadow-[0_0_0_0.5px_rgba(255,255,255,0.12),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.12)] text-fg-muted hover:text-fg"
+      }`}
+    >
+      {label}
+    </button>
   );
 }

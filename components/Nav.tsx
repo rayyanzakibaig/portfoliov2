@@ -38,7 +38,7 @@ export default function Nav() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed bottom-4 md:bottom-auto md:top-10 left-1/2 -translate-x-1/2 z-[9990]"
+      className="fixed bottom-4 min-[414px]:bottom-auto min-[414px]:top-10 left-1/2 -translate-x-1/2 z-[9990]"
     >
           {/* Liquid glass pill */}
           <div
@@ -68,7 +68,7 @@ export default function Nav() {
                   alt="RZ"
                   width={32}
                   height={32}
-                  className="h-8 w-8 dark:invert"
+                  className="h-6 w-auto dark:invert"
                   priority
                 />
               </Link>

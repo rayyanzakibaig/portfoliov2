@@ -32,6 +32,9 @@ export default function Home() {
         onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
       >
         {/* Blobs: outer motion.div = cursor parallax, inner div = CSS wander (separate transforms avoid conflict) */}
+        {/* Bottom fade to blend into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, var(--bg))" }} />
+
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "75%", height: "65%", top: "5%", left: "10%" }}>
             <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.75) 0%, transparent 70%)", filter: "blur(48px)" }} />
@@ -121,18 +124,18 @@ export default function Home() {
             <motion.a
               href="#work"
               variants={fadeUp}
-              className="mt-10 flex flex-col items-center text-fg-muted/50 hover:text-fg-muted transition-colors duration-200"
+              className="mt-10 flex flex-col items-center text-fg-muted/70 hover:text-fg-muted transition-colors duration-200"
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
               <motion.svg
-                width="20" height="20" viewBox="0 0 20 20" fill="none"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
+                width="28" height="28" viewBox="0 0 28 28" fill="none"
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
               >
-                <path d="M4 7l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 10l8 8 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </motion.svg>
             </motion.a>
           </motion.div>

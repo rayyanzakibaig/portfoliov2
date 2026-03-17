@@ -57,11 +57,10 @@ export const projects: Project[] = [
     tools: "React, Supabase, Netlify, Claude Code, Figma, Node.js",
     gradientFrom: "#1a2340",
     gradientTo: "#2d3f6b",
-    tag: "Product Design",
+    tag: "Full Stack App",
     tags: ["Product Design", "Full Stack"],
     prevSlug: "investate",
     nextSlug: "sleep-os",
-    wip: true,
     liveUrl: "https://hirejourney.netlify.app",
     overview:
       "Hire Journey is a full-stack web application designed to help job seekers manage their entire search process — from discovery to offer. The product combines a clean UI with powerful organizational tools.",

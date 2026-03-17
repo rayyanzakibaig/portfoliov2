@@ -26,7 +26,7 @@ export default function About() {
           }}
         />
         <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-32 pb-20">
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible">
+          <motion.div variants={staggerContainer} initial="hidden" animate="visible" transition={{ delayChildren: 0.3, staggerChildren: 0.1 }}>
             <motion.p
               variants={fadeUp}
               className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-6"
@@ -98,9 +98,9 @@ export default function About() {
               It started with a lens.
             </h2>
             <p className="text-base text-fg-muted leading-relaxed max-w-prose">
-              I picked up a camera in high school and spent four years shooting and designing for
-              my school. That&apos;s where I learned to see — how light, framing, and negative
-              space work together. Those habits never left.
+              I learned how to use manual settings on my camera in high school and spent four years shooting and designing for
+              my school. That&apos;s where I applied my design thinking from framing a shot, capturing lighting, using negative space and more.
+              
             </p>
           </motion.div>
           <motion.div variants={fadeUp}>
@@ -142,8 +142,7 @@ export default function About() {
             </h2>
             <p className="text-base text-fg-muted leading-relaxed max-w-prose">
               Studying MIS at the University of Houston pushed me to think in systems. I started
-              doing UX work — first at American EMR, then building a product for a real estate
-              startup. I realized good design isn&apos;t just visual; it&apos;s behavioral.
+              doing UX work. My first internship was at American EMR and there I realized good design isn&apos;t just visual; it&apos;s blending the friction between human computer interaction. .
             </p>
           </motion.div>
         </motion.section>
@@ -164,9 +163,8 @@ export default function About() {
               Now I work at the intersection.
             </h2>
             <p className="text-base text-fg-muted leading-relaxed max-w-prose">
-              I spent a summer at Palantir designing enterprise tools used by thousands of
-              analysts. I work at Apple. I care about the details that most people never notice —
-              and I think that&apos;s exactly the point.
+              Right now I work as a product specialist at Apple. I get to talk to users and learn about what matters to them —
+              and how our products enrich their lives.
             </p>
           </motion.div>
           <motion.div variants={fadeUp}>
@@ -179,40 +177,6 @@ export default function About() {
                 className="w-full h-full object-cover object-top"
               />
             </div>
-          </motion.div>
-        </motion.section>
-
-        {/* ─── Outside of Work ─────────────────────────────────── */}
-        <motion.section
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0 }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-10"
-        >
-          <motion.div variants={fadeUp} className="flex flex-col gap-3">
-            <h3
-              className="text-xl font-bold text-fg"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              I shoot film.
-            </h3>
-            <p className="text-base text-fg-muted leading-relaxed">
-              There&apos;s something about the constraint of 36 frames that sharpens your eye.
-              Analog photography keeps me honest and grounded outside of screens.
-            </p>
-          </motion.div>
-          <motion.div variants={fadeUp} className="flex flex-col gap-3">
-            <h3
-              className="text-xl font-bold text-fg"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              I&apos;m obsessed with cars.
-            </h3>
-            <p className="text-base text-fg-muted leading-relaxed">
-              Cars are one of the few products where engineering, aesthetics, and emotion all
-              converge. I follow the industry closely — and I drive with intent.
-            </p>
           </motion.div>
         </motion.section>
 
