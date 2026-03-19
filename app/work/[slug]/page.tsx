@@ -228,17 +228,10 @@ export default function CaseStudy({
         ) : (
           <>
             <CaseStudySideNav sections={activeSections} />
-            <div className="max-w-[860px] mx-auto px-6 md:px-8 py-20">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0 }}
-                variants={staggerContainer}
-                className="flex flex-col gap-24"
-              >
+            <div className="max-w-[860px] mx-auto px-6 md:px-8 py-20 flex flex-col gap-24">
 
                 {/* ── Overview ─────────────────────────────────── */}
-                <motion.section id="overview" variants={fadeUp}>
+                <motion.section id="overview" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp}>
                   <SectionHeader label="Overview" title="The Project" />
                   <p className="text-base text-fg-muted leading-relaxed max-w-[65ch] mb-6">
                     {project.overview}
@@ -278,7 +271,7 @@ export default function CaseStudy({
                 </motion.section>
 
                 {/* ── Problem ──────────────────────────────────── */}
-                <motion.section id="problem" variants={fadeUp}>
+                <motion.section id="problem" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp}>
                   <SectionHeader label="Problem" title="What we set out to solve" />
                   <p className="text-base text-fg-muted leading-relaxed max-w-[65ch] mb-8">
                     {project.problem}
@@ -300,7 +293,7 @@ export default function CaseStudy({
 
                 {/* ── Research ─────────────────────────────────── */}
                 {project.research && (
-                  <motion.section id="research" variants={fadeUp}>
+                  <motion.section id="research" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp}>
                     <SectionHeader label="Research" title="Understanding the space" />
                     <p className="text-base text-fg-muted leading-relaxed max-w-[65ch] mb-8">
                       {project.research}
@@ -354,7 +347,7 @@ export default function CaseStudy({
                 )}
 
                 {/* ── Solution ─────────────────────────────────── */}
-                <motion.section id="solution" variants={fadeUp}>
+                <motion.section id="solution" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp}>
                   <SectionHeader label="Solution" title="How we got there" />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
                     {project.processSteps.map((step) => (
@@ -448,7 +441,7 @@ export default function CaseStudy({
 
                 {/* ── Flows ────────────────────────────────────── */}
                 {hasFlows && (
-                  <motion.section id="flows" variants={fadeUp}>
+                  <motion.section id="flows" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp}>
                     <SectionHeader label="Flows" title="The final experience" />
                     {project.finalDesignImages ? (
                       <div className="flex flex-col gap-3">
@@ -473,7 +466,7 @@ export default function CaseStudy({
 
                 {/* ── Reflection ───────────────────────────────── */}
                 {project.reflection && (
-                  <motion.section id="reflection" variants={fadeUp}>
+                  <motion.section id="reflection" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp}>
                     <SectionHeader label="Reflection" title="What I learned" />
                     <div className="grid grid-cols-3 gap-3 mb-8">
                       {project.stats.map((stat) => (
@@ -491,7 +484,6 @@ export default function CaseStudy({
                   </motion.section>
                 )}
 
-              </motion.div>
             </div>
           </>
         )}

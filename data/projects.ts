@@ -12,6 +12,8 @@ export type Project = {
   tools: string;
   gradientFrom: string;
   gradientTo: string;
+  panelGlow?: { from: string; to: string; strength?: number; solid?: boolean };
+  coverBlur?: number;
   tag: string;
   tags?: string[];
   prevSlug: string;
@@ -57,8 +59,9 @@ export const projects: Project[] = [
     tools: "React, Supabase, Netlify, Claude Code, Figma, Node.js",
     gradientFrom: "#3c64ff",
     gradientTo: "#823ce6",
+    panelGlow: { from: "#3c64ff", to: "#823ce6" },
     tag: "Full Stack App",
-    tags: ["Product Design", "Full Stack"],
+    tags: ["Product Design", "Full Stack App"],
     prevSlug: "investate",
     nextSlug: "sleep-os",
     liveUrl: "https://hirejourney.netlify.app",
@@ -69,9 +72,9 @@ export const projects: Project[] = [
     outcome:
       "The final product shipped with a kanban-style application tracker, company research tools, and interview prep modules. Early users reported a 40% reduction in time spent organizing their search.",
     stats: [
-      { value: "40%", label: "Reduction in search overhead" },
-      { value: "3mo", label: "Full design-to-deploy cycle" },
-      { value: "12", label: "Core user flows designed" },
+      { value: "40%", label: "Faster tracking" },
+      { value: "3 month", label: "Ideation → launch" },
+      { value: "12", label: "User flows" },
     ],
     processSteps: [
       { step: "01", title: "Research", description: "Conducted 8 user interviews with active job seekers to map pain points." },
@@ -119,7 +122,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sleep-os",
-    title: "Sleep Improvement",
+    title: "Sleep OS",
     accentWord: "OS",
     coverVideo: "/images/sleep-os/palantir-cover.mp4",
     subtitle: "Palantir design challenge",
@@ -130,8 +133,9 @@ export const projects: Project[] = [
     tools: "Figma",
     gradientFrom: "#1c1c1e",
     gradientTo: "#2c2c2e",
+    panelGlow: { from: "#1a1a2e", to: "#16213e" },
     tag: "UX Design",
-    tags: ["UX Design", "Design Sprint"],
+    tags: ["Product Design", "Concept"],
     prevSlug: "hire-journey",
     nextSlug: "american-emr",
     wip: true,
@@ -193,15 +197,17 @@ export const projects: Project[] = [
     accentWord: "EMR",
     coverImage: "/images/american-emr/american-emr.png",
     subtitle: "Patient healthcare mobile application",
-    description: "Simplifying Patient Healthcare Interface",
+    description: "Simplifying Patient Healthcare Mobile Interface",
     year: "2024",
     role: "Product Design Intern",
     duration: "1 week",
     tools: "Figma",
     gradientFrom: "#060f1a",
     gradientTo: "#0c2040",
+    panelGlow: { from: "#001233", to: "#002d7a", solid: true },
+    coverBlur: 24,
     tag: "Mobile Design",
-    tags: ["Mobile Design", "Internship"],
+    tags: ["Mobile Design", "UI/UX Internship"],
     prevSlug: "sleep-os",
     nextSlug: "investate",
     overview:
@@ -211,9 +217,7 @@ export const projects: Project[] = [
     outcome:
       "A fully prototyped patient portal across 7+ screens. Three rounds of iteration on the Quick Highlights widget and sticky navigation produced a design that balances information density with ease of use.",
     stats: [
-      { value: "7+", label: "Feature screens prototyped" },
-      { value: "3→5", label: "Sticky nav items after testing" },
-      { value: "3", label: "Quick Highlights iterations" },
+
     ],
     processSteps: [
       { step: "01", title: "Research", description: "Reviewed AMR user data and ran patient interviews to map pain points across navigation and core features." },
@@ -268,20 +272,21 @@ export const projects: Project[] = [
   },
   {
     slug: "investate",
-    cursorLabel: "Website Development",
+    cursorLabel: "View Case Study",
     title: "Investate Holdings",
     accentWord: "Holdings",
     coverImage: "/images/investate/investate.jpg",
     subtitle: "Brand identity and website design for a real estate investment firm.",
-    description: "Short Term Rental Website",
+    description: "Short Term Rental Company Website",
     year: "2023",
     role: "UX/UI Designer & Developer",
     duration: "3 days",
     tools: "Figma, HTML/CSS",
     gradientFrom: "#130f08",
     gradientTo: "#1f1a10",
+    panelGlow: { from: "#1c0f07", to: "#3b1f0e" },
     tag: "Brand Design",
-    tags: ["Brand Design", "Development"],
+    tags: ["UX Design", "Web Development"],
     prevSlug: "american-emr",
     nextSlug: "hire-journey",
     liveUrl: "https://investateholdings.com",
@@ -292,9 +297,9 @@ export const projects: Project[] = [
     outcome:
       "The final deliverable included a logo, color palette, typography system, and a live 5-page website. The client closed their first deal using the new materials within two weeks of launch.",
     stats: [
-      { value: "3d", label: "Brand-to-launch timeline" },
-      { value: "5", label: "Pages designed and built" },
-      { value: "2wk", label: "Time to first closed deal" },
+      { value: "1 Day", label: "Designed and Launched" },
+      { value: "5", label: "Pages designed" },
+      { value: "", label: "" },
     ],
     processSteps: [
       {

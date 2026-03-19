@@ -86,9 +86,9 @@ export default function Creative() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{
-                    opacity: { duration: 0.25, ease: "easeOut" },
-                    y: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-                    delay: index * 0.04,
+                    opacity: { duration: 0.3, ease: "easeOut" },
+                    y: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+                    delay: 0.55 + index * 0.04,
                   }}
                   onClick={() => setActiveItem(image)}
                   data-cursor="hover"

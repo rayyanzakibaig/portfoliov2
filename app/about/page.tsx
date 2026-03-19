@@ -56,8 +56,14 @@ export default function About() {
 
       <div className="max-w-5xl mx-auto px-6 md:px-8 pb-24 space-y-28">
         {/* ─── Intro Split ─────────────────────────────────────── */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-          <div>
+        <motion.section
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          transition={{ delayChildren: 0.5, staggerChildren: 0.12 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
+        >
+          <motion.div variants={fadeUp}>
             <div className="rounded-3xl w-full aspect-[3/4] overflow-hidden">
               <Image
                 src="/images/rayyanportrait.jpg"
@@ -67,8 +73,8 @@ export default function About() {
                 className="w-full h-full object-cover"
               />
             </div>
-          </div>
-          <div className="flex flex-col justify-center gap-5">
+          </motion.div>
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
             <h2
               className="text-2xl md:text-3xl font-bold text-fg"
               style={{ fontFamily: "var(--font-display)" }}
@@ -80,8 +86,8 @@ export default function About() {
               spent the last few years learning what it takes to build products that actually hold
               up: good research, sharp craft, and a willingness to get into the code when needed.
             </p>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         {/* ─── Chapter 1: text left, image right ───────────────── */}
         <motion.section
@@ -125,16 +131,18 @@ export default function About() {
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
         >
-          <motion.div variants={fadeUp} className="md:order-1 order-2">
-            <div
-              className="rounded-3xl w-full aspect-[4/3] border border-border flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)" }}
-            >
-              <span className="text-xs text-white/30 tracking-widest uppercase">Photo</span>
-              {/* TODO: replace with real image */}
+          <motion.div variants={fadeUp}>
+            <div className="rounded-3xl w-full aspect-[4/3] overflow-hidden">
+              <Image
+                src="/images/khusiphoto.jpg"
+                alt=""
+                width={800}
+                height={600}
+                className="w-full h-full object-cover object-left"
+              />
             </div>
           </motion.div>
-          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5 md:order-2 order-1">
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
             <h2
               className="text-2xl md:text-3xl font-bold text-fg"
               style={{ fontFamily: "var(--font-display)" }}
@@ -169,13 +177,13 @@ export default function About() {
             </p>
           </motion.div>
           <motion.div variants={fadeUp}>
-            <div className="rounded-3xl w-full aspect-[4/3] overflow-hidden">
+            <div className="rounded-3xl w-full overflow-hidden">
               <Image
                 src="/images/rayyan-apple.jpg"
                 alt="Rayyan at Apple"
-                width={800}
+                width={400}
                 height={600}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-auto"
               />
             </div>
           </motion.div>

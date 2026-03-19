@@ -78,13 +78,18 @@ export default function HireJourneyCaseStudy() {
 
               {/* Title */}
               <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4">
-                <Image
-                  src="/images/hirejourney/gradient-filled-logo.png"
-                  alt="HireJourney"
-                  width={48}
-                  height={48}
-                  className="rounded-xl"
-                />
+                <div
+                  className="rounded-xl p-1.5 flex-shrink-0 dark:[background:linear-gradient(135deg,#060d1f,#0f0820)]"
+                  style={{ background: "linear-gradient(135deg, #1a2a5e, #2d1a4e)" }}
+                >
+                  <Image
+                    src="/images/hirejourney/favicon.png"
+                    alt="HireJourney"
+                    width={40}
+                    height={40}
+                    className="rounded-lg"
+                  />
+                </div>
                 <h1
                   className="text-5xl md:text-7xl font-bold text-fg tracking-tight"
                   style={{ fontFamily: "var(--font-display)" }}

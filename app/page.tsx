@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { staggerContainer, fadeUp } from "@/lib/motion";
+import { staggerContainer, fadeUp, cardReveal } from "@/lib/motion";
 import { projects } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 import Footer from "@/components/Footer";
@@ -41,17 +41,23 @@ export default function Home() {
       >
         {/* Blobs: outer motion.div = cursor parallax, inner div = CSS wander (separate transforms avoid conflict) */}
         {/* Bottom fade to blend into next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-80 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent 0%, var(--bg) 80%)" }} />
+        <div
+          className="absolute bottom-0 left-0 right-0 h-80 pointer-events-none bg-bg"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0%, black 80%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 80%)",
+          }}
+        />
 
         <div className="absolute inset-0 pointer-events-none">
-          <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "75%", height: "65%", top: "5%", left: "10%" }}>
-            <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.75) 0%, transparent 70%)", filter: "blur(48px)" }} />
+          <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "55%", height: "50%", top: "-10%", left: "-5%" }}>
+            <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.50) 0%, transparent 70%)", filter: "blur(64px)" }} />
           </motion.div>
-          <motion.div className="absolute" style={{ x: b2x, y: b2y, width: "65%", height: "55%", top: "40%", left: "25%" }}>
-            <div className="blob-2 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(200,85,160,0.6) 0%, transparent 70%)", filter: "blur(52px)" }} />
+          <motion.div className="absolute" style={{ x: b2x, y: b2y, width: "50%", height: "45%", top: "50%", left: "45%" }}>
+            <div className="blob-2 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(200,85,160,0.42) 0%, transparent 70%)", filter: "blur(72px)" }} />
           </motion.div>
-          <motion.div className="absolute" style={{ x: b3x, y: b3y, width: "60%", height: "50%", top: "20%", left: "40%" }}>
-            <div className="blob-3 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(155,110,232,0.55) 0%, transparent 70%)", filter: "blur(44px)" }} />
+          <motion.div className="absolute" style={{ x: b3x, y: b3y, width: "45%", height: "40%", top: "15%", left: "35%" }}>
+            <div className="blob-3 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(155,110,232,0.40) 0%, transparent 70%)", filter: "blur(68px)" }} />
           </motion.div>
         </div>
 
@@ -63,12 +69,19 @@ export default function Home() {
             className="flex flex-col items-center"
           >
             {/* Eyebrow */}
-            <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-6 md:mb-8">
-              <span className="w-5 h-px bg-fg-muted" />
-              <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase text-fg-muted">
-                Product Designer | Seeking Summer 26' Internship
+            <motion.div variants={fadeUp} className="mb-6 md:mb-8">
+              <span
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] md:text-[11px] font-medium tracking-wide text-fg-muted bg-green-500/[0.12] border border-green-500/30 dark:bg-green-500/[0.08] dark:border-white/15"
+                style={{
+                  boxShadow: "0 4px 16px rgba(34,197,94,0.1)",
+                }}
+              >
+                <span className="relative flex h-1.5 w-1.5 shrink-0">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60 animate-ping" style={{ animationDuration: "2s" }} />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-500" />
+                </span>
+                Product Designer · Seeking Summer &apos;26 Internship
               </span>
-              <span className="w-5 h-px bg-fg-muted" />
             </motion.div>
 
             {/* Name — per-word blur */}
@@ -90,23 +103,39 @@ export default function Home() {
               ))}
             </motion.h1>
 
-            {/* Mission */}
-            <motion.p
-              variants={fadeUp}
-              className="text-base md:text-lg text-fg-muted leading-relaxed max-w-sm md:max-w-md mb-8 md:mb-10"
+            {/* Mission — per-word ease */}
+            <p
+              className="text-2xl md:text-3xl text-fg-muted leading-snug max-w-lg mb-8 md:mb-10 font-light"
+              style={{ fontFamily: "var(--font-display)" }}
             >
-              {["Enhancing", "human", "computer", "interaction"].map((word, i) => (
+              {(
+                [
+                  { text: "Designing",  style: {} },
+                  { text: "products",   style: {} },
+                  { text: "that",       style: {} },
+                  { text: "reduce",     style: { background: "linear-gradient(135deg, #8A6FF0, #C855A0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontStyle: "italic" } },
+                  { text: "friction",   style: { background: "linear-gradient(135deg, #8A6FF0, #C855A0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontStyle: "italic" } },
+                  { text: "—",          style: {} },
+                  { text: "from",       style: {} },
+                  { text: "ideation",   style: {} },
+                  { text: "to",         style: {} },
+                  { text: "shipped",    style: { fontWeight: 600 }, className: "text-fg" },
+                  { text: "code.",      style: { fontWeight: 600 }, className: "text-fg" },
+                ] as { text: string; style: React.CSSProperties; className?: string }[]
+              ).map((seg, i) => (
                 <motion.span
-                  key={word}
-                  initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
+                  key={seg.text + i}
+                  initial={{ opacity: 0, y: 8, filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.7 + i * 0.08 }}
-                  className="inline-block"
+                  transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.65 + i * 0.055 }}
+                  className={`inline-block${seg.className ? ` ${seg.className}` : ""}`}
+                  style={seg.style}
                 >
-                  {word}{i < 3 ? "\u00a0" : ""}
+                  {seg.text}&nbsp;
                 </motion.span>
               ))}
-            </motion.p>
+            </p>
+
 
             {/* CTA buttons */}
             <motion.div variants={fadeUp} className="flex items-center gap-3">
@@ -115,7 +144,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] hover:bg-fg/70 hover:text-bg transition-all duration-200"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                View Work
+                View Case Studies
               </a>
               <a
                 href="https://drive.google.com/file/d/1mnPFnb0WzECPuX6eOYl4WHcP4RkWxX7f/view?usp=sharing"
@@ -171,25 +200,32 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0 }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10"
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10">
             {/* Featured card — Hire Journey full-width */}
-            <motion.div variants={fadeUp} className="col-span-full">
+            <motion.div
+              variants={cardReveal}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className="col-span-full"
+            >
               <ProjectCard project={projects[0]} />
             </motion.div>
 
             {/* Remaining projects — full-width */}
             {projects.slice(1).map((project) => (
-              <motion.div key={project.slug} variants={fadeUp} className="col-span-full">
+              <motion.div
+                key={project.slug}
+                variants={cardReveal}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+                className="col-span-full"
+              >
                 <ProjectCard project={project} />
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
