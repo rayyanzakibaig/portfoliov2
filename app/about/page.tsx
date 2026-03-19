@@ -97,7 +97,7 @@ export default function About() {
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
         >
-          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5 order-2 md:order-1">
             <h2
               className="text-2xl md:text-3xl font-bold text-fg"
               style={{ fontFamily: "var(--font-display)" }}
@@ -110,7 +110,7 @@ export default function About() {
               
             </p>
           </motion.div>
-          <motion.div variants={fadeUp}>
+          <motion.div variants={fadeUp} className="order-1 md:order-2">
             <div className="rounded-3xl w-full aspect-square overflow-hidden">
               <Image
                 src="/rayyan-camera.jpg"
@@ -164,7 +164,7 @@ export default function About() {
           variants={staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
         >
-          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5">
+          <motion.div variants={fadeUp} className="flex flex-col justify-center gap-5 order-2 md:order-1">
             <h2
               className="text-2xl md:text-3xl font-bold text-fg"
               style={{ fontFamily: "var(--font-display)" }}
@@ -176,7 +176,7 @@ export default function About() {
               and how our products enrich their lives.
             </p>
           </motion.div>
-          <motion.div variants={fadeUp}>
+          <motion.div variants={fadeUp} className="order-1 md:order-2">
             <div className="rounded-3xl w-full overflow-hidden">
               <Image
                 src="/images/rayyan-apple.jpg"
