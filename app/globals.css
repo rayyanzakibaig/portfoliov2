@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
@@ -118,6 +122,11 @@ h1, h2, h3, h4, h5, h6 {
 .blob-1 { animation: wander-1 33s ease-in-out infinite; will-change: transform; }
 .blob-2 { animation: wander-2 42s ease-in-out infinite; will-change: transform; }
 .blob-3 { animation: wander-3 51s ease-in-out infinite; will-change: transform; }
+
+/* Disable grain on mobile */
+@media (max-width: 767px) {
+  body::after { display: none; }
+}
 
 /* Grain overlay — very subtle */
 body::after {

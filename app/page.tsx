@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/motion";
 import { projects } from "@/data/projects";
@@ -7,6 +8,7 @@ import ProjectCard from "@/components/ProjectCard";
 import Footer from "@/components/Footer";
 
 export default function Home() {
+  const rafId = useRef<number | null>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 40, damping: 18 });
@@ -25,17 +27,23 @@ export default function Home() {
       <section
         className="relative h-[100svh] flex flex-col justify-center"
         onMouseMove={(e) => {
+          if (rafId.current !== null) return;
           const rect = e.currentTarget.getBoundingClientRect();
-          mouseX.set(e.clientX - rect.left - rect.width / 2);
-          mouseY.set(e.clientY - rect.top - rect.height / 2);
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          rafId.current = requestAnimationFrame(() => {
+            mouseX.set(x);
+            mouseY.set(y);
+            rafId.current = null;
+          });
         }}
         onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
       >
         {/* Blobs: outer motion.div = cursor parallax, inner div = CSS wander (separate transforms avoid conflict) */}
         {/* Bottom fade to blend into next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, var(--bg))" }} />
+        <div className="absolute bottom-0 left-0 right-0 h-80 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent 0%, var(--bg) 80%)" }} />
 
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
           <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "75%", height: "65%", top: "5%", left: "10%" }}>
             <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.75) 0%, transparent 70%)", filter: "blur(48px)" }} />
           </motion.div>
@@ -143,7 +151,7 @@ export default function Home() {
       </section>
 
       {/* ─── Work ──────────────────────────────────────────────── */}
-      <section id="work" className="px-6 md:px-8 pt-28 pb-32 md:pt-36 md:pb-40">
+      <section id="work" className="relative px-6 md:px-8 pt-28 pb-32 md:pt-36 md:pb-40">
         <div className="max-w-7xl mx-auto">
           {/* Section header */}
           <motion.div
@@ -168,11 +176,17 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, amount: 0 }}
             variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10"
           >
-            {projects.map((project) => (
-              <motion.div key={project.slug} variants={fadeUp}>
-                <ProjectCard project={project} className="h-full" />
+            {/* Featured card — Hire Journey full-width */}
+            <motion.div variants={fadeUp} className="col-span-full">
+              <ProjectCard project={projects[0]} />
+            </motion.div>
+
+            {/* Remaining projects — full-width */}
+            {projects.slice(1).map((project) => (
+              <motion.div key={project.slug} variants={fadeUp} className="col-span-full">
+                <ProjectCard project={project} />
               </motion.div>
             ))}
           </motion.div>

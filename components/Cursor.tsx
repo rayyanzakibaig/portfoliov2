@@ -94,6 +94,7 @@ export default function Cursor() {
           translateX: "-50%",
           translateY: "-50%",
           background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
+          willChange: "transform",
         }}
         animate={{
           width: isProject ? 0 : hovered ? 10 : 7,
@@ -112,6 +113,7 @@ export default function Cursor() {
           translateX: "-50%",
           translateY: "-50%",
           background: "linear-gradient(135deg, rgba(138,111,240,0.5), rgba(200,85,160,0.5))",
+          willChange: "transform",
         }}
         animate={{
           width: isProject ? 0 : hovered ? 44 : 34,

@@ -58,13 +58,14 @@ export default function About() {
         {/* ─── Intro Split ─────────────────────────────────────── */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
           <div>
-            {/* Portrait placeholder */}
-            <div
-              className="rounded-3xl w-full aspect-[3/4] border border-border flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #1a1a2e, #2d1b69)" }}
-            >
-              <span className="text-xs text-white/30 tracking-widest uppercase">Portrait</span>
-              {/* TODO: replace with real image */}
+            <div className="rounded-3xl w-full aspect-[3/4] overflow-hidden">
+              <Image
+                src="/images/rayyanportrait.jpg"
+                alt="Rayyan Zakibaig"
+                width={600}
+                height={800}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
           <div className="flex flex-col justify-center gap-5">
