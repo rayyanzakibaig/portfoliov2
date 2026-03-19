@@ -37,6 +37,16 @@ export const staggerFast: Variants = {
   },
 };
 
+export const cardReveal: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 export const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.95 },
   visible: {

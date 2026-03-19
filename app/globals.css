@@ -94,34 +94,35 @@ h1, h2, h3, h4, h5, h6 {
 /* Gradient blob wandering — transform only, GPU compositor thread */
 @keyframes wander-1 {
   0%   { transform: translate(0, 0); }
-  15%  { transform: translate(-38vw, 18vh); }
-  32%  { transform: translate(22vw, -42vh); }
-  51%  { transform: translate(44vw, 12vh); }
-  67%  { transform: translate(-14vw, 38vh); }
-  83%  { transform: translate(30vw, -20vh); }
+  15%  { transform: translate(-14vw, 10vh); }
+  32%  { transform: translate(10vw, -12vh); }
+  51%  { transform: translate(18vw, 8vh); }
+  67%  { transform: translate(-8vw, 14vh); }
+  83%  { transform: translate(12vw, -6vh); }
   100% { transform: translate(0, 0); }
 }
 @keyframes wander-2 {
   0%   { transform: translate(0, 0); }
-  18%  { transform: translate(40vw, -28vh); }
-  38%  { transform: translate(-32vw, -44vh); }
-  54%  { transform: translate(16vw, 40vh); }
-  72%  { transform: translate(-44vw, 10vh); }
-  88%  { transform: translate(28vw, -14vh); }
+  18%  { transform: translate(16vw, -10vh); }
+  38%  { transform: translate(-12vw, -14vh); }
+  54%  { transform: translate(8vw, 12vh); }
+  72%  { transform: translate(-16vw, 6vh); }
+  88%  { transform: translate(14vw, -8vh); }
   100% { transform: translate(0, 0); }
 }
 @keyframes wander-3 {
   0%   { transform: translate(0, 0); }
-  22%  { transform: translate(-20vw, -40vh); }
-  41%  { transform: translate(42vw, 22vh); }
-  58%  { transform: translate(-36vw, 36vh); }
-  76%  { transform: translate(18vw, -30vh); }
-  91%  { transform: translate(-28vw, -16vh); }
+  22%  { transform: translate(-10vw, -12vh); }
+  41%  { transform: translate(14vw, 10vh); }
+  58%  { transform: translate(-14vw, 14vh); }
+  76%  { transform: translate(10vw, -10vh); }
+  91%  { transform: translate(-12vw, -8vh); }
   100% { transform: translate(0, 0); }
 }
 .blob-1 { animation: wander-1 33s ease-in-out infinite; will-change: transform; }
 .blob-2 { animation: wander-2 42s ease-in-out infinite; will-change: transform; }
 .blob-3 { animation: wander-3 51s ease-in-out infinite; will-change: transform; }
+.dark .blob-1, .dark .blob-2, .dark .blob-3 { opacity: 0.55; }
 
 /* Disable grain on mobile */
 @media (max-width: 767px) {
@@ -142,6 +143,8 @@ body::after {
 }
 
 /* Smooth theme transition — only active during the toggle */
+html.theme-transitioning,
+html.theme-transitioning body,
 html.theme-transitioning *,
 html.theme-transitioning *::before,
 html.theme-transitioning *::after {
