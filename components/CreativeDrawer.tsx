@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { BentoImage } from "@/data/bentoImages";
@@ -14,12 +14,13 @@ interface CreativeDrawerProps {
 
 export default function CreativeDrawer({ item, items, onClose, onNavigate }: CreativeDrawerProps) {
   const currentIndex = item ? items.findIndex(i => i.id === item.id) : -1;
+  const [direction, setDirection] = useState(1);
 
   const goPrev = () => {
-    if (currentIndex > 0) onNavigate(items[currentIndex - 1]);
+    if (currentIndex > 0) { setDirection(-1); onNavigate(items[currentIndex - 1]); }
   };
   const goNext = () => {
-    if (currentIndex < items.length - 1) onNavigate(items[currentIndex + 1]);
+    if (currentIndex < items.length - 1) { setDirection(1); onNavigate(items[currentIndex + 1]); }
   };
 
   useEffect(() => {
@@ -62,7 +63,14 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
               exit={{ opacity: 0, scale: 0.96, y: 12 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="pointer-events-auto relative flex flex-col md:flex-row w-full max-w-3xl h-[85vh] rounded-2xl border border-border bg-white/75 dark:bg-black/70 backdrop-blur-2xl overflow-hidden"
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+              onPanEnd={(_e, info) => {
+                const { offset, velocity } = info;
+                const isHorizontal = Math.abs(offset.x) > Math.abs(offset.y);
+                if (!isHorizontal) return;
+                if (offset.x < -50 || velocity.x < -300) goNext();
+                else if (offset.x > 50 || velocity.x > 300) goPrev();
+              }}
             >
               {/* Close button */}
               <button
@@ -104,13 +112,14 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
 
               {/* Image panel */}
               <div className="relative flex-1 max-h-[50vh] md:max-h-none h-full overflow-hidden rounded-t-2xl md:rounded-tl-2xl md:rounded-bl-2xl md:rounded-tr-none md:rounded-br-none bg-white/60 dark:bg-white/5">
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="sync" custom={direction}>
                   <motion.div
                     key={item.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    custom={direction}
+                    initial={{ opacity: 0, x: direction * 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: direction * -40 }}
+                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                     className="absolute inset-0"
                   >
                     {item.src ? (

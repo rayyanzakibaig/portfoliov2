@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { staggerContainer, fadeUp } from "@/lib/motion";
 import { bentoImages, type BentoImage } from "@/data/bentoImages";
@@ -24,6 +24,8 @@ const FILTER_CATEGORIES = Array.from(
 export default function Creative() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [activeItem, setActiveItem] = useState<BentoImage | null>(null);
+  const hasMounted = useRef(false);
+  useEffect(() => { hasMounted.current = true; }, []);
 
   const filtered = activeFilter
     ? orderedImages.filter(img => img.filterCategory === activeFilter)
@@ -78,17 +80,15 @@ export default function Creative() {
         {/* ─── Grid ────────────────────────────────────────────── */}
         <section className="px-6 md:px-8 pb-24">
           <div className="relative overflow-hidden columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3">
-            <AnimatePresence mode="popLayout">
-              {filtered.map((image, index) => (
+            {filtered.map((image, index) => (
                 <div key={image.id} className="break-inside-avoid pb-3">
                 <motion.button
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 56 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    opacity: { duration: 0.3, ease: "easeOut" },
-                    y: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-                    delay: 0.55 + index * 0.04,
+                  transition={hasMounted.current ? { duration: 0 } : {
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: 0.7 + index * 0.03,
                   }}
                   onClick={() => setActiveItem(image)}
                   data-cursor="hover"
@@ -121,7 +121,6 @@ export default function Creative() {
                 </motion.button>
                 </div>
               ))}
-            </AnimatePresence>
           </div>
         </section>
 
