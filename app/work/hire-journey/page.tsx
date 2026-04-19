@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import ProjectsNavRow from "@/components/ProjectsNavRow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -26,12 +27,11 @@ const PIPELINE_STAGES = [
 ];
 
 const FLOW_STEPS = [
-  { label: "Job Source", sub: "LinkedIn · Newsletters · Job Boards" },
-  { label: "Paste Job URL", sub: "Single input action" },
-  { label: "Job Parser", sub: "Auto-extracts role, company, location" },
-  { label: "Application Database", sub: "Structured, searchable entries" },
-  { label: "Pipeline View", sub: "Kanban-style stage tracking" },
-  { label: "Insights Dashboard", sub: "Progress at a glance" },
+  { label: "Add Job", sub: "Paste a job link or enter details" },
+  { label: "Extract Details", sub: "Automatically pulls role, company, and info" },
+  { label: "Save & Organize", sub: "Stores everything in one place" },
+  { label: "Track Progress", sub: "Move jobs through stages (Applied, Interview, etc.)" },
+  { label: "View Insights", sub: "See your progress and results" },
 ];
 
 export default function HireJourneyCaseStudy() {
@@ -72,7 +72,7 @@ export default function HireJourneyCaseStudy() {
               {/* Eyebrow */}
               <motion.div variants={fadeUp} className="flex items-center gap-2.5 mb-6">
                 <span className="w-5 h-px bg-fg-muted/40" />
-                <span className="text-[10px] font-medium tracking-widest uppercase text-fg-muted">Personal Product · 2026</span>
+                <span className="text-sm font-medium tracking-widest uppercase text-fg-muted">Personal Product · 2026</span>
                 <span className="w-5 h-px bg-fg-muted/40" />
               </motion.div>
 
@@ -104,29 +104,40 @@ export default function HireJourneyCaseStudy() {
                 className="text-xl md:text-2xl text-fg-muted font-light max-w-xl mb-8"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Designing a better workflow for job searching.
+                Designing a better system for the job seeker.
               </motion.p>
 
               <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-lg leading-relaxed mb-10">
-                Managing dozens of job applications in spreadsheets quickly became inefficient.
-                HireJourney automates job tracking, visualizes application progress, and simplifies the job search workflow.
+                Managing dozens of job applications in spreadsheets is inefficient.
+                HireJourney automates job tracking, visualizes application progress, and simplifies the job search.
               </motion.p>
 
               {/* Meta row */}
               <motion.div
                 variants={fadeUp}
-                className="grid grid-cols-3 divide-x divide-border rounded-2xl overflow-hidden border border-border bg-border w-full max-w-xl"
+                className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border rounded-2xl overflow-hidden border border-border bg-border w-full"
               >
                 {[
-                  { label: "Role", value: "Product Design + Development" },
-                  { label: "Tools", value: "Figma · Next.js · Claude Code" },
-                  { label: "Type", value: "Personal Product" },
-                ].map(({ label, value }) => (
-                  <div key={label} className="bg-bg px-3 py-3 md:px-6 md:py-4 flex flex-col gap-0.5 min-w-0">
-                    <p className="text-[9px] md:text-[10px] font-semibold tracking-widest uppercase text-fg-muted">{label}</p>
+                  { label: "Role", value: "Product Design + Development", row2: false },
+                  { label: "Tools", value: "Figma · Next.js · Claude Code", row2: false },
+                  { label: "Type", value: "Personal Product", row2: true },
+                ].map(({ label, value, row2 }) => (
+                  <div key={label} className={`bg-bg px-3 py-3 md:px-5 md:py-4 flex flex-col gap-0.5 min-w-0 ${row2 ? "border-t border-border md:border-t-0" : ""}`}>
+                    <p className="text-[9px] md:text-[11px] font-semibold tracking-widest uppercase text-fg-muted">{label}</p>
                     <p className="text-xs md:text-sm text-fg font-medium leading-snug">{value}</p>
                   </div>
                 ))}
+                <a
+                  href="https://hirejourney.netlify.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-t border-border md:border-t-0 bg-bg px-3 py-3 md:px-5 md:py-4 flex flex-col gap-0.5 min-w-0 group hover:bg-surface transition-colors duration-150"
+                >
+                  <p className="text-[9px] md:text-[11px] font-semibold tracking-widest uppercase text-fg-muted">Live</p>
+                  <p className="text-xs md:text-sm text-accent font-medium leading-snug group-hover:text-accent-hover transition-colors duration-150">
+                    View site ↗
+                  </p>
+                </a>
               </motion.div>
             </motion.div>
 
@@ -159,7 +170,7 @@ export default function HireJourneyCaseStudy() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <motion.p variants={fadeUp} className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted mb-4">
+            <motion.p variants={fadeUp} className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">
               The Problem
             </motion.p>
             <motion.h2
@@ -167,11 +178,11 @@ export default function HireJourneyCaseStudy() {
               className="text-3xl md:text-4xl font-bold text-fg mb-6 max-w-xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              A spreadsheet isn't a workflow.
+              Messy Job Tracking in Spreadsheets.
             </motion.h2>
             <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-lg mb-16 leading-relaxed">
-              Before HireJourney, I tracked applications in a spreadsheet. As applications increased,
-              the workflow became difficult to maintain.
+              I tracked my internship applications in a spreadsheet and had to manually input each field.
+              As my applications increased, it became difficult to keep track.
             </motion.p>
 
             {/* Spreadsheet screenshot */}
@@ -189,8 +200,8 @@ export default function HireJourneyCaseStudy() {
             <motion.div variants={stagger} className="grid grid-cols-3 gap-3">
               {[
                 { icon: "⌨️", title: "Manual Entry", body: "Every field, by hand." },
-                { icon: "🔗", title: "Fragmented", body: "No unified source." },
-                { icon: "📉", title: "No Visibility", body: "Data, not workflow." },
+                { icon: "🔗", title: "Fragmented", body: "Separate sources for search and tracking." },
+                { icon: "📉", title: "Poor Visibility", body: "Cluttered, unclear insights." },
               ].map(({ icon, title, body }) => (
                 <motion.div
                   key={title}
@@ -217,15 +228,15 @@ export default function HireJourneyCaseStudy() {
             viewport={{ once: true, amount: 0.4 }}
             className="max-w-3xl mx-auto px-6 md:px-8 flex flex-col items-center text-center gap-12"
           >
-            <motion.p variants={fadeUp} className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">
-              Design Goal
+            <motion.p variants={fadeUp} className="text-sm font-semibold tracking-widest uppercase text-fg-muted">
+              Goal
             </motion.p>
             <motion.h2
               variants={fadeUp}
               className="text-3xl md:text-5xl font-bold text-fg leading-tight"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Turn job searching from a{" "}
+              Create an all in one solution{" "}
               <span
                 style={{
                   background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
@@ -234,11 +245,11 @@ export default function HireJourneyCaseStudy() {
                   backgroundClip: "text",
                 }}
               >
-                spreadsheet into a structured workflow.
+                from job search to offer.
               </span>
             </motion.h2>
             <motion.div variants={stagger} className="flex flex-wrap justify-center gap-3">
-              {["Reduce friction", "Automate repetitive tasks", "Surface useful insights"].map((p) => (
+              {["Improve job search", "Automate repetitive tasks", "Provide Useful insights"].map((p) => (
                 <motion.span
                   key={p}
                   variants={fadeUp}
@@ -252,7 +263,63 @@ export default function HireJourneyCaseStudy() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            4. FEATURE: JOB IMPORT
+            4. PRODUCT SYSTEM
+        ════════════════════════════════════════════════════════ */}
+        <section className="py-32 border-y border-border">
+          <div className="max-w-5xl mx-auto px-6 md:px-8">
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              className="flex flex-col items-center"
+            >
+              <motion.p variants={fadeUp} className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">
+                Product System
+              </motion.p>
+              <motion.h2
+                variants={fadeUp}
+                className="text-3xl md:text-4xl font-bold text-fg text-center mb-16"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                How it all connects.
+              </motion.h2>
+
+              {/* Flow diagram — vertical on mobile, horizontal on md+ */}
+              <motion.div variants={fadeUp} className="flex flex-col md:flex-row md:items-center w-full gap-0">
+                {FLOW_STEPS.map(({ label, sub }, i) => (
+                  <div key={label} className="flex flex-col md:flex-row md:items-center md:flex-1 min-w-0">
+                    <div className="p-4 rounded-2xl border border-border bg-surface/60 text-center flex flex-col justify-center gap-1 w-full h-32">
+                      <p className="text-sm font-semibold text-fg">{label}</p>
+                      <p className="text-xs text-fg-muted leading-snug">{sub}</p>
+                    </div>
+                    {i < FLOW_STEPS.length - 1 && (
+                      <>
+                        {/* Vertical arrow (mobile) */}
+                        <div className="flex flex-col items-center py-2 gap-0.5 md:hidden">
+                          <div className="w-px h-4 bg-border" />
+                          <svg width="12" height="7" viewBox="0 0 12 7" fill="none" className="text-fg-muted/40">
+                            <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                        {/* Horizontal arrow (desktop) */}
+                        <div className="hidden md:flex items-center px-2 gap-0.5 shrink-0">
+                          <div className="h-px w-4 bg-border" />
+                          <svg width="7" height="12" viewBox="0 0 7 12" fill="none" className="text-fg-muted/40">
+                            <path d="M1 1l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════
+            5. FEATURE: JOB IMPORT
         ════════════════════════════════════════════════════════ */}
         <section className="py-32 max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
@@ -267,7 +334,7 @@ export default function HireJourneyCaseStudy() {
               {/* URL input mockup */}
               <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-sm">
                 <div className="px-6 pt-6 pb-4 border-b border-border">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-fg-muted mb-3">Add a Job</p>
+                  <p className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-3">Add a Job</p>
                   <div className="flex gap-2">
                     <div className="flex-1 flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-border bg-bg text-sm text-fg-muted">
                       <span className="opacity-40">🔗</span>
@@ -278,7 +345,7 @@ export default function HireJourneyCaseStudy() {
                 </div>
                 {/* Parsed result */}
                 <div className="px-6 py-4 flex flex-col gap-3">
-                  <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">Parsed automatically</p>
+                  <p className="text-sm font-semibold tracking-widest uppercase text-fg-muted">Parsed automatically</p>
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { label: "Company", value: "Stripe" },
@@ -287,7 +354,7 @@ export default function HireJourneyCaseStudy() {
                       { label: "Source", value: "LinkedIn" },
                     ].map(({ label, value }) => (
                       <div key={label} className="p-3 rounded-xl bg-bg border border-border">
-                        <p className="text-[10px] text-fg-muted mb-0.5">{label}</p>
+                        <p className="text-xs text-fg-muted mb-0.5">{label}</p>
                         <p className="text-sm font-medium text-fg">{value}</p>
                       </div>
                     ))}
@@ -302,7 +369,7 @@ export default function HireJourneyCaseStudy() {
 
             {/* Text */}
             <motion.div variants={fadeUp} className="flex flex-col gap-6">
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">Feature 01</span>
+              <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted">Feature 01</span>
               <h2
                 className="text-3xl md:text-4xl font-bold text-fg"
                 style={{ fontFamily: "var(--font-display)" }}
@@ -311,12 +378,12 @@ export default function HireJourneyCaseStudy() {
               </h2>
               <div className="flex flex-col gap-5">
                 {[
-                  { label: "Problem", text: "Manual job entry was repetitive — same fields, every time." },
+                  { label: "Problem", text: "Manual job entry is repetitive — same fields, every time." },
                   { label: "Solution", text: "Paste a job URL → HireJourney parses the listing and creates a complete entry automatically." },
                   { label: "Impact", text: "One action replaces multiple manual steps." },
                 ].map(({ label, text }) => (
                   <div key={label} className="flex flex-col gap-1.5">
-                    <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">{label}</p>
+                    <p className="text-sm font-semibold tracking-widest uppercase text-fg">{label}</p>
                     <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
                   </div>
                 ))}
@@ -326,7 +393,7 @@ export default function HireJourneyCaseStudy() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            5. FEATURE: PIPELINE
+            6. FEATURE: PIPELINE
         ════════════════════════════════════════════════════════ */}
         <section className="py-32 border-y border-border bg-surface/30">
           <div className="max-w-5xl mx-auto px-6 md:px-8">
@@ -337,7 +404,7 @@ export default function HireJourneyCaseStudy() {
               viewport={{ once: true, amount: 0.2 }}
             >
               <motion.div variants={fadeUp} className="flex flex-col items-center text-center mb-16">
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted mb-4">Feature 02</span>
+                <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">Feature 02</span>
                 <h2
                   className="text-3xl md:text-4xl font-bold text-fg mb-4"
                   style={{ fontFamily: "var(--font-display)" }}
@@ -345,7 +412,7 @@ export default function HireJourneyCaseStudy() {
                   Application Pipeline
                 </h2>
                 <p className="text-base text-fg-muted max-w-md leading-relaxed">
-                  Job searching behaves like a pipeline. Applications move through stages — so the UI should reflect that.
+                  Applications move through stages — UI should reflect that.
                 </p>
               </motion.div>
 
@@ -412,7 +479,7 @@ export default function HireJourneyCaseStudy() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            6. FEATURE: RESUME BUILDER
+            7. FEATURE: RESUME BUILDER
         ════════════════════════════════════════════════════════ */}
         <section className="py-32 max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
@@ -420,94 +487,53 @@ export default function HireJourneyCaseStudy() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center"
+            className="flex flex-col gap-10"
           >
-            {/* Text */}
-            <motion.div variants={fadeUp} className="flex flex-col gap-6">
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">Feature 03</span>
+            {/* Title */}
+            <motion.div variants={fadeUp} className="flex flex-col gap-3">
+              <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted">Feature 03</span>
               <h2
                 className="text-3xl md:text-4xl font-bold text-fg"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Resume Builder
               </h2>
-              <div className="flex flex-col gap-5">
-                {[
-                  { label: "Problem", text: "Many job seekers struggle building ATS-friendly resumes that pass automated screening." },
-                  { label: "Solution", text: "Upload a resume or input structured data. HireJourney generates customizable ATS-optimized templates." },
-                  { label: "Impact", text: "Resume data becomes reusable and portable across every application." },
-                ].map(({ label, text }) => (
-                  <div key={label} className="flex flex-col gap-1.5">
-                    <p className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">{label}</p>
-                    <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
-            {/* Resume UI screenshot */}
-            <motion.div variants={fadeUp} className="rounded-2xl overflow-hidden border border-border shadow-sm">
-              <Image
-                src="/images/hirejourney/hirejourney-resumes.png"
-                alt="HireJourney Resume Builder"
-                width={1200}
-                height={750}
-                className="w-full h-auto"
-              />
+            {/* Screenshots */}
+            <motion.div variants={fadeUp} className="grid grid-cols-3 gap-4">
+              {[
+                { src: "/images/hirejourney/resume-overview.png", alt: "Resume overview" },
+                { src: "/images/hirejourney/resume-edit.png", alt: "Resume editor" },
+                { src: "/images/hirejourney/resume-design.png", alt: "Resume templates" },
+              ].map(({ src, alt }) => (
+                <div key={src} className="rounded-2xl overflow-hidden border border-border shadow-sm">
+                  <Image src={src} alt={alt} width={600} height={900} className="w-full h-auto" />
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Problem / Solution / Impact */}
+            <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { label: "Problem", text: "Many job seekers struggle building ATS-friendly resumes that pass automated screening." },
+                { label: "Solution", text: "Upload a resume or input structured data. HireJourney generates customizable ATS-optimized templates." },
+                { label: "Impact", text: "Helps you pass the first barrier: automated screening." },
+              ].map(({ label, text }) => (
+                <div key={label} className="flex flex-col gap-1.5">
+                  <p className="text-sm font-semibold tracking-widest uppercase text-fg">{label}</p>
+                  <p className="text-sm text-fg-muted leading-relaxed">{text}</p>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            7. PRODUCT SYSTEM
+            7. BUILDING THE MVP
         ════════════════════════════════════════════════════════ */}
-        <section className="py-32 border-y border-border">
-          <div className="max-w-3xl mx-auto px-6 md:px-8">
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              className="flex flex-col items-center"
-            >
-              <motion.p variants={fadeUp} className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted mb-4">
-                Product System
-              </motion.p>
-              <motion.h2
-                variants={fadeUp}
-                className="text-3xl md:text-4xl font-bold text-fg text-center mb-16"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                How it all connects.
-              </motion.h2>
-
-              {/* Flow diagram */}
-              <motion.div variants={fadeUp} className="flex flex-col items-center w-full max-w-sm">
-                {FLOW_STEPS.map(({ label, sub }, i) => (
-                  <div key={label} className="flex flex-col items-center w-full">
-                    <div className="w-full p-4 rounded-2xl border border-border bg-surface/60 text-center flex flex-col gap-1">
-                      <p className="text-sm font-semibold text-fg">{label}</p>
-                      <p className="text-xs text-fg-muted">{sub}</p>
-                    </div>
-                    {i < FLOW_STEPS.length - 1 && (
-                      <div className="flex flex-col items-center py-2 gap-0.5">
-                        <div className="w-px h-4 bg-border" />
-                        <svg width="12" height="7" viewBox="0 0 12 7" fill="none" className="text-fg-muted/40">
-                          <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════
-            8. BUILDING THE MVP
-        ════════════════════════════════════════════════════════ */}
-        <section className="py-32 max-w-5xl mx-auto px-6 md:px-8">
+        <section className="py-32 border-t border-border">
+          <div className="max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
             variants={stagger}
             initial="hidden"
@@ -516,17 +542,16 @@ export default function HireJourneyCaseStudy() {
             className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center"
           >
             <motion.div variants={fadeUp} className="flex flex-col gap-6">
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted">Development</span>
+              <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted">Development</span>
               <h2
                 className="text-3xl md:text-4xl font-bold text-fg"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Building the MVP
+                Tech Stack
               </h2>
               <p className="text-base text-fg-muted leading-relaxed">
                 I used Claude Code to rapidly prototype and build a functional MVP, allowing design
-                decisions to be tested in a real product environment — compressing the feedback loop
-                between design intent and implementation reality.
+                decisions to be tested in a real product environment.
               </p>
               <a
                 href="https://hirejourney.netlify.app"
@@ -541,22 +566,30 @@ export default function HireJourneyCaseStudy() {
 
             <motion.div variants={fadeUp} className="grid grid-cols-2 gap-3">
               {[
-                { icon: "⚡", label: "Next.js", sub: "Frontend framework" },
-                { icon: "🗃️", label: "Supabase", sub: "Database + Auth" },
-                { icon: "🤖", label: "Claude Code", sub: "AI-assisted dev" },
-                { icon: "🚀", label: "Netlify", sub: "Deployment" },
-              ].map(({ icon, label, sub }) => (
+                { icon: "/images/tech/nextjs.png", label: "Next.js", sub: "Frontend framework" },
+                { icon: "/images/tech/supabase.png", label: "Supabase", sub: "Database + Auth" },
+                { icon: "/images/tech/claude.png", label: "Claude Code", sub: "AI-assisted dev" },
+                { icon: "/images/tech/netlify.svg", iconDark: "/images/tech/netlify-dark.png", label: "Netlify", sub: "Deployment" },
+              ].map(({ icon, iconDark, label, sub }) => (
                 <div
                   key={label}
                   className="p-5 rounded-2xl border border-border bg-surface/60 flex flex-col gap-2"
                 >
-                  <span className="text-xl">{icon}</span>
+                  {iconDark ? (
+                    <>
+                      <img src={icon} alt={label} className="w-8 h-8 object-contain dark:hidden" />
+                      <img src={iconDark} alt={label} className="w-8 h-8 object-contain hidden dark:block" />
+                    </>
+                  ) : (
+                    <img src={icon} alt={label} className="w-8 h-8 object-contain" />
+                  )}
                   <p className="text-sm font-semibold text-fg">{label}</p>
                   <p className="text-xs text-fg-muted">{sub}</p>
                 </div>
               ))}
             </motion.div>
           </motion.div>
+          </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════
@@ -571,15 +604,15 @@ export default function HireJourneyCaseStudy() {
               viewport={{ once: true, amount: 0.2 }}
             >
               <motion.div variants={fadeUp} className="flex flex-col items-center text-center mb-16">
-                <span className="text-[10px] font-semibold tracking-widest uppercase text-fg-muted mb-4">Outcome</span>
+                <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">Outcome</span>
                 <h2
                   className="text-3xl md:text-4xl font-bold text-fg mb-4"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  From spreadsheet to product.
+                  From clutter to order.
                 </h2>
                 <p className="text-base text-fg-muted max-w-md leading-relaxed">
-                  A working MVP I now use in my own job search — solving the exact problem it was designed for.
+                  A fully functional product I now use in my own job search. Solving the exact problem it was designed for.
                 </p>
               </motion.div>
 
@@ -601,19 +634,15 @@ export default function HireJourneyCaseStudy() {
               <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
                   "Automated job tracking",
-                  "Visual application pipeline",
-                  "Resume management system",
+                  "Visual application phase",
+                  "Resume builder",
                   "Working MVP used in my own search",
                 ].map((item, i) => (
                   <motion.div
                     key={i}
                     variants={fadeUp}
-                    className="p-5 rounded-2xl border border-border bg-bg flex items-start gap-3"
+                    className="p-5 rounded-2xl border border-border bg-bg flex items-center"
                   >
-                    <span
-                      className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: "#8A6FF0" }}
-                    />
                     <p className="text-sm text-fg-muted leading-relaxed">{item}</p>
                   </motion.div>
                 ))}
@@ -622,35 +651,101 @@ export default function HireJourneyCaseStudy() {
           </div>
         </section>
 
-        {/* ── Project nav ───────────────────────────────────────── */}
-        <div className="max-w-5xl mx-auto px-6 md:px-8 py-12 border-t border-border">
-          <div className="flex items-center justify-between">
-            <Link
-              href="/"
-              className="group flex flex-col gap-1 p-4 rounded-xl hover:bg-surface transition-colors duration-200"
-            >
-              <span className="text-xs text-fg-muted group-hover:text-fg transition-colors">← Back</span>
-              <span
-                className="text-base font-semibold text-fg group-hover:text-accent transition-colors"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                All Work
-              </span>
-            </Link>
-            <Link
-              href="/work/sleep-os"
-              className="group flex flex-col gap-1 text-right p-4 rounded-xl hover:bg-surface transition-colors duration-200"
-            >
-              <span className="text-xs text-fg-muted group-hover:text-fg transition-colors">Next →</span>
-              <span
-                className="text-base font-semibold text-fg group-hover:text-accent transition-colors"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Sleep OS
-              </span>
-            </Link>
+        {/* ══════════════════════════════════════════════════════
+            10. KEY LEARNINGS
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-24 border-t border-b border-border">
+          <div className="max-w-5xl mx-auto px-6 md:px-8">
+            <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+              {/* Left — Key Learnings */}
+              <motion.div variants={fadeUp} className="flex flex-col gap-4">
+                <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted block mb-2">
+                  What I Learned
+                </span>
+                {[
+                  {
+                    num: "01",
+                    icon: "🎨",
+                    heading: "Design + Development",
+                    body: "Building my own product taught me where I might encouter gaps between UX and development. I now make tradeoffs earlier and design with implementation in mind.",
+                  },
+                  {
+                    num: "02",
+                    icon: "⚡",
+                    heading: "Performance Awareness",
+                    body: "Small decisions around data fetching and load add up. I am now more deliberate about when and how data is requested.",
+                  },
+                  {
+                    num: "03",
+                    icon: "🔒",
+                    heading: "Full-Stack & Security",
+                    body: "As this is my first full stack web app, I learned to connect frontend to backend and handle the basics — RLS policies, input sanitization, and keeping API keys server-side.",
+                  },
+                ].map(({ num, icon, heading, body }) => (
+                  <motion.div
+                    key={num}
+                    variants={fadeUp}
+                    className="rounded-2xl border border-border bg-surface/60 p-6 flex flex-col gap-3"
+                  >
+                    <div className="flex items-center gap-2 text-accent">
+                      {icon}
+                      <span className="text-xs uppercase tracking-widest text-fg-muted">{num}</span>
+                    </div>
+                    <p className="text-base font-semibold text-fg">{heading}</p>
+                    <p className="text-sm text-fg-muted leading-relaxed">{body}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Right — What's Next */}
+              <motion.div variants={fadeUp} className="flex flex-col gap-4">
+                <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted block mb-2">
+                  What's Next
+                </span>
+                {[
+                  {
+                    num: "01",
+                    icon: "🤖",
+                    heading: "Auto Apply",
+                    body: "Potentially use AI to auto apply to jobs. Could be monetized by keeping it a subscription feature.",
+                  },
+                  {
+                    num: "02",
+                    icon: "📝",
+                    heading: "Auto Write Resume/Cover Letter",
+                    body: "Again keep it a subscription feature but it would automatically adjust your experience to align with the role.",
+                  },
+                  {
+                    num: "03",
+                    icon: "🗺️",
+                    heading: "More Resources",
+                    body: "Want to build this into a resource for your whole career journey and not just for the hiring process, that would include adding things like a career roadmap, salary expectations, what skills or technologies to learn, and so on.",
+                  },
+                ].map(({ num, icon, heading, body }) => (
+                  <motion.div
+                    key={num}
+                    variants={fadeUp}
+                    className="rounded-2xl border border-border bg-surface/60 p-6 flex flex-col gap-3"
+                  >
+                    <div className="flex items-center gap-2 text-accent">
+                      {icon}
+                      <span className="text-xs uppercase tracking-widest text-fg-muted">{num}</span>
+                    </div>
+                    <p className="text-base font-semibold text-fg">{heading}</p>
+                    <p className="text-sm text-fg-muted leading-relaxed">{body}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+            </motion.div>
           </div>
-        </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            11. NEXT PROJECT
+        ══════════════════════════════════════════════════════ */}
+        <ProjectsNavRow currentSlug="hire-journey" />
 
         <Footer />
       </main>
