@@ -175,7 +175,7 @@ export default function Cursor() {
                   {cursorTags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-widest uppercase"
+                      className="px-2.5 py-1 rounded-full text-xs font-semibold tracking-widest uppercase"
                       style={
                         theme === "dark"
                           ? { background: "rgba(138,111,240,0.25)", color: "rgba(255,255,255,0.9)" }

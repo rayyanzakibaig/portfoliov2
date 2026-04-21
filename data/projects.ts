@@ -12,13 +12,19 @@ export type Project = {
   tools: string;
   gradientFrom: string;
   gradientTo: string;
-  panelGlow?: { from: string; to: string; strength?: number; solid?: boolean };
+  panelGlow?: { from: string; to: string; strength?: number; solid?: boolean; base?: string };
   coverBlur?: number;
+  gradientPanel?: boolean; // replace blurred cover bg in text panel with animated gradient orbs
+  hideImage?: boolean; // omit image panel, text fills full card width
+  panelImages?: string[]; // screenshots to display in the left panel when hideImage is true
   tag: string;
   tags?: string[];
   prevSlug: string;
   nextSlug: string;
   wip?: boolean;
+  textOnly?: boolean;
+  cardTitle?: string;
+  logo?: string;
   liveUrl?: string;
   cursorLabel?: string;
   overview: string;
@@ -32,12 +38,14 @@ export type Project = {
   goals?: string[];
   research?: string;
   researchImages?: string[];
+  researchImageStack?: boolean;
   researchAnnotations?: string[];
   keyInsights?: Array<string | { insight: string; response: string }>;
   userFlow?: string;
   iterations?: string;
+  iterationsCards?: { title: string; description: string; image?: string }[];
   iterationsImages?: string[];
-  keyDesignDecisions?: { title: string; description: string; beforeImage?: string; image?: string }[];
+  keyDesignDecisions?: { title: string; description: string; beforeDescription?: string; afterDescription?: string; beforeImage?: string; image?: string }[];
   finalDesign?: string;
   finalDesignImages?: string[];
   prototype?: string;
@@ -60,6 +68,13 @@ export const projects: Project[] = [
     gradientFrom: "#3c64ff",
     gradientTo: "#823ce6",
     panelGlow: { from: "#3c64ff", to: "#823ce6" },
+    gradientPanel: true,
+    hideImage: true,
+    panelImages: [
+      "/images/hirejourney/resume-overview.png",
+      "/images/hirejourney/resume-edit.png",
+      "/images/hirejourney/resume-design.png",
+    ],
     tag: "Full Stack App",
     tags: ["Product Design", "Full Stack App"],
     prevSlug: "investate",
@@ -123,71 +138,85 @@ export const projects: Project[] = [
   {
     slug: "sleep-os",
     title: "Sleep OS",
+    cardTitle: "Palantir Design Challenge",
     accentWord: "OS",
-    coverVideo: "/images/sleep-os/palantir-cover.mp4",
+    textOnly: true,
+    logo: "/images/PLTR White Logo.png",
     subtitle: "Palantir design challenge",
-    description: "AI System to Improve Sleep Behavior",
+    description: "Adaptive Sleep OS improving your sleep",
     year: "2025",
     role: "Product Designer",
-    duration: "2 hours",
+    duration: "120 minutes",
     tools: "Figma",
-    gradientFrom: "#1c1c1e",
-    gradientTo: "#2c2c2e",
+    gradientFrom: "#0a0a0f",
+    gradientTo: "#1a1a2e",
     panelGlow: { from: "#1a1a2e", to: "#16213e" },
     tag: "UX Design",
     tags: ["Product Design", "Concept"],
     prevSlug: "hire-journey",
     nextSlug: "american-emr",
-    wip: true,
     overview:
-      "Sleep OS is a conceptual operating system layer designed to help users optimize their sleep through ambient data collection and intelligent scheduling. Built for the Palantir design challenge.",
+      "Palantir gave me a single prompt, a blank canvas, and 120 minutes. No user research. No prior context. Just a problem space and a timer. The brief was broad enough to go anywhere — which meant the first and most important decision wasn't what to design, but what problem was actually worth solving.",
     problem:
-      "Most sleep trackinmg apps are passive — they collect data but don't act on it. The challenge was to design a system that actively intervenes, gently adjusting your digital environment to support better sleep hygiene.",
+      "My first instinct was to design a better sleep tracking dashboard. Better charts. Cleaner data. Smarter recommendations. But I stopped myself — because every major sleep app already does that. Oura, Apple Health, Sleep Cycle. They all track. They all surface data. And yet people still sleep badly. That gap told me something important: the problem wasn't a lack of information. It was that people had the information and still didn't change. So I reframed the entire challenge. Not \"how do we track sleep better?\" — but \"how do we actually change what people do before bed?\"",
     outcome:
-      "The submission featured a comprehensive design system, 24 screens, and a novel 'wind-down mode' concept that dynamically adjusts notifications, screen temperature, and app access based on sleep schedule.",
+      "A context-aware sleep system that works quietly in the background — adjusting lighting, detecting screen usage, and nudging habits before users ever feel friction. Smart home automation, passive reminders, and a feedback loop that improves over time. The goal was a product users would barely notice using, but would absolutely feel the results of.",
     stats: [
-      { value: "72h", label: "Design sprint duration" },
-      { value: "24", label: "Screens designed" },
-      { value: "1", label: "Designer, end-to-end" },
+      { value: "120 min", label: "Timed product design challenge" },
+      { value: "5", label: "Core components" },
+      { value: "4", label: "Design principles" },
     ],
     processSteps: [
-      { step: "01", title: "Brief", description: "Deconstructed the challenge prompt and defined scope within constraints." },
-      { step: "02", title: "Concept", description: "Rapid ideation across 4 concept directions, selecting the most novel." },
-      { step: "03", title: "Design", description: "Built a full design system and prototyped key flows in Figma." },
-      { step: "04", title: "Present", description: "Packaged the submission as a case study with narrative and rationale." },
+      { step: "01", title: "Reframe", description: "Before touching any UI, I spent the first stretch questioning the prompt itself. The real problem wasn't missing features — it was that existing solutions don't change behavior. That reframe became the foundation for every decision that followed." },
+      { step: "02", title: "Root Causes", description: "I mapped the five things that actually disrupt sleep: irregular routines, screen exposure, late meals and caffeine, unresolved stress, and environment. All five are behavioral or environmental — none require better data to fix." },
+      { step: "03", title: "Concept", description: "The concept came directly from the research: if the problem is environmental and behavioral, the solution should be too. A system that detects context and adjusts automatically — rather than asking the user to act on information they already have." },
+      { step: "04", title: "Principles", description: "I grounded every feature decision in four principles before designing anything: passive interaction, environment over interface, actionable over informational, and friction reduction. These became the filter for what made the cut." },
     ],
     goals: [
-      "Design an ambient, non-intrusive system that actively supports sleep hygiene rather than passively tracking it",
-      "Create a novel wind-down mode that is distinct from existing Do Not Disturb paradigms",
-      "Demonstrate the concept with enough fidelity to be judged on interaction quality, not just surface aesthetics",
+      "Reframe the problem from 'track sleep better' to 'change sleep behavior' — the root cause is behavioral, not informational",
+      "Design a system that works passively in the background, requiring as little conscious effort from the user as possible",
+      "Communicate a clear design narrative and decision-making rationale within the 120-minute constraint",
     ],
     research:
-      "Given the 72-hour constraint, research was rapid but structured. Reviewed 3 published papers on blue light and sleep disruption. Audited existing OS-level sleep features — iOS Focus, macOS Night Shift, Android Bedtime mode. Identified the core gap: all existing tools are opt-in and static, none adapt dynamically to user behaviour.",
+      "I started by mapping everything that actually disrupts sleep — not missing features in existing apps, but the real-world causes. Irregular routines throw off circadian rhythm. Blue light at night suppresses melatonin. Late meals and caffeine delay sleep onset. Stress and mental load carry into the night. Light and temperature directly interfere with rest quality. What struck me immediately was that all five of these are behavioral or environmental. None of them are solved by a better chart. That became the spine of the entire concept.",
     keyInsights: [
-      "Existing sleep features feel punitive rather than supportive — they take things away without offering anything in return",
-      "The most effective interventions happen 60–90 minutes before sleep, not at bedtime",
-      "Users want control but don't want to think — progressive automation with easy manual override is the right model",
+      {
+        insight: "The problem isn't a lack of data. It's a lack of behavior change.",
+        response: "Every major sleep app already surfaces data. Oura, Apple Health, Sleep Cycle — they all track cycles and provide recommendations. Users still sleep badly. More information wasn't the answer. Changing what users actually do before bed was. The design direction shifted entirely toward passive behavior shaping.",
+      },
+      {
+        insight: "People know what they should do. They just don't do it consistently.",
+        response: "This is the gap that existing tools ignore. Rather than adding yet another reminder or insight, I designed a system that removes the need for willpower entirely — adjusting the environment automatically so the right conditions happen by default, not by conscious decision.",
+      },
+      {
+        insight: "The best sleep technology is the kind you stop thinking about.",
+        response: "If a user has to actively engage with the app for it to work, it will eventually get abandoned. The entire product was designed around disappearing into the routine — smart lighting dims on schedule, blinds close automatically, nudges surface only when they're actually useful.",
+      },
     ],
     keyDesignDecisions: [
       {
-        title: "Ambient over active",
-        description: "Wind-down mode activates gradually, not at a hard cutoff. Dimming and filtering intensify over 90 minutes rather than switching at a set time.",
+        title: "Passive interaction over active dashboards",
+        description: "The instinct in most sleep apps is to give users more controls, more data, more settings. I went the opposite direction. Every feature was evaluated on a single question: can this work without the user thinking about it? If yes, it was a candidate. If it required manual input to function, it was cut or simplified. The system should do the work — not remind users to do work.",
       },
       {
-        title: "OS layer, not app",
-        description: "Positioning as an OS feature rather than a third-party app gives Sleep OS the system-level access needed to affect notifications, brightness, and app behaviour.",
+        title: "Environment over interface",
+        description: "The biggest lever on sleep quality isn't what's on your phone screen — it's the room you're in. So the product extends beyond the phone. Smart lighting that dims automatically at your wind-down time. Automated blinds that close before bed. Temperature nudges. The phone becomes a control plane for the physical environment, not the primary experience.",
       },
       {
-        title: "Learn before restrict",
-        description: "The first two weeks of use are observation-only. Restrictions only kick in after Sleep OS has enough data to make intelligent, personalised suggestions.",
+        title: "Actionable nudges over informational reports",
+        description: "I deliberately deprioritized the data visualization layer that most sleep apps lead with. Instead of showing users a sleep score and leaving them to interpret it, the system surfaces one clear next action: 'dim your lights now,' 'your screen time is running late,' 'your window for a wind-down routine opens in 20 minutes.' Specificity drives behavior. Dashboards don't.",
+      },
+      {
+        title: "Friction removal before friction occurs",
+        description: "Most habit tools react to failure — they send a notification after you've already done the thing you shouldn't. I designed for the moments before. Lighting changes before you'd think to change it. The reminder comes before you pick up your phone for one more scroll. The goal is to intercept the pattern, not respond to it.",
       },
     ],
     reflection:
-      "Working within a 72-hour constraint forces a useful discipline: every feature has to earn its place. I over-invested in the design system early and compressed prototype time more than I would have liked. In a second sprint I would timebox the system work to 4 hours and spend the saved time on more screens.",
+      "The reframe was the most valuable thing I did in this challenge — and it happened in the first fifteen minutes, before I drew a single screen. Once I stopped asking 'what features should a sleep app have?' and started asking 'why don't existing sleep apps work?', everything else followed naturally. Under a 120-minute constraint, that clarity is everything. There's no time to chase the wrong problem. What I'd do differently: I'd push the smart home integration narrative further and prototype at least one end-to-end flow with real timing logic, not just the concept.",
     nextSteps: [
-      "Prototype the adaptive notification dampening system with real timing logic",
-      "Test the wind-down mode concept with users who have chronic sleep issues, not just general audiences",
-      "Explore how Sleep OS would integrate with third-party apps beyond the OS layer",
+      "Conduct user interviews to pressure-test the behavioral assumptions — specifically whether passive nudges feel helpful or intrusive in practice",
+      "Build a working prototype of the smart home automation layer with real timing and sensor inputs to test the ambient experience",
+      "Run a longitudinal study measuring whether the habit-shaping approach produces lasting improvements in sleep consistency, not just short-term novelty",
     ],
   },
   {
@@ -195,6 +224,7 @@ export const projects: Project[] = [
     cursorLabel: "UX Design Internship",
     title: "American EMR",
     accentWord: "EMR",
+    textOnly: true,
     coverImage: "/images/american-emr/american-emr.png",
     subtitle: "Patient healthcare mobile application",
     description: "Simplifying Patient Healthcare Mobile Interface",
@@ -204,7 +234,7 @@ export const projects: Project[] = [
     tools: "Figma",
     gradientFrom: "#060f1a",
     gradientTo: "#0c2040",
-    panelGlow: { from: "#001233", to: "#002d7a", solid: true },
+    panelGlow: { from: "#0d2060", to: "#1a4db8", strength: 2.5, base: "linear-gradient(135deg, rgba(0,18,70,0.65) 0%, rgba(13,50,160,0.42) 100%)" },
     coverBlur: 24,
     tag: "Mobile Design",
     tags: ["Mobile Design", "UI/UX Internship"],
@@ -232,23 +262,36 @@ export const projects: Project[] = [
       "Surface critical info — reminders, upcoming appointments, due payments — directly on the dashboard",
     ],
     research:
-      "I reviewed patient data from American EMR and ran interviews to identify core pain points. Three user personas emerged, each voicing a distinct frustration with existing healthcare apps.",
+      "I conducted interviews with existing patients to identify core pain points. Three user personas emerged, each voicing a distinct frustration with existing healthcare apps.",
     researchImages: [
       "/images/american-emr/userpersona1.png",
       "/images/american-emr/userpersona2.png",
       "/images/american-emr/userpersona3.png",
     ],
-    keyInsights: [
-      "Critical info was buried — patients needed reminders, appointments, and payments on the dashboard, not hidden two taps deep",
-      "Three nav icons wasn't enough — patients couldn't quickly reach Medical Records or Notifications",
-      "Arrows outperformed text labels as navigation affordances — cleaner and more intuitive for all users",
-    ],
+    researchImageStack: true,
     iterations: "/images/american-emr/quick-highlights-versions.png",
-    keyDesignDecisions: [
+    iterationsCards: [
       {
-        title: "Quick Highlights section",
-        description: "Half the dashboard was empty. I added a widget surfacing medication reminders, upcoming appointments, and due payments at a glance — tested across three iterations to land on the right balance of density and clarity.",
+        title: "Quick Highlights Section",
+        description: "After completing the home dashboard, half of the screen was still unused space and I decided to add a Quick Highlights section. This feature displays key patient information, such as medication reminders, upcoming appointments, and missed payments, allowing users to easily view and access important details at a glance.",
       },
+      {
+        title: "Quick Highlights Version 1",
+        description: "In the first iteration, I designed widget-style cards with black titles and icons for visual recognition. To maintain consistency with the dashboard, I integrated the arrows and added a \"details\" label, indicating that the cards were clickable for more information.",
+        image: "/images/american-emr/highlights-v1.png",
+      },
+      {
+        title: "Quick Highlights Version 2",
+        description: "After reviewing the first version, user feedback indicated the cards were too cluttered. To simplify, I removed the icons and \"details\" text, as the arrows already indicated clickability. I kept only the arrows, increasing their size to maintain continuity with the dashboard and improve visibility.",
+        image: "/images/american-emr/highlights-v2.png",
+      },
+      {
+        title: "Quick Highlights Version 3",
+        description: "After re-evaluating, version 2 made the cards indistinguishable at a glance — a problem since users should be able to quickly identify information. I reintroduced the icons to maintain design continuity from the dashboard while excluding the \"details\" text, balancing visual load.",
+        image: "/images/american-emr/highlights-v3.png",
+      },
+    ],
+    keyDesignDecisions: [
       {
         title: "Back arrows in subpages",
         description: "Users couldn't reliably navigate back — the home icon wasn't intuitive enough. A back arrow at the top of each subpage, consistent with the dashboard's arrow motif, resolved it immediately in testing.",
@@ -257,6 +300,8 @@ export const projects: Project[] = [
       {
         title: "Expanding the sticky navigation",
         description: "The initial menu had 3 icons with text labels — Prescriptions, Home, and Chats. While legible, it left out Medical Records and Notifications entirely, forcing patients to go back to the dashboard to access them. I expanded to 5 icons, removed the text labels to reduce visual weight, and switched to filled icons for better visibility at a glance.",
+        beforeDescription: "The initial menu had 3 icons with text labels — Prescriptions, Home, and Chats. While legible, it left out Medical Records and Notifications entirely, forcing patients to go back to the dashboard to access them.",
+        afterDescription: "I expanded to 5 icons, removed the text labels to reduce visual weight, and switched to filled icons for better visibility at a glance.",
         beforeImage: "/images/american-emr/emr-menu-1.png",
         image: "/images/american-emr/emr-menu-2.png",
       },

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue } from "framer-motion";
 import Image from "next/image";
 import type { BentoImage } from "@/data/bentoImages";
 
@@ -15,6 +15,7 @@ interface CreativeDrawerProps {
 export default function CreativeDrawer({ item, items, onClose, onNavigate }: CreativeDrawerProps) {
   const currentIndex = item ? items.findIndex(i => i.id === item.id) : -1;
   const [direction, setDirection] = useState(1);
+  const dragX = useMotionValue(0);
 
   const goPrev = () => {
     if (currentIndex > 0) { setDirection(-1); onNavigate(items[currentIndex - 1]); }
@@ -22,6 +23,9 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
   const goNext = () => {
     if (currentIndex < items.length - 1) { setDirection(1); onNavigate(items[currentIndex + 1]); }
   };
+
+  // Reset drag position when image changes
+  useEffect(() => { dragX.set(0); }, [item?.id]);
 
   useEffect(() => {
     if (!item) return;
@@ -35,8 +39,18 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
   }, [item, currentIndex, items]);
 
   useEffect(() => {
-    document.body.style.overflow = item ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (item) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      return () => {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
   }, [item]);
 
   return (
@@ -64,13 +78,6 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="pointer-events-auto relative flex flex-col md:flex-row w-full max-w-3xl h-[85vh] rounded-2xl border border-border bg-white/75 dark:bg-black/70 backdrop-blur-2xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
-              onPanEnd={(_e, info) => {
-                const { offset, velocity } = info;
-                const isHorizontal = Math.abs(offset.x) > Math.abs(offset.y);
-                if (!isHorizontal) return;
-                if (offset.x < -50 || velocity.x < -300) goNext();
-                else if (offset.x > 50 || velocity.x > 300) goPrev();
-              }}
             >
               {/* Close button */}
               <button
@@ -111,7 +118,17 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
               )}
 
               {/* Image panel */}
-              <div className="relative flex-1 max-h-[50vh] md:max-h-none h-full overflow-hidden rounded-t-2xl md:rounded-tl-2xl md:rounded-bl-2xl md:rounded-tr-none md:rounded-br-none bg-white/60 dark:bg-white/5">
+              <motion.div
+                className={`relative flex-1 max-h-[50vh] md:max-h-none h-full overflow-hidden rounded-t-2xl md:rounded-tl-2xl md:rounded-bl-2xl md:rounded-tr-none md:rounded-br-none ${item.modalContainAlways ? "" : "bg-white/60 dark:bg-white/5"}`}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.25}
+                style={{ x: dragX }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -50 || info.velocity.x < -300) goNext();
+                  else if (info.offset.x > 50 || info.velocity.x > 300) goPrev();
+                }}
+              >
                 <AnimatePresence mode="sync" custom={direction}>
                   <motion.div
                     key={item.id}
@@ -130,7 +147,7 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
                           alt=""
                           fill
                           aria-hidden
-                          className="object-cover scale-110 blur-2xl opacity-40"
+                          className={`object-cover scale-110 blur-2xl ${item.modalContainAlways ? "opacity-90" : "opacity-40"}`}
                           sizes="(max-width: 768px) 100vw, 60vw"
                         />
                         {/* Main image */}
@@ -138,7 +155,7 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
                           src={item.modalSrc ?? item.src}
                           alt={item.alt}
                           fill
-                          className={item.containInModal ? "object-contain" : "object-cover"}
+                          className={item.modalContainAlways ? "object-cover md:object-contain" : item.containInModal ? "object-contain" : "object-cover"}
                           sizes="(max-width: 768px) 100vw, 60vw"
                         />
                       </>
@@ -147,12 +164,11 @@ export default function CreativeDrawer({ item, items, onClose, onNavigate }: Cre
                     )}
                   </motion.div>
                 </AnimatePresence>
-              </div>
+              </motion.div>
 
               {/* Info panel */}
               <div
-                className="w-full md:w-64 shrink-0 flex flex-col p-6 overflow-y-auto rounded-b-2xl md:rounded-br-2xl md:rounded-tr-2xl md:rounded-tl-none md:rounded-bl-none"
-                style={{ borderLeft: "1px solid var(--border)" }}
+                className="w-full md:w-64 shrink-0 flex flex-col p-6 overflow-y-auto rounded-br-2xl rounded-bl-none md:rounded-tr-2xl md:rounded-tl-none md:rounded-bl-none md:border-l md:border-border"
               >
                 <div className="flex-1 flex flex-col justify-center">
                   {item.award && (

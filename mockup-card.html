@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hire Journey — Card Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #050709;
+  /* Subtle page texture */
+  background-image:
+    radial-gradient(ellipse 120% 100% at 50% 50%, #0c0f1e 0%, #050709 65%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1120px;
+  padding: 64px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+/* Section eyebrow */
+.eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────────────────────── */
+.card {
+  width: 100%;
+  max-width: 1280px;
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  background: linear-gradient(135deg, #0c1022 0%, #090c18 45%, #06080e 100%);
+  border: 1px solid rgba(255,255,255,0.068);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.03),
+    0 2px 8px rgba(0,0,0,0.3),
+    0 16px 48px rgba(0,0,0,0.55),
+    0 48px 96px rgba(0,0,0,0.35),
+    inset 0 0 120px rgba(88,101,242,0.038);
+}
+
+/* Card-level vignette */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  pointer-events: none;
+  z-index: 20;
+  background:
+    radial-gradient(ellipse 90% 110% at 100% 50%, rgba(0,0,0,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 100% at 0% 50%, rgba(0,0,0,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 40% at 50% 0%, rgba(0,0,0,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 30% at 50% 100%, rgba(0,0,0,0.15) 0%, transparent 50%);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LEFT PANEL
+───────────────────────────────────────────────────────────── */
+.left {
+  width: 65%;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(148deg, #101640 0%, #0b1028 35%, #08091c 75%, #06080e 100%);
+}
+
+/* Glow blobs */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PHONE FRAME
+───────────────────────────────────────────────────────────── */
+.phone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #09101e;
+}
+
+/* Bezel + rim light */
+.bezel {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  pointer-events: none;
+  z-index: 10;
+  border: 1.5px solid rgba(255,255,255,0.14);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Dynamic Island */
+.di {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44%;
+  height: 6px;
+  background: rgba(0,0,0,0.9);
+  border-radius: 3px;
+  z-index: 11;
+}
+
+/* Right-edge fade blending left panel into card bg */
+.fade-right {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 96px;
+  background: linear-gradient(to right, transparent, #07090e);
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RIGHT PANEL
+───────────────────────────────────────────────────────────── */
+.right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 36px 44px 36px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle left-border accent */
+.right::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(88,101,242,0.18), transparent);
+}
+
+.tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+  background: rgba(255,255,255,0.065);
+  border-radius: 999px;
+  padding: 3.5px 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.07;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.impact {
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.46);
+  margin-bottom: 22px;
+  max-width: 265px;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255,255,255,0.068);
+  margin-bottom: 20px;
+}
+
+.stats {
+  display: flex;
+  gap: 26px;
+  margin-bottom: 26px;
+}
+
+.stat-val {
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  margin-bottom: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-lbl {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.cta {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.44);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <span class="eyebrow">Case Studies</span>
+
+  <div class="card">
+
+    <!-- ── LEFT: Full-bleed video ───────────────────────────────── -->
+    <div class="left" style="overflow:hidden;">
+      <video
+        src="public/images/hirejourney/hirejourneycover.mp4"
+        autoplay loop muted playsinline
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;"
+      ></video>
+      <!-- Right-edge fade into card bg -->
+      <div class="fade-right"></div>
+    </div><!-- /left -->
+
+    <!-- ── RIGHT: Content ─────────────────────────────────────── -->
+    <div class="right">
+
+      <div class="tags">
+        <span class="tag">UX</span>
+        <span class="tag">Product</span>
+        <span class="tag">AI</span>
+      </div>
+
+      <h2 class="title">Hire Journey</h2>
+
+      <p class="impact">40% less time lost chasing applications. One place for every job, every stage.</p>
+
+      <div class="divider"></div>
+
+      <div class="stats">
+        <div>
+          <div class="stat-val">40%</div>
+          <div class="stat-lbl">Faster tracking</div>
+        </div>
+        <div>
+          <div class="stat-val">3mo</div>
+          <div class="stat-lbl">Build cycle</div>
+        </div>
+        <div>
+          <div class="stat-val">12</div>
+          <div class="stat-lbl">User flows</div>
+        </div>
+      </div>
+
+      <div class="cta">View Case Study →</div>
+    </div>
+
+  </div><!-- /card -->
+</div><!-- /wrapper -->
+
+</body>
+</html>

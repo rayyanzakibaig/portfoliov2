@@ -1,25 +1,20 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { staggerContainer, fadeUp, cardReveal } from "@/lib/motion";
 import { projects } from "@/data/projects";
 import ProjectCard from "@/components/ProjectCard";
 import Footer from "@/components/Footer";
+import StarField from "@/components/StarField";
 
 export default function Home() {
   const rafId = useRef<number | null>(null);
+  const targetOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 40, damping: 18 });
   const springY = useSpring(mouseY, { stiffness: 40, damping: 18 });
-
-  const b1x = useTransform(springX, v => v * 0.10);
-  const b1y = useTransform(springY, v => v * 0.10);
-  const b2x = useTransform(springX, v => v * 0.11);
-  const b2y = useTransform(springY, v => v * 0.11);
-  const b3x = useTransform(springX, v => v * 0.12);
-  const b3y = useTransform(springY, v => v * 0.12);
 
   return (
     <main>
@@ -34,12 +29,20 @@ export default function Home() {
           rafId.current = requestAnimationFrame(() => {
             mouseX.set(x);
             mouseY.set(y);
+            targetOffsetRef.current = { x, y };
             rafId.current = null;
           });
         }}
-        onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
+        onMouseLeave={() => { mouseX.set(0); mouseY.set(0); targetOffsetRef.current = { x: 0, y: 0 }; }}
       >
-        {/* Blobs: outer motion.div = cursor parallax, inner div = CSS wander (separate transforms avoid conflict) */}
+        <StarField targetOffsetRef={targetOffsetRef} />
+        {/* Diagonal depth gradient — top-left light source, dark mode only */}
+        <div
+          className="absolute inset-0 pointer-events-none hidden dark:block"
+          style={{
+            background: "linear-gradient(135deg, rgba(80,80,90,0.30) 0%, transparent 55%)",
+          }}
+        />
         {/* Bottom fade to blend into next section */}
         <div
           className="absolute bottom-0 left-0 right-0 h-80 pointer-events-none bg-bg"
@@ -49,17 +52,6 @@ export default function Home() {
           }}
         />
 
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div className="absolute" style={{ x: b1x, y: b1y, width: "55%", height: "50%", top: "-10%", left: "-5%" }}>
-            <div className="blob-1 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(138,111,240,0.50) 0%, transparent 70%)", filter: "blur(64px)" }} />
-          </motion.div>
-          <motion.div className="absolute" style={{ x: b2x, y: b2y, width: "50%", height: "45%", top: "50%", left: "45%" }}>
-            <div className="blob-2 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(200,85,160,0.42) 0%, transparent 70%)", filter: "blur(72px)" }} />
-          </motion.div>
-          <motion.div className="absolute" style={{ x: b3x, y: b3y, width: "45%", height: "40%", top: "15%", left: "35%" }}>
-            <div className="blob-3 absolute inset-0 rounded-full" style={{ background: "radial-gradient(ellipse, rgba(155,110,232,0.40) 0%, transparent 70%)", filter: "blur(68px)" }} />
-          </motion.div>
-        </div>
 
         <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-24 md:pt-28 pb-16 md:pb-24 w-full flex flex-col items-center text-center">
           <motion.div
@@ -102,40 +94,6 @@ export default function Home() {
                 </motion.span>
               ))}
             </motion.h1>
-
-            {/* Mission — per-word ease */}
-            <p
-              className="text-2xl md:text-3xl text-fg-muted leading-snug max-w-lg mb-8 md:mb-10 font-light"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              {(
-                [
-                  { text: "Designing",  style: {} },
-                  { text: "products",   style: {} },
-                  { text: "that",       style: {} },
-                  { text: "reduce",     style: { background: "linear-gradient(135deg, #8A6FF0, #C855A0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontStyle: "italic" } },
-                  { text: "friction",   style: { background: "linear-gradient(135deg, #8A6FF0, #C855A0)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontStyle: "italic" } },
-                  { text: "—",          style: {} },
-                  { text: "from",       style: {} },
-                  { text: "ideation",   style: {} },
-                  { text: "to",         style: {} },
-                  { text: "shipped",    style: { fontWeight: 600 }, className: "text-fg" },
-                  { text: "code.",      style: { fontWeight: 600 }, className: "text-fg" },
-                ] as { text: string; style: React.CSSProperties; className?: string }[]
-              ).map((seg, i) => (
-                <motion.span
-                  key={seg.text + i}
-                  initial={{ opacity: 0, y: 8, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.65 + i * 0.055 }}
-                  className={`inline-block${seg.className ? ` ${seg.className}` : ""}`}
-                  style={seg.style}
-                >
-                  {seg.text}&nbsp;
-                </motion.span>
-              ))}
-            </p>
-
 
             {/* CTA buttons */}
             <motion.div variants={fadeUp} className="flex items-center gap-3">
@@ -197,35 +155,36 @@ export default function Home() {
               >
                 Case Studies
               </h2>
+              <p className="mt-2 text-base text-fg-muted">
+                Here are some of my projects in product design, UX and mobile design
+              </p>
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10">
-            {/* Featured card — Hire Journey full-width */}
-            <motion.div
-              variants={cardReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
-              className="col-span-full"
-            >
-              <ProjectCard project={projects[0]} />
-            </motion.div>
-
-            {/* Remaining projects — full-width */}
-            {projects.slice(1).map((project) => (
-              <motion.div
-                key={project.slug}
-                variants={cardReveal}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.15 }}
-                className="col-span-full"
-              >
-                <ProjectCard project={project} />
-              </motion.div>
-            ))}
-          </div>
+          {(() => {
+            const projectSizes: Record<string, "full" | "half"> = {
+              "hire-journey": "full",
+              "sleep-os": "half",
+              "american-emr": "half",
+              "investate": "full",
+            };
+            return (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10">
+                {projects.map((project) => (
+                  <motion.div
+                    key={project.slug}
+                    variants={cardReveal}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.15 }}
+                    className={projectSizes[project.slug] === "full" ? "col-span-full" : ""}
+                  >
+                    <ProjectCard project={project} className="h-full" />
+                  </motion.div>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       </section>
 

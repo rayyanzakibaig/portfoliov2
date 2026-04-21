@@ -1,20 +1,31 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { staggerContainer, fadeUp } from "@/lib/motion";
 import Image from "next/image";
 import Footer from "@/components/Footer";
 
-const experience = [
-  { year: "2026–Present", role: "Member Relations Director", company: "UH Cougar Product" },
-  { year: "2024–Present", role: "Product Specialist", company: "Apple" },
-  { year: "2025", role: "Product Designer", company: "Palantir" },
-  { year: "2024", role: "UX Design Intern", company: "American EMR" },
-  { year: "2023", role: "Web Developer", company: "Investate Holdings" },
-  { year: "2018–2022", role: "Designer, Photographer", company: "Klein Cain High School" },
+type ExperienceEntry = {
+  year: string;
+  role: string;
+  company: string;
+  view: "design" | "pm" | "both";
+};
+
+const experience: ExperienceEntry[] = [
+  { year: "2026–Present", role: "Member Relations Director", company: "UH Cougar Product", view: "pm" },
+  { year: "2024–Present", role: "Product Specialist", company: "Apple", view: "pm" },
+  { year: "2025", role: "Product Designer", company: "Palantir", view: "both" },
+  { year: "2024", role: "UX Design Intern", company: "American EMR", view: "both" },
+  { year: "2023", role: "Web Developer", company: "Investate Holdings", view: "design" },
+  { year: "2018–2022", role: "Designer, Photographer", company: "Klein Cain High School", view: "design" },
 ];
 
 export default function About() {
+  const [activeView, setActiveView] = useState<"design" | "pm">("design");
+  const visible = experience.filter(e => e.view === activeView || e.view === "both");
+
   return (
     <main className="min-h-screen">
       {/* ─── Hero ──────────────────────────────────────────────── */}
@@ -196,26 +207,47 @@ export default function About() {
           viewport={{ once: true, amount: 0 }}
           variants={staggerContainer}
         >
-          <motion.div variants={fadeUp} className="mb-10">
+          <motion.div variants={fadeUp} className="mb-8 flex items-center justify-between gap-4 flex-wrap">
             <p className="text-xs font-medium tracking-widest uppercase text-fg-muted">
               Experience
             </p>
+            {/* Toggle */}
+            <div className="flex items-center gap-1 p-1 rounded-full border border-border bg-surface">
+              {(["design", "pm"] as const).map((view) => (
+                <button
+                  key={view}
+                  onClick={() => setActiveView(view)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                    activeView === view
+                      ? "bg-fg text-bg shadow-sm"
+                      : "text-fg-muted hover:text-fg"
+                  }`}
+                >
+                  {view === "design" ? "Designer" : "PM"}
+                </button>
+              ))}
+            </div>
           </motion.div>
 
           <div className="relative flex flex-col pl-5 border-l border-border">
-            {experience.map(({ year, role, company }, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                className="flex items-start justify-between gap-6 py-5 last:pb-0"
-              >
-                <div className="flex flex-col gap-0.5">
-                  <p className="text-sm font-semibold text-fg">{company}</p>
-                  <p className="text-sm text-fg-muted">{role}</p>
-                </div>
-                <span className="shrink-0 text-sm text-fg-muted tabular-nums">{year}</span>
-              </motion.div>
-            ))}
+            <AnimatePresence mode="popLayout">
+              {visible.map(({ year, role, company }) => (
+                <motion.div
+                  key={company}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-start justify-between gap-6 py-5 last:pb-0"
+                >
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-sm font-semibold text-fg">{company}</p>
+                    <p className="text-sm text-fg-muted">{role}</p>
+                  </div>
+                  <span className="shrink-0 text-sm text-fg-muted tabular-nums">{year}</span>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         </motion.section>
 

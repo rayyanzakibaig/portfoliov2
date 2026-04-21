@@ -10,6 +10,7 @@ export type BentoImage = {
   award?: string;
   description?: string;
   containInModal?: boolean;  // if true, use object-contain in modal instead of fill
+  modalContainAlways?: boolean; // if true, force object-contain at all breakpoints in modal
   thumbnailScale?: number;   // zoom scale for grid thumbnail (e.g. 1.1 = 10% crop)
   modalSrc?: string;         // alternate image to show in the modal (thumbnail stays as src)
 };
@@ -62,34 +63,9 @@ export const bentoImages: BentoImage[] = [
     gradient: "linear-gradient(135deg, #1a1a2e, #2d2d4a)",
     aspectRatio: "3/4",
     award: "Scholastic Silver Key Award",
+    containInModal: true,
     description:
       "A mixed media exploration of stillness and reflection. This piece won a Scholastic Silver Key Award, recognized for its innovative blend of digital and traditional techniques.",
-  },
-  {
-    id: "bento-5",
-    src: "/images/creative/officeinteriordesign.jpg",
-    alt: "Home Office Interior Design",
-    title: "Home Office Interior Design",
-    category: "Interior Design",
-    filterCategory: "Photography",
-    gradient: "linear-gradient(135deg, #2e1a2e, #4a2d4a)",
-    aspectRatio: "16/9",
-    containInModal: true,
-    description:
-      "A render study for a home office concept — warm materials, considered proportions, and a space that makes work feel less like work.",
-  },
-  {
-    id: "bento-6",
-    src: "/images/creative/pokemon-generative.png",
-    alt: "Pokemon Extended Art",
-    title: "Pokemon Art Extension",
-    category: "Generative AI",
-    filterCategory: "Graphic Design",
-    gradient: "linear-gradient(135deg, #2e2a1a, #4a3f2d)",
-    aspectRatio: "4/3",
-    containInModal: true,
-    description:
-      "An experiment in generative art extension — taking existing Pokémon card artwork and using AI to seamlessly expand the scene beyond its original borders.",
   },
   {
     id: "bento-8",
@@ -206,20 +182,8 @@ export const bentoImages: BentoImage[] = [
     gradient: "linear-gradient(135deg, #1a1a1a, #2d2d2d)",
     aspectRatio: "4/3",
     containInModal: true,
+    modalContainAlways: true,
     description:
       "A graphite still life study — a vanity mirror, glass jewelry box, and scattered pearl necklaces rendered with obsessive attention to light, shadow, and surface texture.",
-  },
-  {
-    id: "bento-7",
-    src: "/images/creative/gradient-filled-logo.png",
-    alt: "HireJourney Logo",
-    title: "Hire Journey Logo",
-    category: "Logo Design",
-    filterCategory: "Graphic Design",
-    gradient: "linear-gradient(135deg, #2e2a1a, #4a3f2d)",
-    aspectRatio: "1/1",
-    containInModal: true,
-    description:
-      "The brand mark for HireJourney — a recruiting platform built for the modern job seeker. The logo balances forward motion with approachability, set in a gradient that nods to growth.",
   },
 ];

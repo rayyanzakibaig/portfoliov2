@@ -4,6 +4,10 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
@@ -90,6 +94,28 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 2px;
 }
 
+
+/* GradientBackground — independent orb drift animations */
+@keyframes drift-blue {
+  0%   { transform: translate(0, 0) scale(1); }
+  35%  { transform: translate(-2%, 3%) scale(1.03); }
+  65%  { transform: translate(2.5%, -2%) scale(0.98); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes drift-purple {
+  0%   { transform: translate(0, 0) scale(1); }
+  30%  { transform: translate(2.5%, -2.5%) scale(1.02); }
+  60%  { transform: translate(-2%, 2%) scale(0.99); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes sheen-slide {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  40%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+.gb-blue   { animation: drift-blue   34s ease-in-out infinite; will-change: transform; }
+.gb-purple { animation: drift-purple 44s ease-in-out infinite; will-change: transform; }
+.gb-sheen  { animation: sheen-slide  22s ease-in-out infinite; will-change: transform, opacity; }
 
 /* Gradient blob wandering — transform only, GPU compositor thread */
 @keyframes wander-1 {
