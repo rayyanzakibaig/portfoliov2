@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
-import ProjectsNavRow from "@/components/ProjectsNavRow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -481,15 +480,15 @@ export default function HireJourneyCaseStudy() {
         {/* ═══════════════════════════════════════════════════════
             7. FEATURE: RESUME BUILDER
         ════════════════════════════════════════════════════════ */}
-        <section className="py-32 max-w-5xl mx-auto px-6 md:px-8">
+        <section className="py-32">
+          {/* Title — constrained */}
           <motion.div
             variants={stagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-col gap-10"
+            className="max-w-5xl mx-auto px-6 md:px-8 mb-10"
           >
-            {/* Title */}
             <motion.div variants={fadeUp} className="flex flex-col gap-3">
               <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted">Feature 03</span>
               <h2
@@ -499,21 +498,35 @@ export default function HireJourneyCaseStudy() {
                 Resume Builder
               </h2>
             </motion.div>
+          </motion.div>
 
-            {/* Screenshots */}
-            <motion.div variants={fadeUp} className="grid grid-cols-3 gap-4">
-              {[
-                { src: "/images/hirejourney/resume-overview.png", alt: "Resume overview" },
-                { src: "/images/hirejourney/resume-edit.png", alt: "Resume editor" },
-                { src: "/images/hirejourney/resume-design.png", alt: "Resume templates" },
-              ].map(({ src, alt }) => (
-                <div key={src} className="rounded-2xl overflow-hidden border border-border shadow-sm">
-                  <Image src={src} alt={alt} width={600} height={900} className="w-full h-auto" />
-                </div>
-              ))}
-            </motion.div>
+          {/* Screenshots — full-width */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-3 gap-4 px-6 md:px-12 mb-10"
+          >
+            {[
+              { src: "/images/hirejourney/resume-overview.png", alt: "Resume overview" },
+              { src: "/images/hirejourney/resume-edit.png", alt: "Resume editor" },
+              { src: "/images/hirejourney/resume-design.png", alt: "Resume templates" },
+            ].map(({ src, alt }) => (
+              <motion.div key={src} variants={fadeUp} className="rounded-2xl overflow-hidden border border-border shadow-sm">
+                <Image src={src} alt={alt} width={600} height={900} className="w-full h-auto" />
+              </motion.div>
+            ))}
+          </motion.div>
 
-            {/* Problem / Solution / Impact */}
+          {/* Problem / Solution / Impact — constrained */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="max-w-5xl mx-auto px-6 md:px-8"
+          >
             <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { label: "Problem", text: "Many job seekers struggle building ATS-friendly resumes that pass automated screening." },
@@ -741,11 +754,6 @@ export default function HireJourneyCaseStudy() {
             </motion.div>
           </div>
         </section>
-
-        {/* ══════════════════════════════════════════════════════
-            11. NEXT PROJECT
-        ══════════════════════════════════════════════════════ */}
-        <ProjectsNavRow currentSlug="hire-journey" />
 
         <Footer />
       </main>

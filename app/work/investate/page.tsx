@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
-import ProjectsNavRow from "@/components/ProjectsNavRow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -332,12 +331,14 @@ export default function InvestateCaseStudy() {
         {/* ═══════════════════════════════════════════════════════
             5. RESEARCH — WIREFRAMES
         ════════════════════════════════════════════════════════ */}
-        <section className="py-32 max-w-5xl mx-auto px-6 md:px-8">
+        <section className="py-32">
+          {/* Text — constrained */}
           <motion.div
             variants={stagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
+            className="max-w-5xl mx-auto px-6 md:px-8 mb-12"
           >
             <motion.p variants={fadeUp} className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">
               Research
@@ -349,35 +350,42 @@ export default function InvestateCaseStudy() {
             >
               Three layout directions, one winner.
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-lg mb-12 leading-relaxed">
+            <motion.p variants={fadeUp} className="text-base text-fg-muted max-w-lg leading-relaxed">
               A competitive audit of investment firm sites and a two-hour discovery session defined
               the visual tension: premium but not intimidating. Three wireframe structures were evaluated
               before committing to the final direction.
             </motion.p>
+          </motion.div>
 
-            <motion.div variants={stagger} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {WIREFRAMES.map(({ label, src, annotation }) => (
-                <motion.div key={label} variants={fadeUp} className="flex flex-col gap-3">
-                  <div className="rounded-xl border border-border overflow-hidden">
-                    <Image src={src} alt={`Layout option ${label}`} width={600} height={400} className="w-full h-auto" />
-                  </div>
-                  <p className="text-sm text-fg-muted leading-relaxed">
-                    <span
-                      className="font-semibold mr-1"
-                      style={{
-                        background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                      }}
-                    >
-                      {label}
-                    </span>
-                    {annotation}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
+          {/* Wireframes — full-width */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 md:px-12"
+          >
+            {WIREFRAMES.map(({ label, src, annotation }) => (
+              <motion.div key={label} variants={fadeUp} className="flex flex-col gap-3">
+                <div className="rounded-xl border border-border overflow-hidden">
+                  <Image src={src} alt={`Layout option ${label}`} width={600} height={400} className="w-full h-auto" />
+                </div>
+                <p className="text-sm text-fg-muted leading-relaxed">
+                  <span
+                    className="font-semibold mr-1"
+                    style={{
+                      background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {label}
+                  </span>
+                  {annotation}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </section>
 
@@ -497,65 +505,88 @@ export default function InvestateCaseStudy() {
             8. OUTCOME
         ════════════════════════════════════════════════════════ */}
         <section className="py-32 border-t border-border bg-surface/20">
-          <div className="max-w-5xl mx-auto px-6 md:px-8">
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-            >
-              <motion.div variants={fadeUp} className="flex flex-col items-center text-center mb-12">
-                <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">Outcome</span>
-                <h2
-                  className="text-3xl md:text-4xl font-bold text-fg mb-4"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  First deal closed within two weeks.
-                </h2>
-                <p className="text-base text-fg-muted max-w-md leading-relaxed">
-                  A logo, color palette, typography system, and 5-page live marketing site — delivered in 3 days.
-                </p>
-              </motion.div>
-
-              {/* Main screenshot */}
-              <motion.div variants={fadeUp} className="rounded-2xl overflow-hidden border border-border shadow-[0_24px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.4)] mb-4">
-                <Image
-                  src="/images/investate/investate-screens.png"
-                  alt="Investate — final site"
-                  width={1200}
-                  height={720}
-                  className="w-full h-auto"
-                />
-              </motion.div>
-
-              {/* Support images */}
-              <motion.div variants={fadeUp} className="grid grid-cols-2 gap-4 mb-12">
-                <div className="rounded-xl overflow-hidden border border-border">
-                  <Image src="/images/investate/investate.jpg" alt="Investate homepage" width={600} height={400} className="w-full h-auto object-cover" />
-                </div>
-                <div className="rounded-xl overflow-hidden border border-border">
-                  <Image src="/images/investate/about-us.png" alt="Investate about page" width={600} height={400} className="w-full h-auto object-cover" />
-                </div>
-              </motion.div>
-
-              <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  "Full brand system",
-                  "5-page live site",
-                  "3-day delivery",
-                  "Deal closed in 2 weeks",
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    variants={fadeUp}
-                    className="p-5 rounded-2xl border border-border bg-bg flex items-center"
-                  >
-                    <p className="text-sm text-fg-muted leading-relaxed">{item}</p>
-                  </motion.div>
-                ))}
-              </motion.div>
+          {/* Heading — constrained */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="max-w-5xl mx-auto px-6 md:px-8 mb-12"
+          >
+            <motion.div variants={fadeUp} className="flex flex-col items-center text-center">
+              <span className="text-sm font-semibold tracking-widest uppercase text-fg-muted mb-4">Outcome</span>
+              <h2
+                className="text-3xl md:text-4xl font-bold text-fg mb-4"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                First deal closed within two weeks.
+              </h2>
+              <p className="text-base text-fg-muted max-w-md leading-relaxed">
+                A logo, color palette, typography system, and 5-page live marketing site — delivered in 3 days.
+              </p>
             </motion.div>
-          </div>
+          </motion.div>
+
+          {/* Main screenshot — full-width */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="px-6 md:px-12 mb-4"
+          >
+            <div className="rounded-2xl overflow-hidden border border-border shadow-[0_24px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.4)]">
+              <Image
+                src="/images/investate/investate-screens.png"
+                alt="Investate — final site"
+                width={1200}
+                height={720}
+                className="w-full h-auto"
+              />
+            </div>
+          </motion.div>
+
+          {/* Support images — full-width */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-2 gap-4 px-6 md:px-12 mb-12"
+          >
+            <div className="rounded-xl overflow-hidden border border-border">
+              <Image src="/images/investate/investate.jpg" alt="Investate homepage" width={600} height={400} className="w-full h-auto object-cover" />
+            </div>
+            <div className="rounded-xl overflow-hidden border border-border">
+              <Image src="/images/investate/about-us.png" alt="Investate about page" width={600} height={400} className="w-full h-auto object-cover" />
+            </div>
+          </motion.div>
+
+          {/* Bullets — constrained */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="max-w-5xl mx-auto px-6 md:px-8"
+          >
+            <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                "Full brand system",
+                "5-page live site",
+                "3-day delivery",
+                "Deal closed in 2 weeks",
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="p-5 rounded-2xl border border-border bg-bg flex items-center"
+                >
+                  <p className="text-sm text-fg-muted leading-relaxed">{item}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════
@@ -652,9 +683,6 @@ export default function InvestateCaseStudy() {
             </motion.div>
           </div>
         </section>
-
-        {/* ── Next Project ─────────────────────────────────────── */}
-        <ProjectsNavRow currentSlug="investate" />
 
         <Footer />
       </main>
