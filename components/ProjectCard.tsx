@@ -87,7 +87,25 @@ export default function ProjectCard({ project, className = "" }: Props) {
         style={{ boxShadow: `0 8px 32px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.07)` }}
       >
         {/* Background */}
-        <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})` }} />
+        <div className="absolute inset-0" style={{ background: project.gradientPanel ? "#08080f" : `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})` }} />
+        {project.gradientPanel && (
+          <>
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                top: "0%", left: "-10%", width: "70%", height: "100%",
+                background: `radial-gradient(ellipse at 20% 50%, ${project.gradientFrom}88 0%, transparent 70%)`,
+              }}
+            />
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                top: "0%", right: "-10%", width: "70%", height: "100%",
+                background: `radial-gradient(ellipse at 80% 40%, ${project.gradientTo}66 0%, transparent 70%)`,
+              }}
+            />
+          </>
+        )}
         {/* Specular rim */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px z-10 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
         {/* Subtle noise overlay */}
@@ -202,19 +220,19 @@ export default function ProjectCard({ project, className = "" }: Props) {
       {/* Full-card gradient background when hideImage — orbs span the whole tile */}
       {project.hideImage && project.gradientPanel && (
         <>
-          <div className="absolute inset-0" style={{ background: "#08080f" }} />
+          <div className="absolute inset-0 bg-[#08080f]" />
           <div
             className="gb-blue absolute pointer-events-none"
             style={{
               top: "0%", left: "-10%", width: "70%", height: "100%",
-              background: `radial-gradient(ellipse at 20% 50%, ${project.gradientFrom}22 0%, transparent 70%)`,
+              background: `radial-gradient(ellipse at 20% 50%, ${project.gradientFrom}88 0%, transparent 70%)`,
             }}
           />
           <div
             className="gb-purple absolute pointer-events-none"
             style={{
               top: "0%", right: "-10%", width: "70%", height: "100%",
-              background: `radial-gradient(ellipse at 80% 40%, ${project.gradientTo}1a 0%, transparent 70%)`,
+              background: `radial-gradient(ellipse at 80% 40%, ${project.gradientTo}66 0%, transparent 70%)`,
             }}
           />
         </>
@@ -232,7 +250,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
                 width={168}
                 height={336}
                 className="rounded-xl object-cover object-top"
-                style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.55)", opacity: 0.8 }}
+                style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.55)" }}
               />
             </div>
             <div style={{ transform: "translateY(-52px)" }}>
@@ -252,7 +270,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
                 width={168}
                 height={336}
                 className="rounded-xl object-cover object-top"
-                style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.55)", opacity: 0.8 }}
+                style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.55)" }}
               />
             </div>
           </div>

@@ -1,11 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
-import ProjectsNavRow from "@/components/ProjectsNavRow";
+import { useState, useEffect } from "react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -22,6 +22,17 @@ const PROCESS_STEPS = [
   { step: "02", title: "Visual Design", body: "Defined a blue trust-first color system, Montserrat typography, and a reusable component library." },
   { step: "03", title: "Prototype", body: "Built interactive Figma flows across 7+ screens — from login through billing and messaging." },
   { step: "04", title: "Iterate", body: "Three rounds of testing refined navigation, the Quick Highlights widget, and sticky menu structure." },
+];
+
+const SCREEN_IMAGES = [
+  { src: "/images/american-emr/loginpage-emr.png",              label: "Login" },
+  { src: "/images/american-emr/dashboard-emr.png",              label: "Dashboard" },
+  { src: "/images/american-emr/appointment-emr.png",            label: "Appointments" },
+  { src: "/images/american-emr/bookings-emr.png",               label: "Bookings" },
+  { src: "/images/american-emr/billing-emr.png",                label: "Billing" },
+  { src: "/images/american-emr/medical-records-emr.png",        label: "Medical Records" },
+  { src: "/images/american-emr/messages+notifications-emr.png", label: "Messages & Notifications" },
+  { src: "/images/american-emr/prescriptions-emr.png",          label: "Prescriptions" },
 ];
 
 const HIGHLIGHT_VERSIONS = [
@@ -46,6 +57,38 @@ const HIGHLIGHT_VERSIONS = [
 ];
 
 export default function AmericanEMRCaseStudy() {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [direction, setDirection] = useState(1);
+
+  const goPrev = () => {
+    if (selectedIndex !== null && selectedIndex > 0) {
+      setDirection(-1);
+      setSelectedIndex(selectedIndex - 1);
+    }
+  };
+  const goNext = () => {
+    if (selectedIndex !== null && selectedIndex < SCREEN_IMAGES.length - 1) {
+      setDirection(1);
+      setSelectedIndex(selectedIndex + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedIndex === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedIndex(null);
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    document.documentElement.style.overflow = selectedIndex !== null ? "hidden" : "";
+    return () => { document.documentElement.style.overflow = ""; };
+  }, [selectedIndex]);
+
   return (
     <>
       <ScrollProgress />
@@ -405,7 +448,7 @@ export default function AmericanEMRCaseStudy() {
                   <div className="border-b border-border p-1.5">
                     <Image src={image} alt={`Quick Highlights ${version}`} width={600} height={400} className="rounded-xl w-full h-auto" />
                   </div>
-                  <div className="p-5 flex flex-col gap-2 bg-surface/60">
+                  <div className="p-5 flex flex-col gap-2 bg-surface/60 flex-1">
                     <div className="flex items-center gap-2">
                       <span
                         className="text-xs font-bold px-2 py-0.5 rounded-full border border-border"
@@ -506,6 +549,7 @@ export default function AmericanEMRCaseStudy() {
             9. OUTCOME
         ════════════════════════════════════════════════════════ */}
         <section className="py-32 border-b border-border bg-surface/20">
+          {/* Header — constrained */}
           <div className="max-w-5xl mx-auto px-6 md:px-8">
             <motion.div
               variants={stagger}
@@ -525,21 +569,52 @@ export default function AmericanEMRCaseStudy() {
                   A fully prototyped patient portal that balances information density with ease of use.
                 </p>
               </motion.div>
+            </motion.div>
+          </div>
 
+          {/* Full-width collage */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 px-6 md:px-12 mb-12"
+          >
+            {SCREEN_IMAGES.map(({ src, label }, idx) => (
               <motion.div
+                key={src}
                 variants={fadeUp}
-                className="rounded-2xl overflow-hidden border border-border shadow-[0_24px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.4)] mb-12"
+                whileHover="hover"
+                initial="rest"
+                animate="rest"
+                className="rounded-2xl overflow-hidden border border-white/[0.06] shadow-md cursor-zoom-in relative"
+                onClick={() => setSelectedIndex(idx)}
               >
-                <Image
-                  src="/images/american-emr/dashboard-emr.png"
-                  alt="American EMR — Final dashboard"
-                  width={1200}
-                  height={720}
-                  className="w-full h-auto"
-                />
+                <motion.div
+                  variants={{ rest: { scale: 1 }, hover: { scale: 1.07 } }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Image
+                    src={src}
+                    alt={label}
+                    width={300}
+                    height={640}
+                    className="w-full h-auto object-cover object-top"
+                  />
+                </motion.div>
               </motion.div>
+            ))}
+          </motion.div>
 
-              <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Bullets — constrained */}
+          <div className="max-w-5xl mx-auto px-6 md:px-8">
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
                 {[
                   "Unified patient portal",
                   "Quick Highlights widget",
@@ -555,7 +630,6 @@ export default function AmericanEMRCaseStudy() {
                   </motion.div>
                 ))}
               </motion.div>
-            </motion.div>
           </div>
         </section>
 
@@ -654,11 +728,80 @@ export default function AmericanEMRCaseStudy() {
           </div>
         </section>
 
-        {/* ── Next Project ─────────────────────────────────────── */}
-        <ProjectsNavRow currentSlug="american-emr" />
-
         <Footer />
       </main>
+
+      {/* ── Screen lightbox ──────────────────────────────────── */}
+      <AnimatePresence>
+        {selectedIndex !== null && (
+          <>
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[9990] bg-black/80 backdrop-blur-md"
+              onClick={() => setSelectedIndex(null)}
+            />
+            <motion.div
+              key="modal"
+              initial={{ opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.94 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-0 z-[9991] flex items-center justify-center p-6 pointer-events-none"
+            >
+              <div className="relative pointer-events-auto overflow-hidden">
+                <AnimatePresence mode="popLayout" custom={direction}>
+                  <motion.div
+                    key={selectedIndex}
+                    custom={direction}
+                    initial={{ x: direction * 60, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: direction * -60, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Image
+                      src={SCREEN_IMAGES[selectedIndex].src}
+                      alt={SCREEN_IMAGES[selectedIndex].label}
+                      width={800}
+                      height={1720}
+                      className="h-[75vh] max-h-[75vh] w-auto max-w-[90vw] object-contain rounded-2xl shadow-2xl"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Prev */}
+              {selectedIndex > 0 && (
+                <button
+                  onClick={goPrev}
+                  className="pointer-events-auto fixed left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-colors"
+                >
+                  ←
+                </button>
+              )}
+
+              {/* Next */}
+              {selectedIndex < SCREEN_IMAGES.length - 1 && (
+                <button
+                  onClick={goNext}
+                  className="pointer-events-auto fixed right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-colors"
+                >
+                  →
+                </button>
+              )}
+
+              {/* Label + counter */}
+              <div className="pointer-events-auto fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-4 py-2">
+                <span className="text-sm text-white/70">{SCREEN_IMAGES[selectedIndex].label}</span>
+                <span className="text-xs text-white/30">{selectedIndex + 1} / {SCREEN_IMAGES.length}</span>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

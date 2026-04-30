@@ -17,6 +17,7 @@ export type Project = {
   gradientPanel?: boolean; // replace blurred cover bg in text panel with animated gradient orbs
   hideImage?: boolean; // omit image panel, text fills full card width
   panelImages?: string[]; // screenshots to display in the left panel when hideImage is true
+  lightModeCard?: boolean; // use light-mode-aware colors in light mode (dark mode unchanged)
   tag: string;
   tags?: string[];
   prevSlug: string;
@@ -70,6 +71,7 @@ export const projects: Project[] = [
     panelGlow: { from: "#3c64ff", to: "#823ce6" },
     gradientPanel: true,
     hideImage: true,
+    lightModeCard: true,
     panelImages: [
       "/images/hirejourney/resume-overview.png",
       "/images/hirejourney/resume-edit.png",
@@ -148,8 +150,9 @@ export const projects: Project[] = [
     role: "Product Designer",
     duration: "120 minutes",
     tools: "Figma",
-    gradientFrom: "#0a0a0f",
-    gradientTo: "#1a1a2e",
+    gradientFrom: "#3d1a8e",
+    gradientTo: "#0d1a50",
+    gradientPanel: true,
     panelGlow: { from: "#1a1a2e", to: "#16213e" },
     tag: "UX Design",
     tags: ["Product Design", "Concept"],
@@ -232,8 +235,9 @@ export const projects: Project[] = [
     role: "Product Design Intern",
     duration: "1 week",
     tools: "Figma",
-    gradientFrom: "#060f1a",
-    gradientTo: "#0c2040",
+    gradientFrom: "#0d52bf",
+    gradientTo: "#0a1a50",
+    gradientPanel: true,
     panelGlow: { from: "#0d2060", to: "#1a4db8", strength: 2.5, base: "linear-gradient(135deg, rgba(0,18,70,0.65) 0%, rgba(13,50,160,0.42) 100%)" },
     coverBlur: 24,
     tag: "Mobile Design",

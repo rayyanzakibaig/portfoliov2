@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
-import ProjectsNavRow from "@/components/ProjectsNavRow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -558,9 +557,6 @@ export default function SleepOSCaseStudy() {
             </motion.div>
           </div>
         </section>
-
-        {/* ── Next Project ─────────────────────────────────────── */}
-        <ProjectsNavRow currentSlug="sleep-os" />
 
         <Footer />
       </main>

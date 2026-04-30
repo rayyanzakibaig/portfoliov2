@@ -37,15 +37,8 @@ export default function About() {
           }}
         />
         <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-32 pb-20">
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible" transition={{ delayChildren: 0.3, staggerChildren: 0.1 }}>
-            <motion.p
-              variants={fadeUp}
-              className="text-xs font-medium tracking-widest uppercase text-fg-muted mb-6"
-            >
-
-            </motion.p>
-            <motion.h1
-              variants={fadeUp}
+          <div>
+            <h1
               className="text-4xl md:text-6xl font-bold text-fg leading-tight tracking-tight"
               style={{ fontFamily: "var(--font-display)" }}
             >
@@ -60,8 +53,8 @@ export default function About() {
               >
                 I build with care.
               </span>
-            </motion.h1>
-          </motion.div>
+            </h1>
+          </div>
         </div>
       </section>
 

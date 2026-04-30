@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { staggerContainer, fadeUp } from "@/lib/motion";
 import { bentoImages, type BentoImage } from "@/data/bentoImages";
+import { staggerContainer, fadeUp } from "@/lib/motion";
 import CreativeDrawer from "@/components/CreativeDrawer";
 import Footer from "@/components/Footer";
 
 // Ordered for editorial grid placement
 // Row 1: landscape/square  Row 2: portrait trio  Row 3: landscape
-const DISPLAY_ORDER = ["bento-8", "bento-3", "bento-9", "bento-10", "bento-12", "bento-17", "bento-15", "bento-11", "bento-13", "bento-14", "bento-1", "bento-2", "bento-4", "bento-16", "bento-6", "bento-7", "bento-5"];
+const DISPLAY_ORDER = ["bento-18", "bento-8", "bento-19", "bento-3", "bento-9", "bento-10", "bento-12", "bento-17", "bento-20", "bento-15", "bento-11", "bento-21", "bento-13", "bento-14", "bento-1", "bento-2", "bento-4", "bento-16", "bento-6", "bento-7", "bento-5"];
 
 
 const orderedImages = DISPLAY_ORDER
@@ -64,8 +64,12 @@ export default function Creative() {
         />
         {/* ─── Header ──────────────────────────────────────────── */}
         <section className="relative">
-          <div className="relative max-w-5xl mx-auto px-6 md:px-8 pt-32 pb-12">
-          <motion.div variants={staggerContainer} initial="hidden" animate="visible" transition={{ delayChildren: 0.3, staggerChildren: 0.1 }}>
+          <motion.div
+            className="relative max-w-5xl mx-auto px-6 md:px-8 pt-32 pb-12"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
             <motion.h1
               variants={fadeUp}
               className="text-5xl md:text-7xl font-semibold text-fg leading-tight tracking-tight mb-4"
@@ -107,16 +111,18 @@ export default function Creative() {
               </div>
             </motion.div>
           </motion.div>
-          </div>
         </section>
 
         {/* ─── Grid ────────────────────────────────────────────── */}
         <section className="px-6 md:px-8 pb-24">
           <div className="relative overflow-hidden columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3">
             {filtered.map((image, index) => (
-                <div
+                <motion.div
                   key={image.id}
                   className="break-inside-avoid pb-3"
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: Math.min(index * 0.04, 0.4) }}
                 >
                   <button
                     onClick={() => setActiveItem(image)}
@@ -148,7 +154,7 @@ export default function Creative() {
                       <p className="text-white text-sm font-medium">{image.title}</p>
                     </div>
                   </button>
-                </div>
+                </motion.div>
             ))}
           </div>
         </section>

@@ -5,7 +5,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Nav from "@/components/Nav";
 import Cursor from "@/components/Cursor";
-import PageTransition from "@/components/PageTransition";
 import LenisProvider from "@/components/LenisProvider";
 import EasterEgg from "@/components/EasterEgg";
 
@@ -51,7 +50,7 @@ export default function RootLayout({
             <Cursor />
             <Nav />
             <EasterEgg />
-            <PageTransition>{children}</PageTransition>
+            {children}
           </LenisProvider>
         </ThemeProvider>
       </body>
