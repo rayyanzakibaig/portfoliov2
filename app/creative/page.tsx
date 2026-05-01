@@ -75,7 +75,7 @@ export default function Creative() {
               className="text-5xl md:text-7xl font-semibold text-fg leading-tight tracking-tight mb-4"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Creative Explorations
+              My Creative Endeavors
             </motion.h1>
             <motion.p variants={fadeUp} className="text-sm text-fg-muted mb-8 max-w-sm">
               When I'm not designing or building, I'm either taking photos, making art, or exploring new creative medias.
@@ -146,13 +146,6 @@ export default function Creative() {
                       )}
                     </div>
 
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/65 to-transparent">
-                      <p className="text-white/60 text-xs tracking-widest uppercase mb-0.5">
-                        {image.category}
-                      </p>
-                      <p className="text-white text-sm font-medium">{image.title}</p>
-                    </div>
                   </button>
                 </motion.div>
             ))}

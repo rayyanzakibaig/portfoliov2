@@ -85,40 +85,26 @@ export default function Cursor() {
 
   return (
     <>
-      {/* Dot — hides when showing project label */}
+      {/* Frosted glass cursor */}
       <motion.div
         className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full"
-        style={{
-          x: mouseX,
-          y: mouseY,
-          translateX: "-50%",
-          translateY: "-50%",
-          background: "linear-gradient(135deg, #8A6FF0, #C855A0)",
-          willChange: "transform",
-        }}
-        animate={{
-          width: isProject ? 0 : hovered ? 10 : 7,
-          height: isProject ? 0 : hovered ? 10 : 7,
-          opacity: isProject ? 0 : 1,
-        }}
-        transition={{ duration: 0.15 }}
-      />
-
-      {/* Ring — hides when showing project label */}
-      <motion.div
-        className="fixed top-0 left-0 z-[99998] pointer-events-none rounded-full"
         style={{
           x: ringX,
           y: ringY,
           translateX: "-50%",
           translateY: "-50%",
-          background: "linear-gradient(135deg, rgba(138,111,240,0.5), rgba(200,85,160,0.5))",
+          backdropFilter: "blur(8px) saturate(180%)",
+          WebkitBackdropFilter: "blur(8px) saturate(180%)",
+          background: theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.35)",
+          boxShadow: theme === "dark"
+            ? "0 0 0 0.5px rgba(255,255,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08)"
+            : "0 0 0 1px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9)",
           willChange: "transform",
         }}
         animate={{
-          width: isProject ? 0 : hovered ? 44 : 34,
-          height: isProject ? 0 : hovered ? 44 : 34,
-          opacity: isProject ? 0 : hovered ? 0.4 : 0.18,
+          width: isProject ? 0 : hovered ? 48 : 36,
+          height: isProject ? 0 : hovered ? 48 : 36,
+          opacity: isProject ? 0 : 1,
         }}
         transition={{ duration: 0.2 }}
       />
