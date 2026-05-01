@@ -229,7 +229,8 @@ export const bentoImages: BentoImage[] = [
     category: "Photography",
     filterCategory: "Photography",
     gradient: "linear-gradient(135deg, #0a1a0a, #1a2d10)",
-    aspectRatio: "3/4",
+    aspectRatio: "4/3",
+    containInModal: true,
     description:
       "A Canada goose standing its ground in the rain — feathers beaded with water, unbothered. Shot mid-storm with a shallow depth of field that melts the green field into soft bokeh.",
   },
@@ -241,7 +242,8 @@ export const bentoImages: BentoImage[] = [
     category: "Photography",
     filterCategory: "Photography",
     gradient: "linear-gradient(135deg, #0d1520, #1a2535)",
-    aspectRatio: "3/4",
+    aspectRatio: "4/3",
+    containInModal: true,
     description:
       "A brown pelican shot at eye level against a rocky coastline — golden light catching the beak, dark water blurred behind it. Close enough to see every feather.",
   },
@@ -256,18 +258,6 @@ export const bentoImages: BentoImage[] = [
     aspectRatio: "3/4",
     description:
       "A red light rail cutting through a deserted downtown canyon — shot from above, everything muted grey except the signals and the tram. Urban geometry at its most cinematic.",
-  },
-  {
-    id: "bento-25",
-    src: "/images/creative/gulf-sunset.jpg",
-    alt: "Gulf Sunset with Bird",
-    title: "Solar",
-    category: "Photography",
-    filterCategory: "Photography",
-    gradient: "linear-gradient(135deg, #3d1a00, #6b3300)",
-    aspectRatio: "3/4",
-    description:
-      "A massive sun breaking through clouds over the Gulf, a single bird crossing the frame mid-flight — all amber and white and burning.",
   },
   {
     id: "bento-26",

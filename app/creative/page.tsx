@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 
 // Ordered for editorial grid placement
 // Row 1: landscape/square  Row 2: portrait trio  Row 3: landscape
-const DISPLAY_ORDER = ["bento-18", "bento-8", "bento-19", "bento-3", "bento-9", "bento-10", "bento-12", "bento-17", "bento-20", "bento-15", "bento-11", "bento-21", "bento-13", "bento-14", "bento-1", "bento-2", "bento-4", "bento-16", "bento-6", "bento-7", "bento-5"];
+const DISPLAY_ORDER = ["bento-18", "bento-8", "bento-19", "bento-3", "bento-9", "bento-10", "bento-22", "bento-23", "bento-12", "bento-17", "bento-20", "bento-15", "bento-11", "bento-21", "bento-24", "bento-13", "bento-14", "bento-26", "bento-1", "bento-2", "bento-4", "bento-16", "bento-6", "bento-7", "bento-5"];
 
 
 const orderedImages = DISPLAY_ORDER
