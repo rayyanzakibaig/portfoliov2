@@ -72,7 +72,7 @@ export default function Home() {
                   <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60 animate-ping" style={{ animationDuration: "2s" }} />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-500" />
                 </span>
-                Product Designer · Seeking Summer &apos;26 Internship
+                Product Designer · Seeking Design/PM &apos;Roles
               </span>
             </motion.div>
 
