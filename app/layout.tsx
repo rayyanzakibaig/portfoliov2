@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond } from "next/font/google";
+import { Space_Grotesk, Lexend, Outfit } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -7,9 +7,24 @@ import Nav from "@/components/Nav";
 import Cursor from "@/components/Cursor";
 import LenisProvider from "@/components/LenisProvider";
 import EasterEgg from "@/components/EasterEgg";
+import IntroSplash from "@/components/IntroSplash";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
+const lexend = Lexend({
+  variable: "--font-lexend",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
@@ -44,8 +59,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${cormorant.variable} antialiased`}>
+      <body className={`${GeistSans.variable} ${spaceGrotesk.variable} ${lexend.variable} ${outfit.variable} antialiased`}>
         <ThemeProvider>
+          <IntroSplash />
           <LenisProvider>
             <Cursor />
             <Nav />
