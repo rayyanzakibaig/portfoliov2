@@ -71,8 +71,10 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
           animate="visible"
           exit="hidden"
           transition={{ duration: 0.25 }}
-          onClick={onClose}
           className="fixed inset-0 z-[9980] bg-black/95 flex flex-col items-center justify-center px-6 pt-24 pb-10 md:pt-20 md:pb-10 md:px-16"
+          data-cursor="lightbox"
+          data-lightbox-index={index ?? 0}
+          data-lightbox-total={images.length}
         >
           {/* Close */}
           <button
@@ -91,7 +93,6 @@ export default function Lightbox({ images, index, onClose, onChange }: Props) {
           {/* Image + caption */}
           <div
             className="flex flex-col items-center gap-5 w-[90vw]"
-            onClick={(e) => e.stopPropagation()}
           >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div

@@ -2,11 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { staggerContainer, fadeUp, cardReveal } from "@/lib/motion";
-import { projects } from "@/data/projects";
-import ProjectCard from "@/components/ProjectCard";
+import { staggerContainer, fadeUp } from "@/lib/motion";
 import Footer from "@/components/Footer";
 import ParticleBg from "@/components/ParticleBg";
+import ProjectCarousel from "@/components/ProjectCarousel";
 
 function hexToRgb(hex: string): [number, number, number] {
   const n = parseInt(hex.slice(1), 16);
@@ -58,17 +57,6 @@ function TypewriterBio({ onComplete }: { onComplete: () => void }) {
 
 export default function Home() {
   const [bioComplete, setBioComplete] = useState(false);
-  const [contentReady, setContentReady] = useState(false);
-
-  useEffect(() => {
-    const seen = sessionStorage.getItem("content-unlocked");
-    if (!seen) {
-      sessionStorage.setItem("content-unlocked", "1");
-      const t = setTimeout(() => setContentReady(true), 3700);
-      return () => clearTimeout(t);
-    }
-    setContentReady(true);
-  }, []);
   const firstRef = useRef<HTMLSpanElement>(null);
   const lastRef  = useRef<HTMLSpanElement>(null);
   const [nameGrads, setNameGrads] = useState<{ first: string; last: string } | null>(null);
@@ -96,12 +84,6 @@ export default function Home() {
 
   return (
     <main>
-      {contentReady && (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
       {/* ─── Hero ──────────────────────────────────────────────── */}
       <section className="relative h-[100svh] flex flex-col justify-center">
         <div className="absolute inset-0"><ParticleBg /></div>
@@ -229,84 +211,36 @@ export default function Home() {
               </a>
             </motion.div>
 
-            {/* Scroll arrow */}
+            {/* Scroll indicator */}
             <motion.a
               href="#work"
               initial={{ opacity: 0, y: 16 }}
               animate={bioComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-              className="mt-10 flex flex-col items-center text-fg-muted/70 hover:text-fg-muted transition-colors duration-200"
+              className="mt-10 flex flex-col items-center text-fg-muted/60 hover:text-fg-muted/90 transition-colors duration-200"
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              <motion.svg
-                width="28" height="28" viewBox="0 0 28 28" fill="none"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
-              >
-                <path d="M6 10l8 8 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </motion.svg>
+              <div className="relative w-[22px] h-[34px] rounded-[11px] border-[1.5px] border-current flex justify-center items-start pt-[7px]">
+                <motion.div
+                  className="w-[3px] h-[6px] rounded-full bg-current"
+                  animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
             </motion.a>
           </motion.div>
         </div>
       </section>
 
       {/* ─── Work ──────────────────────────────────────────────── */}
-      <section id="work" className="relative px-6 md:px-8 pt-28 pb-32 md:pt-36 md:pb-40">
-        <div className="max-w-7xl mx-auto">
-          {/* Section header */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-end justify-between mb-12"
-          >
-            <div>
-              <h2
-                className="text-3xl font-bold text-fg"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Case Studies
-              </h2>
-              <p className="mt-2 text-base text-fg-muted">
-                Here are some of my projects in product design, UX and mobile design
-              </p>
-            </div>
-          </motion.div>
-
-          {(() => {
-            const projectSizes: Record<string, "full" | "half"> = {
-              "hire-journey": "full",
-              "sleep-os": "half",
-              "american-emr": "half",
-              "investate": "full",
-            };
-            return (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10">
-                {projects.map((project) => (
-                  <motion.div
-                    key={project.slug}
-                    variants={cardReveal}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.15 }}
-                    className={projectSizes[project.slug] === "full" ? "col-span-full" : ""}
-                  >
-                    <ProjectCard project={project} className="h-full" />
-                  </motion.div>
-                ))}
-              </div>
-            );
-          })()}
-        </div>
+      <section id="work">
+        <ProjectCarousel />
       </section>
 
       <Footer />
-      </motion.div>
-      )}
     </main>
   );
 }

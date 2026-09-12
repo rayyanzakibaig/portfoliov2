@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 const experience = [
   { year: "2026–Present", role: "Member Relations Director", company: "UH Cougar Product" },
   { year: "2024–Present", role: "Product Specialist", company: "Apple" },
-  { year: "2025", role: "Product Designer", company: "Palantir" },
   { year: "2024", role: "UX Design Intern", company: "American EMR" },
   { year: "2023", role: "Web Developer", company: "Investate Holdings" },
   { year: "2018–2022", role: "Designer & Photographer", company: "Klein Cain High School" },

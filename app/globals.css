@@ -22,17 +22,17 @@
   --color-lavender: #cbb8ff;
   --color-pink: #f2b7d9;
   --color-purple: #e0c6ff;
-  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
   --font-body: var(--font-geist-sans), "Geist", system-ui, sans-serif;
 }
 
 :root {
-  --bg: #ffffff;
+  --bg: #e8e8ed;
   --fg: #111111;
   --fg-muted: #555555;
-  --surface: #f7f7f8;
-  --surface-hover: #f0f0f2;
-  --border: #eaeaea;
+  --surface: #f2f2f7;
+  --surface-hover: #ebebf0;
+  --border: #d8d8e0;
 }
 
 .dark {
@@ -102,6 +102,21 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 2px;
 }
 
+
+
+
+.name-gradient {
+  background: linear-gradient(135deg, #1a1a1a 0%, #6b6b6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dark .name-gradient {
+  background: radial-gradient(ellipse at center, #fcfcfc 0%, #bababa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* GradientBackground — independent orb drift animations */
 @keyframes drift-blue {

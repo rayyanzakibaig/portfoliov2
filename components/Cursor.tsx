@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
 
@@ -13,12 +13,17 @@ export default function Cursor() {
   const [cursorWip, setCursorWip] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+  const [cursorArrow, setCursorArrow] = useState<"left" | "right" | null>(null);
+  const [cursorClose, setCursorClose] = useState(false);
+  const [pressed, setPressed] = useState(false);
+
+  const lightboxClosingRef = useRef(false);
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  const ringX = useSpring(mouseX, { stiffness: 280, damping: 22, mass: 0.25 });
-  const ringY = useSpring(mouseY, { stiffness: 280, damping: 22, mass: 0.25 });
+  const ringX = useSpring(mouseX, { stiffness: 600, damping: 32, mass: 0.15 });
+  const ringY = useSpring(mouseY, { stiffness: 600, damping: 32, mass: 0.15 });
 
   useEffect(() => {
     setIsTouch(window.matchMedia("(pointer: coarse)").matches);
@@ -30,10 +35,30 @@ export default function Cursor() {
     const move = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
+      const lb = document.querySelector("[data-cursor='lightbox']") as HTMLElement | null;
+      if (lb) {
+        const t = e.target as HTMLElement;
+        if (t.closest("[data-cursor='close']")) {
+          setCursorArrow(null);
+        } else {
+          setCursorArrow(e.clientX < window.innerWidth / 2 ? "left" : "right");
+        }
+      } else {
+        setCursorArrow(null);
+        setCursorClose(false);
+      }
     };
 
     const onEnter = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      if (target.closest("[data-cursor='close']")) {
+        if (lightboxClosingRef.current) return;
+        setCursorClose(true);
+        setHovered(false);
+        setCursorLabel(null);
+        return;
+      }
+      setCursorClose(false);
       const projectEl = target.closest("[data-cursor='project']") as HTMLElement | null;
       if (projectEl) {
         const tagsRaw = projectEl.dataset.cursorTags ?? "";
@@ -58,6 +83,7 @@ export default function Cursor() {
 
     const onLeave = (e: MouseEvent) => {
       const related = e.relatedTarget as HTMLElement | null;
+      if (!related?.closest("[data-cursor='close']")) setCursorClose(false);
       if (!related?.closest("[data-cursor='project']")) {
         setCursorLabel(null);
         setCursorTags([]);
@@ -68,14 +94,30 @@ export default function Cursor() {
       }
     };
 
+    const onLightboxClose = () => {
+      lightboxClosingRef.current = true;
+      setCursorClose(false);
+      setCursorArrow(null);
+      setTimeout(() => { lightboxClosingRef.current = false; }, 400);
+    };
+
+    const onDown = () => setPressed(true);
+    const onUp   = () => setPressed(false);
+
     window.addEventListener("mousemove", move);
     document.addEventListener("mouseover", onEnter);
     document.addEventListener("mouseout", onLeave);
+    window.addEventListener("lightbox:close", onLightboxClose);
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("mouseup", onUp);
 
     return () => {
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseover", onEnter);
       document.removeEventListener("mouseout", onLeave);
+      window.removeEventListener("lightbox:close", onLightboxClose);
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("mouseup", onUp);
     };
   }, [mouseX, mouseY]);
 
@@ -87,7 +129,7 @@ export default function Cursor() {
     <>
       {/* Frosted glass cursor */}
       <motion.div
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full"
+        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full flex items-center justify-center"
         style={{
           x: ringX,
           y: ringY,
@@ -95,19 +137,39 @@ export default function Cursor() {
           translateY: "-50%",
           backdropFilter: "blur(8px) saturate(180%)",
           WebkitBackdropFilter: "blur(8px) saturate(180%)",
-          background: theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.35)",
+          background: cursorArrow
+            ? theme === "dark" ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.5)"
+            : theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.35)",
           boxShadow: theme === "dark"
             ? "0 0 0 1px rgba(255,255,255,0.25), inset 0 1px 0 rgba(255,255,255,0.1)"
             : "0 0 0 1px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9)",
           willChange: "transform",
+          color: theme === "dark" ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.75)",
         }}
         animate={{
-          width: isProject ? 0 : hovered ? 48 : 36,
-          height: isProject ? 0 : hovered ? 48 : 36,
-          opacity: isProject ? 0 : 1,
+          width: cursorArrow ? 72 : cursorClose ? 48 : isProject ? 0 : hovered ? 48 : 36,
+          height: cursorArrow ? 72 : cursorClose ? 48 : isProject ? 0 : hovered ? 48 : 36,
+          opacity: isProject && !cursorArrow && !cursorClose ? 0 : 1,
+          scale: pressed ? 0.65 : 1,
         }}
         transition={{ duration: 0.2 }}
-      />
+      >
+        {cursorClose && (
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <path d="M1 1l10 10M11 1L1 11" />
+          </svg>
+        )}
+        {cursorArrow === "left" && !cursorClose && (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        )}
+        {cursorArrow === "right" && !cursorClose && (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        )}
+      </motion.div>
 
       {/* Project CTA pill */}
       <AnimatePresence>

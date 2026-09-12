@@ -21,18 +21,34 @@ export default function Footer() {
     <footer className="border-t border-border">
       <div className="max-w-5xl mx-auto px-6 md:px-8 py-20 md:py-24 flex flex-col items-center text-center gap-6">
         {/* Headline */}
-        <h2
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-3xl md:text-5xl font-bold text-fg"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Let's build something better together.
-        </h2>
-        <p className="text-base text-fg-muted max-w-sm leading-relaxed">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          className="text-base text-fg-muted max-w-sm leading-relaxed"
+        >
           I'm open to internships and co-ops in design, development, or management.
-        </p>
+        </motion.p>
 
         {/* CTA pills */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mt-1">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap items-center justify-center gap-3 mt-1"
+        >
           {/* Email — primary filled */}
           <button
             onClick={copyEmail}
@@ -95,7 +111,7 @@ export default function Footer() {
             </svg>
             GitHub
           </a>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom bar */}

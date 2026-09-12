@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { staggerContainer, fadeUp } from "@/lib/motion";
+import { staggerContainer, fadeUp, listContainer, listItem } from "@/lib/motion";
+import StatCounter from "@/components/StatCounter";
 import { getProjectBySlug } from "@/data/projects";
 import ScrollProgress from "@/components/ScrollProgress";
 import Footer from "@/components/Footer";
@@ -280,17 +281,17 @@ export default function CaseStudy({
                     {project.problem}
                   </p>
                   {project.goals && (
-                    <ul className="flex flex-col gap-3">
+                    <motion.ul variants={listContainer} className="flex flex-col gap-3">
                       {project.goals.map((goal, i) => (
-                        <li key={i} className="flex items-start gap-3 text-base text-fg-muted leading-relaxed">
+                        <motion.li key={i} variants={listItem} className="flex items-start gap-3 text-base text-fg-muted leading-relaxed">
                           <span
                             className="mt-2 w-1.5 h-1.5 rounded-full shrink-0"
                             style={{ backgroundColor: "var(--color-accent)" }}
                           />
                           {goal}
-                        </li>
+                        </motion.li>
                       ))}
-                    </ul>
+                    </motion.ul>
                   )}
                 </div>
               </motion.section>
@@ -327,12 +328,12 @@ export default function CaseStudy({
                       </div>
                     )}
                     {project.keyInsights && (
-                      <ul className="flex flex-col gap-4">
+                      <motion.ul variants={listContainer} className="flex flex-col gap-4">
                         {project.keyInsights.map((item, i) => {
                           const insight = typeof item === "string" ? item : item.insight;
                           const response = typeof item === "string" ? null : item.response;
                           return (
-                            <li key={i} className="p-5 rounded-xl bg-surface border border-border flex flex-col gap-4">
+                            <motion.li key={i} variants={listItem} className="p-5 rounded-xl bg-surface border border-border flex flex-col gap-4">
                               <div className="flex items-start gap-4">
                                 <span className="mt-0.5 text-xs font-bold tabular-nums shrink-0" style={{ ...accentGrad, fontFamily: "var(--font-display)" }}>
                                   {String(i + 1).padStart(2, "0")}
@@ -348,7 +349,7 @@ export default function CaseStudy({
                             </li>
                           );
                         })}
-                      </ul>
+                      </motion.ul>
                     )}
                   </div>
                 </motion.section>
@@ -358,9 +359,9 @@ export default function CaseStudy({
               <motion.section id="solution" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={fadeUp} className="border-t border-border">
                 <div className="max-w-5xl mx-auto px-6 md:px-8 py-24">
                   <SectionHeader label="Solution" title="How we got there" />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+                  <motion.div variants={listContainer} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
                     {project.processSteps.map((step) => (
-                      <div key={step.step} className="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                      <motion.div key={step.step} variants={listItem} className="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
                         {step.processImage && (
                           <div className="relative w-full h-36 overflow-hidden border-b border-border">
                             <Image src={step.processImage} alt={step.title} fill className="object-cover object-top" sizes="600px" />
@@ -371,9 +372,9 @@ export default function CaseStudy({
                           <p className="text-sm font-semibold text-fg">{step.title}</p>
                           <p className="text-sm text-fg-muted leading-relaxed">{step.description}</p>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                   {project.iterations && (
                     <div className="flex flex-col gap-4 mb-12">
 
@@ -498,14 +499,14 @@ export default function CaseStudy({
                         ))}
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <motion.div variants={listContainer} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {project.keyDesignDecisions.map((d, i) => (
-                          <div key={i} className="p-5 rounded-2xl bg-surface border border-border flex flex-col gap-2">
+                          <motion.div key={i} variants={listItem} className="p-5 rounded-2xl bg-surface border border-border flex flex-col gap-2">
                             <p className="text-sm font-semibold text-fg">{d.title}</p>
                             <p className="text-sm text-fg-muted leading-relaxed">{d.description}</p>
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
+                      </motion.div>
                     )
                   )}
                 </div>
@@ -548,7 +549,7 @@ export default function CaseStudy({
                         {project.stats.map((stat) => (
                           <div key={stat.label} className="p-4 md:p-5 rounded-2xl border border-border bg-surface/60 flex flex-col gap-2">
                             <span className="text-2xl md:text-4xl font-bold leading-none" style={{ fontFamily: "var(--font-display)", ...accentGrad }}>
-                              {stat.value}
+                              <StatCounter value={stat.value} />
                             </span>
                             <span className="text-[11px] md:text-xs text-fg-muted leading-snug">{stat.label}</span>
                           </div>

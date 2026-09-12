@@ -142,7 +142,7 @@ export const projects: Project[] = [
     title: "Sleep OS",
     cardTitle: "Palantir Design Challenge",
     accentWord: "OS",
-    textOnly: true,
+    coverVideo: "/images/sleep-os/palantir-cover.mp4",
     logo: "/images/PLTR White Logo.png",
     subtitle: "Palantir design challenge",
     description: "Adaptive Sleep OS improving your sleep",
