@@ -78,7 +78,7 @@ export default function HireJourneyCaseStudy() {
               {/* Title */}
               <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4">
                 <div
-                  className="rounded-xl p-1.5 flex-shrink-0 dark:[background:linear-gradient(135deg,#060d1f,#0f0820)]"
+                  className="rounded-xl p-1.5 flex-shrink-0"
                   style={{ background: "linear-gradient(135deg, #1a2a5e, #2d1a4e)" }}
                 >
                   <Image
@@ -500,13 +500,13 @@ export default function HireJourneyCaseStudy() {
             </motion.div>
           </motion.div>
 
-          {/* Screenshots — full-width */}
+          {/* Screenshots — constrained to content margins */}
           <motion.div
             variants={stagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-3 gap-4 px-6 md:px-12 mb-10"
+            className="grid grid-cols-3 gap-4 max-w-5xl mx-auto px-6 md:px-8 mb-10"
           >
             {[
               { src: "/images/hirejourney/resume-overview.png", alt: "Resume overview" },

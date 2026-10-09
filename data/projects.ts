@@ -59,7 +59,7 @@ export const projects: Project[] = [
     slug: "hire-journey",
     title: "Hire Journey",
     accentWord: "Journey",
-    coverVideo: "/images/hirejourney/hirejourneycover.mp4",
+    coverImage: "/images/hirejourney/hirejourneycover.png",
     subtitle: "A full-stack web helping job seekers find and track their next opportunity.",
     description: "Modern Job Tracker for Job Seekers",
     year: "2026",

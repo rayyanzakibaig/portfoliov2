@@ -61,6 +61,7 @@ export default function Creative() {
   const trackX = useMotionValue(0);
   const swipedRef = useRef(false);
   const thumbsRef = useRef<HTMLDivElement>(null);
+  const firstOpenRef = useRef(true);
   const THUMB_W = 56;
 
   useEffect(() => {
@@ -110,6 +111,7 @@ export default function Creative() {
 
   const closeLightbox = () => {
     setActiveItem(null);
+    firstOpenRef.current = true;
     window.dispatchEvent(new CustomEvent("lightbox:close"));
   };
 
@@ -132,7 +134,8 @@ export default function Creative() {
   useEffect(() => {
     if (activeIndex < 0 || !thumbsRef.current) return;
     const el = thumbsRef.current.children[activeIndex] as HTMLElement;
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    el?.scrollIntoView({ behavior: firstOpenRef.current ? "auto" : "smooth", block: "nearest", inline: "center" });
+    firstOpenRef.current = false;
   }, [activeIndex]);
 
   // Re-center active image on viewport resize
@@ -161,7 +164,7 @@ export default function Creative() {
               My Creative Endeavors
             </motion.h1>
             <motion.p variants={fadeUp} className="text-sm text-fg-muted mb-8 max-w-sm">
-              When I'm not designing or building, I'm either taking photos, making art, or exploring new creative medias.
+              When I'm not designing or building, I'm either capturing photos, creating art, or exploring new creative medias.
             </motion.p>
 
             {/* Filter tabs */}
@@ -179,8 +182,10 @@ export default function Creative() {
                     <button
                       key={label}
                       onClick={() => setActiveFilter(cat === "All" ? null : cat as string)}
-                      className="relative pb-3 text-sm whitespace-nowrap transition-colors duration-150"
-                      style={{ color: isActive ? "var(--fg)" : "var(--fg-muted)" }}
+                      className={`relative pb-3 text-sm whitespace-nowrap transition-colors duration-150 ${
+                        isActive ? "" : "text-fg-muted hover:text-fg"
+                      }`}
+                      style={{ color: isActive ? "var(--fg)" : undefined }}
                     >
                       {label}
                       {isActive && (
@@ -211,7 +216,7 @@ export default function Creative() {
               >
                 <button
                   onClick={() => openLightbox(image)}
-                  data-cursor="hover"
+                  data-cursor="image"
                   className="group relative overflow-hidden cursor-pointer w-full block"
                   style={{ aspectRatio: image.aspectRatio }}
                 >
@@ -294,6 +299,10 @@ export default function Creative() {
                       height: `${IMG_MAX_H * 100}vh`,
                       marginRight: i < lightboxItems.length - 1 ? GAP : 0,
                     }}
+                    initial={{
+                      scale: isActive ? 1.15 : 0.58,
+                      opacity: isActive ? 0 : 0.65,
+                    }}
                     animate={{
                       scale: isActive ? 1 : 0.58,
                       opacity: isActive ? 1 : 0.65,
@@ -329,32 +338,41 @@ export default function Creative() {
             {/* Filmstrip */}
             <div
               ref={thumbsRef}
+              data-cursor="none"
               className="absolute bottom-0 left-0 right-0 h-[72px] z-10 flex items-center justify-center overflow-x-auto scrollbar-none"
               onClick={(e) => e.stopPropagation()}
             >
               {lightboxItems.map((item, i) => {
                 const isActive = i === activeIndex;
                 return (
-                  <button
+                  <motion.button
                     key={item.id}
                     onClick={(e) => { e.stopPropagation(); goTo(i); }}
-                    className="flex-shrink-0 overflow-hidden transition-all duration-200"
-                    style={{
-                      width: THUMB_W,
-                      height: 52,
-                      opacity: isActive ? 1 : 0.35,
-                      outline: isActive ? "2px solid rgba(255,255,255,0.9)" : "none",
-                      outlineOffset: 2,
-                    }}
+                    className="relative flex-shrink-0 overflow-visible"
+                    style={{ width: THUMB_W, height: 52 }}
+                    initial={false}
+                    animate={{ opacity: isActive ? 1 : 0.35, scale: 1 }}
+                    whileHover={{ opacity: isActive ? 1 : 0.75, scale: 1.08 }}
+                    transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <Image
-                      src={item.src!}
-                      alt={item.alt}
-                      width={112}
-                      height={112}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
+                    <div className="w-full h-full overflow-hidden">
+                      <Image
+                        src={item.src!}
+                        alt={item.alt}
+                        width={112}
+                        height={112}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-thumb-outline"
+                        className="absolute -inset-[2px] pointer-events-none"
+                        style={{ outline: "2px solid rgba(255,255,255,0.9)", outlineOffset: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 40 }}
+                      />
+                    )}
+                  </motion.button>
                 );
               })}
             </div>

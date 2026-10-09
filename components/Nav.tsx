@@ -75,11 +75,12 @@ export default function Nav() {
                 <Link
                   key={href}
                   href={href}
-                  className="text-sm transition-opacity duration-150 px-2 py-3 -my-3"
+                  className={`text-sm transition-colors duration-150 px-2 py-3 -my-3 ${
+                    active ? "" : "text-fg-muted hover:text-fg"
+                  }`}
                   style={{
                     fontWeight: active ? 500 : 400,
-                    color: active ? "var(--fg)" : "var(--fg-muted)",
-                    opacity: active ? 1 : undefined,
+                    color: active ? "var(--fg)" : undefined,
                   }}
                 >
                   {label}

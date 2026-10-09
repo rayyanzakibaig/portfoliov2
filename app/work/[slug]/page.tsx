@@ -81,7 +81,7 @@ export default function CaseStudy({
         <div className="fixed top-24 left-6 md:left-10 z-50 hidden md:block">
           <Link
             href="/"
-            className="text-sm text-fg-muted hover:text-fg transition-colors duration-200 flex items-center gap-1.5"
+            className="text-sm text-fg-muted hover:text-fg transition-colors duration-200 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-bg/80 backdrop-blur-md border border-border shadow-sm"
           >
             ← Work
           </Link>
@@ -405,9 +405,7 @@ export default function CaseStudy({
                             {project.iterationsCards.slice(1).map((card, i) =>
                               card.image ? (
                                 <div key={i} className="rounded-2xl border border-border overflow-hidden">
-                                  <div className="p-1.5">
-                                    <Image src={card.image} alt={card.title} width={800} height={400} className="rounded-xl w-full h-auto" />
-                                  </div>
+                                  <Image src={card.image} alt={card.title} width={800} height={400} className="w-full h-auto" />
                                 </div>
                               ) : null
                             )}
@@ -479,9 +477,7 @@ export default function CaseStudy({
                               d.image ? (
                                 <div className="flex flex-col">
                                   <div className="rounded-t-2xl bg-surface border border-border border-b-0 overflow-hidden">
-                                    <div className="p-1.5">
-                                      <Image src={d.image} alt={d.title} width={1200} height={600} className="rounded-t-xl w-full h-auto" />
-                                    </div>
+                                    <Image src={d.image} alt={d.title} width={1200} height={600} className="w-full h-auto" />
                                   </div>
                                   <div className="rounded-b-2xl bg-surface border border-border p-5 flex flex-col gap-2">
                                     <p className="text-sm font-semibold text-fg">{d.title}</p>

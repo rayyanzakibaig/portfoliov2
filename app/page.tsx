@@ -6,6 +6,7 @@ import { staggerContainer, fadeUp } from "@/lib/motion";
 import Footer from "@/components/Footer";
 import ParticleBg from "@/components/ParticleBg";
 import ProjectCarousel from "@/components/ProjectCarousel";
+import { lenisRef } from "@/lib/lenis";
 
 function hexToRgb(hex: string): [number, number, number] {
   const n = parseInt(hex.slice(1), 16);
@@ -195,6 +196,10 @@ export default function Home() {
             >
               <a
                 href="#work"
+                onClick={(e) => {
+                  e.preventDefault();
+                  lenisRef.current?.scrollTo("#work");
+                }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] hover:bg-fg/70 hover:text-bg transition-all duration-200"
                 style={{ fontFamily: "var(--font-display)" }}
               >
@@ -220,7 +225,7 @@ export default function Home() {
               className="mt-10 flex flex-col items-center text-fg-muted/60 hover:text-fg-muted/90 transition-colors duration-200"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+                lenisRef.current?.scrollTo("#work");
               }}
             >
               <div className="relative w-[22px] h-[34px] rounded-[11px] border-[1.5px] border-current flex justify-center items-start pt-[7px]">

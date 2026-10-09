@@ -8,6 +8,7 @@ import { useTheme } from "./ThemeProvider";
 export default function Cursor() {
   const { theme } = useTheme();
   const [hovered, setHovered] = useState(false);
+  const [magnify, setMagnify] = useState(false);
   const [cursorLabel, setCursorLabel] = useState<string | null>(null);
   const [cursorTags, setCursorTags] = useState<string[]>([]);
   const [cursorWip, setCursorWip] = useState(false);
@@ -16,6 +17,7 @@ export default function Cursor() {
   const [cursorArrow, setCursorArrow] = useState<"left" | "right" | null>(null);
   const [cursorClose, setCursorClose] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const [cursorHidden, setCursorHidden] = useState(false);
 
   const lightboxClosingRef = useRef(false);
 
@@ -35,10 +37,11 @@ export default function Cursor() {
     const move = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
+      const t = e.target as HTMLElement;
+      setCursorHidden(!!t.closest("[data-cursor='none']"));
       const lb = document.querySelector("[data-cursor='lightbox']") as HTMLElement | null;
       if (lb) {
-        const t = e.target as HTMLElement;
-        if (t.closest("[data-cursor='close']")) {
+        if (t.closest("[data-cursor='close']") || t.closest("[data-cursor='none']")) {
           setCursorArrow(null);
         } else {
           setCursorArrow(e.clientX < window.innerWidth / 2 ? "left" : "right");
@@ -60,12 +63,18 @@ export default function Cursor() {
       }
       setCursorClose(false);
       const projectEl = target.closest("[data-cursor='project']") as HTMLElement | null;
+      const imageEl = target.closest("[data-cursor='image']");
       if (projectEl) {
         const tagsRaw = projectEl.dataset.cursorTags ?? "";
         setCursorTags(tagsRaw ? tagsRaw.split(",") : []);
         setCursorLabel(projectEl.dataset.cursorLabel ?? null);
         setCursorWip(projectEl.dataset.cursorWip === "true");
         setHovered(false);
+        setMagnify(false);
+      } else if (imageEl) {
+        setHovered(true);
+        setMagnify(false);
+        setCursorLabel(null);
       } else if (
         target.tagName === "A" ||
         target.tagName === "BUTTON" ||
@@ -74,9 +83,11 @@ export default function Cursor() {
         target.dataset.cursor === "hover"
       ) {
         setHovered(true);
+        setMagnify(true);
         setCursorLabel(null);
       } else {
         setHovered(false);
+        setMagnify(false);
         setCursorLabel(null);
       }
     };
@@ -89,8 +100,9 @@ export default function Cursor() {
         setCursorTags([]);
         setCursorWip(false);
       }
-      if (!related?.closest("a") && !related?.closest("button")) {
+      if (!related?.closest("a") && !related?.closest("button") && !related?.closest("[data-cursor='image']")) {
         setHovered(false);
+        setMagnify(false);
       }
     };
 
@@ -135,24 +147,52 @@ export default function Cursor() {
           y: ringY,
           translateX: "-50%",
           translateY: "-50%",
-          backdropFilter: "blur(8px) saturate(180%)",
-          WebkitBackdropFilter: "blur(8px) saturate(180%)",
+          backdropFilter: magnify ? "none" : "blur(8px) saturate(180%)",
+          WebkitBackdropFilter: magnify ? "none" : "blur(8px) saturate(180%)",
           background: cursorArrow
             ? theme === "dark" ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.5)"
+            : magnify
+            ? theme === "dark" ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.15)"
             : theme === "dark" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.35)",
-          boxShadow: theme === "dark"
+          boxShadow: magnify
+            ? theme === "dark"
+              ? [
+                  "0 0 0 1.5px rgba(255,255,255,0.8)",
+                  "inset 1.5px 1.5px 2px 0 rgba(255,255,255,0.5)",
+                  "inset -1.5px -1.5px 2px 0 rgba(0,0,0,0.3)",
+                  "inset 0 0 4px 1.5px rgba(130,220,255,0.4)",
+                  "inset 0 0 6px 2.5px rgba(255,110,220,0.22)",
+                ].join(", ")
+              : [
+                  "0 0 0 1.5px rgba(17,17,17,0.3)",
+                  "inset 1.5px 1.5px 2px 0 rgba(255,255,255,0.8)",
+                  "inset -1.5px -1.5px 2px 0 rgba(0,0,0,0.12)",
+                  "inset 0 0 4px 1.5px rgba(80,180,255,0.3)",
+                  "inset 0 0 6px 2.5px rgba(235,60,180,0.17)",
+                ].join(", ")
+            : hovered
+            ? theme === "dark"
+              ? "0 0 0 1.5px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,0.15)"
+              : "0 0 0 1.5px rgba(17,17,17,0.55), inset 0 1px 0 rgba(255,255,255,0.9)"
+            : theme === "dark"
             ? "0 0 0 1px rgba(255,255,255,0.25), inset 0 1px 0 rgba(255,255,255,0.1)"
             : "0 0 0 1px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.9)",
           willChange: "transform",
           color: theme === "dark" ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.75)",
+          transition: "background 0.2s ease, box-shadow 0.2s ease, backdrop-filter 0.2s ease",
         }}
         animate={{
           width: cursorArrow ? 72 : cursorClose ? 48 : isProject ? 0 : hovered ? 48 : 36,
           height: cursorArrow ? 72 : cursorClose ? 48 : isProject ? 0 : hovered ? 48 : 36,
           opacity: isProject && !cursorArrow && !cursorClose ? 0 : 1,
-          scale: pressed ? 0.65 : 1,
+          scale: cursorHidden ? 1.6 : pressed ? 0.65 : 1,
         }}
-        transition={{ duration: 0.2 }}
+        transition={{
+          width: { duration: 0.2 },
+          height: { duration: 0.2 },
+          scale: { duration: cursorHidden ? 0.45 : 0.2, ease: [0.16, 1, 0.3, 1] },
+          opacity: { duration: 0.2 },
+        }}
       >
         {cursorClose && (
           <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">

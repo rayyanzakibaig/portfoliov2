@@ -38,85 +38,90 @@ export default function ProjectCard({ project, className = "" }: Props) {
 
   const visual = (
     <div
-      className="relative rounded-2xl overflow-hidden w-full aspect-video"
-      style={{
-        background: project.gradientPanel
-          ? "#08080f"
-          : `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
-        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.07)",
-      }}
+      className="relative rounded-2xl w-full aspect-[4/3]"
+      style={{ boxShadow: "0 0 0 1px var(--border)" }}
     >
-      {/* Gradient orbs */}
-      {project.gradientPanel && (
-        <>
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              top: "0%", left: "-10%", width: "70%", height: "100%",
-              background: `radial-gradient(ellipse at 20% 50%, ${project.gradientFrom}88 0%, transparent 70%)`,
-            }}
+      {/* Inner — background + content, scales on hover */}
+      <div
+        className="absolute inset-0 rounded-2xl overflow-hidden transition-transform duration-500 ease-out group-hover:scale-[0.96]"
+        style={{
+          background: project.gradientPanel
+            ? "#08080f"
+            : `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
+        }}
+      >
+        {/* Gradient orbs */}
+        {project.gradientPanel && (
+          <>
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                top: "0%", left: "-10%", width: "70%", height: "100%",
+                background: `radial-gradient(ellipse at 20% 50%, ${project.gradientFrom}88 0%, transparent 70%)`,
+              }}
+            />
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                top: "0%", right: "-10%", width: "70%", height: "100%",
+                background: `radial-gradient(ellipse at 80% 40%, ${project.gradientTo}66 0%, transparent 70%)`,
+              }}
+            />
+          </>
+        )}
+
+        {/* Cover video */}
+        {project.coverVideo && (
+          <video
+            ref={mainVideoRef}
+            src={project.coverVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              top: "0%", right: "-10%", width: "70%", height: "100%",
-              background: `radial-gradient(ellipse at 80% 40%, ${project.gradientTo}66 0%, transparent 70%)`,
-            }}
+        )}
+
+        {/* Cover image */}
+        {!project.coverVideo && project.coverImage && (
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
-        </>
-      )}
+        )}
 
-      {/* Cover video */}
-      {project.coverVideo && (
-        <video
-          ref={mainVideoRef}
-          src={project.coverVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
-        />
-      )}
+        {/* Staggered panel images */}
+        {!project.coverVideo && !project.coverImage && project.panelImages && (
+          <div className="absolute inset-0 flex items-end justify-center gap-2">
+            {project.panelImages.map((src, i) => (
+              <div key={i} style={{ transform: `translateY(${i === 1 ? -52 : -20}px)` }}>
+                <Image
+                  src={src}
+                  alt=""
+                  width={140}
+                  height={280}
+                  className="rounded-xl object-cover object-top"
+                  style={{ boxShadow: i === 1 ? "0 12px 40px rgba(0,0,0,0.65)" : "0 8px 32px rgba(0,0,0,0.55)" }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
-      {/* Cover image */}
-      {!project.coverVideo && project.coverImage && (
-        <Image
-          src={project.coverImage}
-          alt={project.title}
-          fill
-          className="object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-      )}
+        {/* Logo centered (fallback when no media) */}
+        {!project.coverVideo && !project.coverImage && !project.panelImages && project.logo && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Image src={project.logo} alt={project.title} width={120} height={40} className="object-contain opacity-80" />
+          </div>
+        )}
 
-      {/* Staggered panel images */}
-      {!project.coverVideo && !project.coverImage && project.panelImages && (
-        <div className="absolute inset-0 flex items-end justify-center gap-2">
-          {project.panelImages.map((src, i) => (
-            <div key={i} style={{ transform: `translateY(${i === 1 ? -52 : -20}px)` }}>
-              <Image
-                src={src}
-                alt=""
-                width={140}
-                height={280}
-                className="rounded-xl object-cover object-top"
-                style={{ boxShadow: i === 1 ? "0 12px 40px rgba(0,0,0,0.65)" : "0 8px 32px rgba(0,0,0,0.55)" }}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Logo centered (fallback when no media) */}
-      {!project.coverVideo && !project.coverImage && !project.panelImages && project.logo && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Image src={project.logo} alt={project.title} width={120} height={40} className="object-contain opacity-80" />
-        </div>
-      )}
-
-      {/* Specular rim */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        {/* Specular rim */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      </div>
     </div>
   );
 
@@ -153,8 +158,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
           data-cursor="project"
           data-cursor-label={cursorLabel}
           data-cursor-wip="true"
-          whileHover={{ y: -6 }}
-          transition={{ type: "spring", stiffness: 400, damping: 28 }}
+          transition={{ type: "spring", stiffness: 300, damping: 24 }}
           className={`group block cursor-pointer ${className}`}
         >
           {cardInner}
@@ -164,8 +168,7 @@ export default function ProjectCard({ project, className = "" }: Props) {
           href={`/work/${project.slug}`}
           data-cursor="project"
           data-cursor-label={cursorLabel}
-          whileHover={{ y: -6 }}
-          transition={{ type: "spring", stiffness: 400, damping: 28 }}
+          transition={{ type: "spring", stiffness: 300, damping: 24 }}
           className={`group block ${className}`}
         >
           {cardInner}
