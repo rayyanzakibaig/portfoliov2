@@ -346,7 +346,7 @@ export default function CaseStudy({
                                   <p className="text-sm text-fg-muted leading-relaxed">{response}</p>
                                 </div>
                               )}
-                            </li>
+                            </motion.li>
                           );
                         })}
                       </motion.ul>
