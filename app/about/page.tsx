@@ -50,8 +50,9 @@ export default function About() {
         <TiltCard
           holographic
           sparkle={false}
-          className="overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-surface/95 via-teal-500/10 to-indigo-500/15 p-6 md:p-12 flex flex-row gap-6 md:gap-16 items-start"
+          className="overflow-hidden rounded-2xl border border-border bg-surface/95 bg-[radial-gradient(circle_at_12%_18%,rgba(139,92,246,0.18),transparent_60%),radial-gradient(circle_at_88%_12%,rgba(236,72,153,0.15),transparent_70%),radial-gradient(circle_at_65%_92%,rgba(59,130,246,0.17),transparent_78%)] p-6 md:p-12"
         >
+          <div className="grid grid-cols-[auto_1fr] gap-6 md:gap-16 items-start">
           {/* Portrait */}
           <motion.div variants={fadeUp} className="w-[96px] sm:w-[140px] md:w-[220px] flex-shrink-0">
             <div className="rounded-full w-full aspect-square overflow-hidden">
@@ -74,16 +75,16 @@ export default function About() {
             >
               Hey, I&apos;m Rayyan.
             </h1>
-            <p className="text-base text-fg-muted leading-relaxed">
+            <p className="text-base text-fg/90 leading-relaxed dark:[text-shadow:0_1px_12px_rgba(0,0,0,0.35)]">
               I&apos;m a product designer and MIS student at the University of Houston, building
               things that are both useful and fun.
             </p>
-            <p className="text-base text-fg-muted leading-relaxed mt-4">
+            <p className="text-base text-fg/90 leading-relaxed dark:[text-shadow:0_1px_12px_rgba(0,0,0,0.35)] mt-4">
               I&apos;ve interned at American EMR designing healthcare mobile UI, and currently work
               as a Product Specialist at Apple. Before that, I was an IT Technician, where I learned
               to think through problems analytically.
             </p>
-            <p className="text-base text-fg-muted leading-relaxed mt-4">
+            <p className="text-base text-fg/90 leading-relaxed dark:[text-shadow:0_1px_12px_rgba(0,0,0,0.35)] mt-4">
               I like solving real user pain points, prototyping fast, and building products myself.
               Right now I&apos;m seeking internship roles in product design or product management.
             </p>
@@ -139,6 +140,7 @@ export default function About() {
               </a>
             </div>
           </motion.div>
+          </div>
         </TiltCard>
         </motion.section>
 
