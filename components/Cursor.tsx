@@ -18,6 +18,7 @@ export default function Cursor() {
   const [cursorClose, setCursorClose] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [cursorHidden, setCursorHidden] = useState(false);
+  const [cursorFullyHidden, setCursorFullyHidden] = useState(false);
 
   const lightboxClosingRef = useRef(false);
 
@@ -39,6 +40,7 @@ export default function Cursor() {
       mouseY.set(e.clientY);
       const t = e.target as HTMLElement;
       setCursorHidden(!!t.closest("[data-cursor='none']"));
+      setCursorFullyHidden(!!t.closest("[data-cursor='hide']"));
       const lb = document.querySelector("[data-cursor='lightbox']") as HTMLElement | null;
       if (lb) {
         if (t.closest("[data-cursor='close']") || t.closest("[data-cursor='none']")) {
@@ -184,7 +186,7 @@ export default function Cursor() {
         animate={{
           width: cursorArrow ? 72 : cursorClose ? 48 : isProject ? 0 : hovered ? 48 : 36,
           height: cursorArrow ? 72 : cursorClose ? 48 : isProject ? 0 : hovered ? 48 : 36,
-          opacity: isProject && !cursorArrow && !cursorClose ? 0 : 1,
+          opacity: cursorFullyHidden ? 0 : isProject && !cursorArrow && !cursorClose ? 0 : 1,
           scale: cursorHidden ? 1.6 : pressed ? 0.65 : 1,
         }}
         transition={{

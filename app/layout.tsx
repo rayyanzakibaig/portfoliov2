@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Lexend, Outfit } from "next/font/google";
+import { Space_Grotesk, Lexend, Outfit, Press_Start_2P, Inter } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -27,6 +27,20 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const pressStart2P = Press_Start_2P({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -59,7 +73,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${spaceGrotesk.variable} ${lexend.variable} ${outfit.variable} antialiased`}>
+      <body className={`${GeistSans.variable} ${spaceGrotesk.variable} ${lexend.variable} ${outfit.variable} ${pressStart2P.variable} ${inter.variable} antialiased`}>
         <ThemeProvider>
           <IntroSplash />
           <LenisProvider>

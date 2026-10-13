@@ -50,11 +50,11 @@ export default function About() {
         <TiltCard
           holographic
           sparkle={false}
-          className="overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-surface/95 via-teal-500/10 to-indigo-500/15 p-8 md:p-12 flex flex-col md:flex-row gap-12 md:gap-16 items-center md:items-start"
+          className="overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-surface/95 via-teal-500/10 to-indigo-500/15 p-6 md:p-12 flex flex-row gap-6 md:gap-16 items-start"
         >
           {/* Portrait */}
-          <motion.div variants={fadeUp} className="w-full flex justify-center md:w-[220px] md:justify-start flex-shrink-0">
-            <div className="rounded-full w-[220px] aspect-square overflow-hidden">
+          <motion.div variants={fadeUp} className="w-[96px] sm:w-[140px] md:w-[220px] flex-shrink-0">
+            <div className="rounded-full w-full aspect-square overflow-hidden">
               <Image
                 src="/images/rayyanprofile.jpg"
                 alt="Rayyan Zakibaig"
@@ -89,10 +89,10 @@ export default function About() {
             </p>
 
             {/* CTA row */}
-            <div className="flex flex-wrap gap-3 mt-6">
+            <div className="flex flex-nowrap items-center gap-3 mt-6 overflow-x-auto scrollbar-none">
               <a
                 href="mailto:rzakibaig@gmail.com"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] hover:opacity-85 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-fg text-bg text-sm font-medium shadow-[0_0_0_0.5px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.15)] hover:opacity-85 transition-all duration-200 shrink-0"
               >
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="1" y="3" width="14" height="10" rx="2" />
@@ -104,7 +104,7 @@ export default function About() {
                 href="https://drive.google.com/file/d/1mnPFnb0WzECPuX6eOYl4WHcP4RkWxX7f/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border bg-surface/60 text-fg text-sm font-medium hover:bg-surface transition-all duration-200"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border bg-surface/60 text-fg text-sm font-medium hover:bg-surface transition-all duration-200 shrink-0"
               >
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 1h6l4 4v10H2V1z" />
@@ -118,7 +118,7 @@ export default function About() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 hover:opacity-85"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 hover:opacity-85 shrink-0"
                 style={{ background: "#0A66C2" }}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="white">
@@ -130,7 +130,7 @@ export default function About() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 hover:opacity-85"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 hover:opacity-85 shrink-0"
                 style={{ background: "#181717" }}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="white">

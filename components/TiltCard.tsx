@@ -101,7 +101,6 @@ export default function TiltCard({
         }
         className={`relative ${className}`}
       >
-        {children}
         {showEffects && (
           <>
             <motion.div
@@ -128,6 +127,7 @@ export default function TiltCard({
             )}
           </>
         )}
+        <div className="relative">{children}</div>
       </motion.div>
     </div>
   );

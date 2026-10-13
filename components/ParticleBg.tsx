@@ -119,7 +119,6 @@ export default function ParticleBg() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // UI state
-  const [open,           setOpen]           = useState(false);
   const [density,        setDensity]        = useState(0.22);
   const [driftSpeed,     setDriftSpeed]     = useState(0.32);
   const [noiseScale,     setNoiseScale]     = useState(2.40);
@@ -307,56 +306,6 @@ export default function ParticleBg() {
         aria-hidden="true"
       />
 
-      {/* Toggle button */}
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="absolute bottom-6 right-6 z-20 text-[9px] font-mono tracking-[0.2em] text-white/30 hover:text-white/60 border border-white/[0.08] hover:border-white/20 rounded px-2.5 py-1 transition-colors bg-black/10 backdrop-blur-sm pointer-events-auto"
-      >
-        {open ? 'CLOSE' : 'TUNE'}
-      </button>
-
-      {/* Settings panel */}
-      {open && (
-        <div className="absolute bottom-16 right-6 z-20 w-[600px] max-w-[calc(100vw-3rem)] rounded-xl border border-white/[0.07] bg-[#0e0e0e]/92 backdrop-blur-2xl p-6 shadow-2xl pointer-events-auto">
-          <p className="text-[9px] font-mono tracking-[0.25em] text-[#E05C3A] mb-1 uppercase">Live Parameters</p>
-          <h3 className="text-white text-xl font-bold mb-6" style={{ fontFamily: 'var(--font-display)' }}>
-            Tune the field
-          </h3>
-
-          <div className="grid grid-cols-2 gap-x-10 gap-y-5">
-            <Slider label="DENSITY"      value={density}    min={0.1} max={1}   step={0.01} onChange={set.density} />
-            <Slider label="DRIFT SPEED"  value={driftSpeed} min={0}   max={1.2} step={0.01} onChange={set.driftSpeed} />
-            <Slider label="NOISE SCALE"  value={noiseScale} min={0.4} max={2.4} step={0.01} onChange={set.noiseScale} />
-            <Slider label="WING SPREAD"  value={wingSpread} min={0.1} max={0.6} step={0.01} onChange={set.wingSpread} />
-
-            <div>
-              <span className="block text-[10px] font-mono tracking-[0.15em] text-white/40 mb-1.5">GLYPH SET</span>
-              <div className="relative">
-                <select
-                  value={glyphSetKey}
-                  onChange={(e) => set.glyphSetKey(e.target.value as GlyphKey)}
-                  className="w-full appearance-none bg-white/[0.05] border border-white/[0.08] rounded px-3 py-2 pr-7 text-sm font-mono text-white/70 cursor-pointer focus:outline-none"
-                >
-                  {(Object.keys(GLYPH_SETS) as GlyphKey[]).map((k) => (
-                    <option key={k} value={k} className="bg-[#111]">{GLYPH_SETS[k].label}</option>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-white/30 text-xs">⌄</span>
-              </div>
-            </div>
-
-            <Slider label="ACCENT BLOOM" value={accentBloom} min={0} max={0.4} step={0.01} onChange={set.accentBloom} />
-
-            <div className="col-span-2 pt-1 border-t border-white/[0.06]">
-              <span className="block text-[10px] font-mono tracking-[0.15em] text-white/30 mb-3 mt-2">CURSOR</span>
-              <div className="flex gap-10">
-                <Toggle label="REACT TO POINTER" value={reactToPointer} onChange={set.reactToPointer} />
-                <Toggle label="PAUSE DRIFT"       value={pauseDrift}     onChange={set.pauseDrift} />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
